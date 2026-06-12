@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Human Technology Tree - Machine Learning Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="navigator" aria-label="Knowledge navigator">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">HT</span>
+          <div>
+            <p class="eyebrow">Human Technology Tree</p>
+            <h1>Machine Learning Demo</h1>
+          </div>
+        </div>
+
+        <label class="search-label" for="searchInput">Search knowledge</label>
+        <input id="searchInput" class="search-input" type="search" placeholder="Search by name, tag, or text" />
+
+        <div class="filter-group" aria-label="Filter by tag">
+          <button class="filter-button is-active" data-filter="all" type="button">All</button>
+          <button class="filter-button" data-filter="Mathematics" type="button">Math</button>
+          <button class="filter-button" data-filter="Machine Learning" type="button">ML</button>
+          <button class="filter-button" data-filter="Deep Learning" type="button">Deep</button>
+          <button class="filter-button" data-filter="Optimization" type="button">Optim</button>
+        </div>
+
+        <nav id="nodeList" class="node-list" aria-label="Knowledge nodes"></nav>
+      </aside>
+
+      <section class="workspace" aria-label="Knowledge workspace">
+        <section id="treeView" class="tree-view is-active" aria-label="2D dependency graph">
+          <section class="graph-panel">
+            <div class="graph-toolbar" aria-label="Relationship legend">
+              <span><i class="legend-dot prerequisite"></i>Prerequisite</span>
+              <span><i class="legend-dot application"></i>Application</span>
+            </div>
+            <svg id="edgeLayer" class="edge-layer" role="img" aria-label="Knowledge relationship lines"></svg>
+            <div id="graphNodes" class="graph-nodes"></div>
+          </section>
+        </section>
+
+        <article id="introPage" class="intro-page" aria-live="polite" hidden></article>
+      </section>
+    </main>
+
+    <script src="../data/machine-learning-knowledge.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
