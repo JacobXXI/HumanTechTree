@@ -4,13 +4,13 @@ This repository contains an MVP demo for the Human Technology Tree idea describe
 
 ## Demo
 
-Open `demo/index.html` in a browser to try the machine learning knowledge demo, or run a local server from the repository root:
+Open `index.html` in a browser to try the machine learning knowledge demo, or run a local server from the repository root:
 
 ```sh
 python3 -m http.server 8000
 ```
 
-Then visit `http://localhost:8000/demo/`. The demo also works if the `demo` folder is served directly. It includes:
+Then visit `http://localhost:8000/`. It includes:
 
 - 10 reviewed machine learning knowledge nodes.
 - A searchable and filterable side navigator.
@@ -18,7 +18,7 @@ Then visit `http://localhost:8000/demo/`. The demo also works if the `demo` fold
 - A knowledge introduction page opened from either the sidebar or the tree.
 - Descriptions, prerequisites, enabled ideas, tags, status, and references for each node.
 
-The seed data lives in `data/machine-learning-knowledge.js` so the same source can later drive a Docusaurus or React implementation. A portable browser copy also lives in `demo/data/machine-learning-knowledge.js` so the static demo keeps working when the `demo` folder is served by itself.
+The seed data lives in `data/machine-learning-knowledge.js` so the same source can later drive a Docusaurus or React implementation.
 
 ## Knowledge Nodes
 

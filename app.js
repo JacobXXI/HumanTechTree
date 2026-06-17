@@ -1,5 +1,4 @@
 const DATA_SCRIPT_PATH = "data/machine-learning-knowledge.js";
-const PARENT_DATA_SCRIPT_PATH = "../data/machine-learning-knowledge.js";
 
 let data = null;
 const state = {
@@ -55,16 +54,6 @@ const futureIdeaNames = {
   "large-language-models": "Large Language Models"
 };
 
-function getDataScriptCandidates() {
-  const path = window.location.pathname.toLowerCase();
-  const isNestedDemoPath = path.includes("/demo/");
-  const candidates = isNestedDemoPath
-    ? [PARENT_DATA_SCRIPT_PATH, DATA_SCRIPT_PATH]
-    : [DATA_SCRIPT_PATH, PARENT_DATA_SCRIPT_PATH];
-
-  return [...new Set(candidates)];
-}
-
 function loadDataScript(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -81,19 +70,10 @@ function loadDataScript(src) {
 async function loadKnowledgeData() {
   if (window.machineLearningKnowledge) return window.machineLearningKnowledge;
 
-  const errors = [];
+  await loadDataScript(DATA_SCRIPT_PATH);
+  if (window.machineLearningKnowledge) return window.machineLearningKnowledge;
 
-  for (const src of getDataScriptCandidates()) {
-    try {
-      await loadDataScript(src);
-      if (window.machineLearningKnowledge) return window.machineLearningKnowledge;
-      errors.push(`${src} loaded without knowledge data`);
-    } catch (error) {
-      errors.push(error.message);
-    }
-  }
-
-  throw new Error(`Unable to load knowledge data. Tried: ${errors.join("; ")}`);
+  throw new Error(`${DATA_SCRIPT_PATH} loaded without knowledge data.`);
 }
 
 function showLoadError(error) {
@@ -103,7 +83,7 @@ function showLoadError(error) {
   const empty = document.createElement("p");
   empty.className = "empty-state";
   empty.textContent =
-    "Unable to load knowledge data. Keep the data folder with the demo files, or serve the site from the project root.";
+    "Unable to load knowledge data. Keep data/machine-learning-knowledge.js with the root app files.";
   nodeList.append(empty);
 
   graphNodes.innerHTML = "";
