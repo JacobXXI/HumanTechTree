@@ -16,9 +16,63 @@ Then visit `http://localhost:8000/`. It includes:
 - A searchable and filterable side navigator.
 - A full-pane 2D prerequisite graph.
 - A knowledge introduction page opened from either the sidebar or the tree.
-- Descriptions, prerequisites, enabled ideas, tags, status, and references for each node.
+- Descriptions, derived prerequisites, derived enabled ideas, tags, status, and references for each node.
 
-The seed data lives in `data/machine-learning-knowledge.js` so the same source can later drive a Docusaurus or React implementation.
+The seed data lives in `src/data/machine-learning-knowledge.js` so the same source can later drive a Docusaurus or React implementation. Relationship records are the source of truth for prerequisites and enabled ideas.
+
+## Project Structure
+
+The demo is split into focused modules:
+
+```text
+src/
+  app.js
+  data/
+    machine-learning-knowledge.js
+  graph/
+    knowledge-graph.js
+  ui/
+    renderers.js
+  validation/
+    knowledge-data-validation.js
+tests/
+  data-validation/
+    validate-knowledge-data.mjs
+```
+
+This keeps content data, graph logic, UI rendering, validation, and application wiring separate while preserving the no-build static demo.
+
+## Validation
+
+Run the knowledge data validation before expanding or editing the seed database:
+
+```sh
+npm run validate:data
+```
+
+The validator checks required fields, duplicate IDs, relationship endpoints, allowed statuses and relationship types, reference URLs, duplicate relationships, and prerequisite cycles.
+
+## GitHub Pages Deployment
+
+This repository is ready to publish with GitHub Pages using the static files at the repository root.
+
+Before deploying, run:
+
+```sh
+npm test
+```
+
+In GitHub, open `Settings -> Pages`, then set:
+
+- Source: `Deploy from a branch`
+- Branch: `main`
+- Folder: `/ (root)`
+
+After GitHub Pages finishes publishing, the project will be available at:
+
+```text
+https://jacobxxi.github.io/HumanTechTree/
+```
 
 ## Knowledge Nodes
 

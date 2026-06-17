@@ -1,0 +1,9 @@
+{
+  "name": "human-technology-tree",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "validate:data": "node tests/data-validation/validate-knowledge-data.mjs",
+    "test": "npm run validate:data"
+  }
+}
