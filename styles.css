@@ -463,7 +463,7 @@ h3 {
 }
 
 .graph-node.is-dimmed {
-  opacity: 0.32;
+  opacity: 0.3;
 }
 
 @media (prefers-reduced-motion: reduce) {

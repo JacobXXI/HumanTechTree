@@ -78,7 +78,38 @@
     return related;
   }
 
-  function buildPrerequisiteGraph(nodes, relationships) {
+  function collectReachableIds(startId, adjacency, result) {
+    const queue = [startId];
+
+    while (queue.length) {
+      const currentId = queue.shift();
+      const nextIds = adjacency.get(currentId) || [];
+
+      nextIds.forEach((nextId) => {
+        if (result.has(nextId)) return;
+
+        result.add(nextId);
+        queue.push(nextId);
+      });
+    }
+  }
+
+  function getFocusedSubgraphIds(data, id) {
+    const nodeIds = getNodeIds(data);
+    const focused = new Set();
+
+    if (!nodeIds.has(id)) return focused;
+
+    const prerequisiteGraph = buildPrerequisiteGraph(data.nodes, data.relationships);
+    const supportGraph = buildSupportGraph(data.nodes, data.relationships);
+    focused.add(id);
+    collectReachableIds(id, prerequisiteGraph.parents, focused);
+    collectReachableIds(id, supportGraph.children, focused);
+
+    return focused;
+  }
+
+  function buildRelationshipGraph(nodes, relationships, shouldIncludeRelationship) {
     const nodeIds = new Set(nodes.map((node) => node.id));
     const parents = new Map(nodes.map((node) => [node.id, []]));
     const children = new Map(nodes.map((node) => [node.id, []]));
@@ -86,7 +117,7 @@
     relationships
       .filter(
         (relationship) =>
-          relationship.type === "prerequisite" &&
+          shouldIncludeRelationship(relationship) &&
           nodeIds.has(relationship.source) &&
           nodeIds.has(relationship.target)
       )
@@ -96,6 +127,18 @@
       });
 
     return { parents, children };
+  }
+
+  function buildPrerequisiteGraph(nodes, relationships) {
+    return buildRelationshipGraph(
+      nodes,
+      relationships,
+      (relationship) => relationship.type === "prerequisite"
+    );
+  }
+
+  function buildSupportGraph(nodes, relationships) {
+    return buildRelationshipGraph(nodes, relationships, () => true);
   }
 
   function computeLayers(nodes, parents) {
@@ -235,7 +278,7 @@
   }
 
   function computeNormalizedPositions(nodes, relationships) {
-    const { parents, children } = buildPrerequisiteGraph(nodes, relationships);
+    const { parents, children } = buildSupportGraph(nodes, relationships);
     const layers = orderLayers(computeLayers(nodes, parents), parents, children);
     const maxLayerIndex = Math.max(layers.length - 1, 1);
     const coordinates = new Map();
@@ -267,6 +310,7 @@
     getEnabledIds,
     getFutureNodeIds,
     getFutureNodeIndex,
+    getFocusedSubgraphIds,
     getIncomingRelationships,
     getNodeIds,
     getNodeIndex,

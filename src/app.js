@@ -22,6 +22,8 @@ const zoomOutButton = document.querySelector("#zoomOut");
 const zoomResetButton = document.querySelector("#zoomReset");
 const networkContext = networkCanvas?.getContext("2d");
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const nodeSelectionDelayMs = 280;
+let pendingNodeSelectionTimer = null;
 
 const networkState = {
   frameId: null,
@@ -242,6 +244,13 @@ function resetGraphTransform() {
   applyGraphTransform();
 }
 
+function clearPendingNodeSelection() {
+  if (!pendingNodeSelectionTimer) return;
+
+  window.clearTimeout(pendingNodeSelectionTimer);
+  pendingNodeSelectionTimer = null;
+}
+
 function shouldSuppressGraphClick() {
   if (!graphTransform.suppressClick) return false;
 
@@ -257,6 +266,7 @@ function renderGraph() {
     graphNodes,
     edgeLayer,
     onOpenNode: openIntro,
+    onSelectNode: scheduleGraphNodeSelection,
     shouldSuppressClick: shouldSuppressGraphClick
   });
 }
@@ -275,11 +285,55 @@ function renderNodeList() {
     data,
     state,
     nodeList,
-    onOpenNode: openIntro
+    onOpenNode: openIntro,
+    onSelectNode: scheduleNodeSelection
   });
 }
 
+function selectNode(id) {
+  state.selectedId = id;
+  state.view = "tree";
+  resetGraphTransform();
+  render();
+}
+
+function clearNodeSelection() {
+  clearPendingNodeSelection();
+  if (!state.selectedId || state.view !== "tree") return;
+
+  state.selectedId = null;
+  render();
+}
+
+function scheduleNodeSelection(id) {
+  clearPendingNodeSelection();
+  pendingNodeSelectionTimer = window.setTimeout(() => {
+    pendingNodeSelectionTimer = null;
+    selectNode(id);
+  }, nodeSelectionDelayMs);
+}
+
+function isOutsideFocusedSubgraph(id) {
+  if (!state.selectedId || !window.HttKnowledgeGraph) return false;
+
+  return !window.HttKnowledgeGraph.getFocusedSubgraphIds(data, state.selectedId).has(id);
+}
+
+function scheduleGraphNodeSelection(id) {
+  clearPendingNodeSelection();
+  pendingNodeSelectionTimer = window.setTimeout(() => {
+    pendingNodeSelectionTimer = null;
+    if (isOutsideFocusedSubgraph(id)) {
+      clearNodeSelection();
+      return;
+    }
+
+    selectNode(id);
+  }, nodeSelectionDelayMs);
+}
+
 function openIntro(id) {
+  clearPendingNodeSelection();
   state.selectedId = id;
   state.view = "intro";
   render();
@@ -353,6 +407,7 @@ filterButtons.forEach((button) => {
 
 graphViewport.addEventListener("pointerdown", (event) => {
   if (!event.isPrimary || event.button !== 0) return;
+  if (event.target.closest(".graph-node")) return;
 
   graphTransform.isDragging = true;
   graphTransform.dragStartX = event.clientX;
@@ -400,6 +455,13 @@ function endGraphDrag(event) {
 
 graphViewport.addEventListener("pointerup", endGraphDrag);
 graphViewport.addEventListener("pointercancel", endGraphDrag);
+
+graphViewport.addEventListener("click", (event) => {
+  if (event.target.closest(".graph-node")) return;
+  if (shouldSuppressGraphClick()) return;
+
+  clearNodeSelection();
+});
 
 graphPanel.addEventListener(
   "wheel",

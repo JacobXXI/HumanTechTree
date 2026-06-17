@@ -12,7 +12,7 @@ python3 -m http.server 8000
 
 Then visit `http://localhost:8000/`. It includes:
 
-- 10 reviewed machine learning knowledge nodes.
+- 30 reviewed technology and machine learning knowledge nodes.
 - A searchable and filterable side navigator.
 - A full-pane 2D prerequisite graph.
 - A knowledge introduction page opened from either the sidebar or the tree.
@@ -92,6 +92,26 @@ The first demo covers:
 8. Decision Trees
 9. Neural Networks
 10. Backpropagation
+11. Discrete Mathematics
+12. Graph Theory
+13. Algorithms
+14. Data Structures
+15. Programming Languages
+16. Computer Architecture
+17. Parallel Computing
+18. GPU Computing
+19. Information Theory
+20. Numerical Methods
+21. Automatic Differentiation
+22. Linear Regression
+23. Bayesian Inference
+24. Unsupervised Learning
+25. Reinforcement Learning
+26. Ensemble Methods
+27. Representation Learning
+28. Deep Learning
+29. Transformers
+30. Large Language Models
 
 ## Next Steps
 

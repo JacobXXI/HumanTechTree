@@ -47,7 +47,59 @@
     edgeLayer.innerHTML = "";
   }
 
-  function renderNodeList({ data, state, nodeList, onOpenNode }) {
+  function getLayerStats(data, normalizedPositions) {
+    const layerCounts = new Map();
+
+    data.nodes.forEach((node) => {
+      const spot = normalizedPositions.get(node.id);
+      if (!spot) return;
+
+      const key = spot.y.toFixed(6);
+      layerCounts.set(key, (layerCounts.get(key) || 0) + 1);
+    });
+
+    return {
+      layerCount: Math.max(layerCounts.size, 1),
+      maxLayerSize: Math.max(...layerCounts.values(), 1)
+    };
+  }
+
+  function getGraphContentSize({
+    data,
+    normalizedPositions,
+    nodeWidth,
+    nodeHeight,
+    panelWidth,
+    panelHeight,
+    paddingX,
+    paddingTop,
+    paddingBottom
+  }) {
+    const { layerCount, maxLayerSize } = getLayerStats(data, normalizedPositions);
+    const horizontalGap = panelWidth < 620 ? 42 : 72;
+    const verticalGap = panelHeight < 620 ? 76 : 104;
+    const minNormalizedGap =
+      maxLayerSize > 1 ? Math.min(0.24, 0.86 / (maxLayerSize - 1)) : 1;
+    const requiredUsableWidth =
+      maxLayerSize > 1
+        ? Math.ceil((nodeWidth + horizontalGap) / minNormalizedGap)
+        : nodeWidth + horizontalGap * 2;
+    const requiredUsableHeight =
+      layerCount > 1 ? (layerCount - 1) * (nodeHeight + verticalGap) : nodeHeight;
+
+    return {
+      height: Math.max(
+        panelHeight,
+        Math.ceil(requiredUsableHeight + nodeHeight + paddingTop + paddingBottom)
+      ),
+      width: Math.max(
+        panelWidth,
+        Math.ceil(requiredUsableWidth + nodeWidth + paddingX * 2)
+      )
+    };
+  }
+
+  function renderNodeList({ data, state, nodeList, onOpenNode, onSelectNode }) {
     if (!data) return;
 
     const filteredNodes = data.nodes.filter((node) => matchesNode(node, state));
@@ -70,45 +122,70 @@
         <strong>${escapeHtml(node.name)}</strong>
         <span>${escapeHtml(node.tags.slice(0, 2).join(" / "))}</span>
       `;
-      button.addEventListener("click", () => onOpenNode(node.id));
+      button.addEventListener("click", (event) => {
+        if (event.detail > 1) return;
+        onSelectNode(node.id);
+      });
+      button.addEventListener("dblclick", () => onOpenNode(node.id));
       nodeList.append(button);
     });
   }
 
-  function renderGraph({ data, state, graphViewport, graphNodes, edgeLayer, onOpenNode, shouldSuppressClick }) {
+  function renderGraph({
+    data,
+    state,
+    graphViewport,
+    graphNodes,
+    edgeLayer,
+    onOpenNode,
+    onSelectNode,
+    shouldSuppressClick
+  }) {
     if (!data) return;
 
-    const selectedRelated = KnowledgeGraph.getRelatedIds(data, state.selectedId);
-    const width = graphViewport.clientWidth || graphNodes.clientWidth || 900;
-    const height = graphViewport.clientHeight || graphNodes.clientHeight || 520;
-    const nodeWidth = width < 620 ? 116 : 150;
+    const focusedIds = state.selectedId
+      ? KnowledgeGraph.getFocusedSubgraphIds(data, state.selectedId)
+      : KnowledgeGraph.getNodeIds(data);
+    const displayNodes = data.nodes;
+    const displayRelationships = KnowledgeGraph.getRenderableRelationships(data);
+    const selectedRelated = state.selectedId ? focusedIds : new Set();
+    const panelWidth = graphViewport.parentElement?.clientWidth || graphNodes.clientWidth || 900;
+    const panelHeight = graphViewport.parentElement?.clientHeight || graphNodes.clientHeight || 520;
+    const nodeWidth = panelWidth < 620 ? 116 : 150;
     const nodeHeight = 58;
     const paddingX = 18;
     const paddingTop = 56;
     const paddingBottom = 36;
+    const normalizedPositions = KnowledgeGraph.computeNormalizedPositions(
+      displayNodes,
+      displayRelationships
+    );
+    const { width, height } = getGraphContentSize({
+      data: { nodes: displayNodes },
+      normalizedPositions,
+      nodeWidth,
+      nodeHeight,
+      panelWidth,
+      panelHeight,
+      paddingX,
+      paddingTop,
+      paddingBottom
+    });
     const usableWidth = width - nodeWidth - paddingX * 2;
     const usableHeight = height - nodeHeight - paddingTop - paddingBottom;
-    const normalizedPositions = KnowledgeGraph.computeNormalizedPositions(
-      data.nodes,
-      data.relationships
-    );
     const positions = new Map();
 
+    graphViewport.style.width = `${width}px`;
+    graphViewport.style.height = `${height}px`;
     graphNodes.innerHTML = "";
     edgeLayer.innerHTML = "";
     edgeLayer.setAttribute("viewBox", `0 0 ${width} ${height}`);
     edgeLayer.innerHTML = "<defs></defs>";
 
-    data.nodes.forEach((node) => {
+    displayNodes.forEach((node) => {
       const spot = normalizedPositions.get(node.id);
-      const x = Math.min(
-        width - nodeWidth - paddingX,
-        Math.max(paddingX, paddingX + spot.x * usableWidth)
-      );
-      const y = Math.min(
-        height - nodeHeight - paddingBottom,
-        Math.max(paddingTop, paddingTop + spot.y * usableHeight)
-      );
+      const x = paddingX + spot.x * usableWidth;
+      const y = paddingTop + spot.y * usableHeight;
       positions.set(node.id, {
         x,
         y,
@@ -135,18 +212,30 @@
           return;
         }
 
+        if (event.detail > 1) return;
+        onSelectNode(node.id);
+      });
+      button.addEventListener("dblclick", (event) => {
+        if (shouldSuppressClick()) {
+          event.preventDefault();
+          return;
+        }
+
         onOpenNode(node.id);
       });
       graphNodes.append(button);
     });
 
-    KnowledgeGraph.getRenderableRelationships(data).forEach((relationship) => {
+    displayRelationships.forEach((relationship) => {
       const source = positions.get(relationship.source);
       const target = positions.get(relationship.target);
       if (!source || !target) return;
 
       const selectedEdge =
         relationship.source === state.selectedId || relationship.target === state.selectedId;
+      const isFocusedEdge =
+        !state.selectedId ||
+        (focusedIds.has(relationship.source) && focusedIds.has(relationship.target));
       const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
       const verticalDistance = Math.abs(target.bottom - source.top);
       const curve = Math.max(36, verticalDistance * 0.42);
@@ -158,7 +247,7 @@
       line.setAttribute("fill", "none");
       line.setAttribute("stroke", KnowledgeGraph.getRelationshipColor(relationship.type));
       line.setAttribute("stroke-width", selectedEdge ? "3" : "1.6");
-      line.setAttribute("opacity", selectedEdge ? "0.95" : "0.48");
+      line.setAttribute("opacity", selectedEdge ? "0.95" : isFocusedEdge ? "0.48" : "0.24");
       edgeLayer.append(line);
     });
   }
