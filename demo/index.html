@@ -34,12 +34,20 @@
       <section class="workspace" aria-label="Knowledge workspace">
         <section id="treeView" class="tree-view is-active" aria-label="2D dependency graph">
           <section class="graph-panel">
+            <canvas id="networkBackground" class="network-background" aria-hidden="true"></canvas>
             <div class="graph-toolbar" aria-label="Relationship legend">
               <span><i class="legend-dot prerequisite"></i>Prerequisite</span>
               <span><i class="legend-dot application"></i>Application</span>
+              <div class="zoom-controls" aria-label="Tree zoom controls">
+                <button id="zoomOut" class="zoom-button" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+                <button id="zoomReset" class="zoom-button" type="button" aria-label="Reset view" title="Reset view">1×</button>
+                <button id="zoomIn" class="zoom-button" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+              </div>
             </div>
-            <svg id="edgeLayer" class="edge-layer" role="img" aria-label="Knowledge relationship lines"></svg>
-            <div id="graphNodes" class="graph-nodes"></div>
+            <div id="graphViewport" class="graph-viewport">
+              <svg id="edgeLayer" class="edge-layer" role="img" aria-label="Knowledge relationship lines"></svg>
+              <div id="graphNodes" class="graph-nodes"></div>
+            </div>
           </section>
         </section>
 
@@ -47,7 +55,6 @@
       </section>
     </main>
 
-    <script src="../data/machine-learning-knowledge.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

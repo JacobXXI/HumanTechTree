@@ -1,4 +1,7 @@
-const data = window.machineLearningKnowledge;
+const DATA_SCRIPT_PATH = "data/machine-learning-knowledge.js";
+const PARENT_DATA_SCRIPT_PATH = "../data/machine-learning-knowledge.js";
+
+let data = null;
 const state = {
   selectedId: null,
   view: "tree",
@@ -8,13 +11,43 @@ const state = {
 
 const nodeList = document.querySelector("#nodeList");
 const treeView = document.querySelector("#treeView");
+const networkCanvas = document.querySelector("#networkBackground");
+const graphPanel = document.querySelector(".graph-panel");
+const graphViewport = document.querySelector("#graphViewport");
 const graphNodes = document.querySelector("#graphNodes");
 const edgeLayer = document.querySelector("#edgeLayer");
 const introPage = document.querySelector("#introPage");
 const searchInput = document.querySelector("#searchInput");
 const filterButtons = Array.from(document.querySelectorAll(".filter-button"));
+const zoomInButton = document.querySelector("#zoomIn");
+const zoomOutButton = document.querySelector("#zoomOut");
+const zoomResetButton = document.querySelector("#zoomReset");
+const networkContext = networkCanvas?.getContext("2d");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-const nodesById = new Map(data.nodes.map((node) => [node.id, node]));
+let nodesById = new Map();
+const networkState = {
+  frameId: null,
+  height: 0,
+  lastTimestamp: 0,
+  particles: [],
+  pixelRatio: 1,
+  width: 0
+};
+const graphTransform = {
+  dragDistance: 0,
+  dragStartX: 0,
+  dragStartY: 0,
+  isDragging: false,
+  maxScale: 2.4,
+  minScale: 0.55,
+  originX: 0,
+  originY: 0,
+  scale: 1,
+  suppressClick: false,
+  x: 0,
+  y: 0
+};
 const futureIdeaNames = {
   "ensemble-methods": "Ensemble Methods",
   "representation-learning": "Representation Learning",
@@ -22,12 +55,262 @@ const futureIdeaNames = {
   "large-language-models": "Large Language Models"
 };
 
+function getDataScriptCandidates() {
+  const path = window.location.pathname.toLowerCase();
+  const isNestedDemoPath = path.includes("/demo/");
+  const candidates = isNestedDemoPath
+    ? [PARENT_DATA_SCRIPT_PATH, DATA_SCRIPT_PATH]
+    : [DATA_SCRIPT_PATH, PARENT_DATA_SCRIPT_PATH];
+
+  return [...new Set(candidates)];
+}
+
+function loadDataScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      script.remove();
+      reject(new Error(`Could not load ${src}`));
+    };
+    document.head.append(script);
+  });
+}
+
+async function loadKnowledgeData() {
+  if (window.machineLearningKnowledge) return window.machineLearningKnowledge;
+
+  const errors = [];
+
+  for (const src of getDataScriptCandidates()) {
+    try {
+      await loadDataScript(src);
+      if (window.machineLearningKnowledge) return window.machineLearningKnowledge;
+      errors.push(`${src} loaded without knowledge data`);
+    } catch (error) {
+      errors.push(error.message);
+    }
+  }
+
+  throw new Error(`Unable to load knowledge data. Tried: ${errors.join("; ")}`);
+}
+
+function showLoadError(error) {
+  console.error(error);
+  nodeList.innerHTML = "";
+
+  const empty = document.createElement("p");
+  empty.className = "empty-state";
+  empty.textContent =
+    "Unable to load knowledge data. Keep the data folder with the demo files, or serve the site from the project root.";
+  nodeList.append(empty);
+
+  graphNodes.innerHTML = "";
+  edgeLayer.innerHTML = "";
+}
+
+function randomBetween(minimum, maximum) {
+  return minimum + Math.random() * (maximum - minimum);
+}
+
+function createNetworkParticle(width, height) {
+  const angle = randomBetween(0, Math.PI * 2);
+  const speed = randomBetween(14, 34);
+
+  return {
+    alpha: randomBetween(0.48, 0.9),
+    phase: randomBetween(0, Math.PI * 2),
+    radius: randomBetween(1.2, 2.4),
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
+    x: randomBetween(0, width),
+    y: randomBetween(0, height)
+  };
+}
+
+function seedNetworkParticles(width, height) {
+  const particleCount = Math.round(Math.min(92, Math.max(44, (width * height) / 11000)));
+  networkState.particles = Array.from({ length: particleCount }, () =>
+    createNetworkParticle(width, height)
+  );
+}
+
+function resizeNetworkBackground() {
+  if (!networkCanvas || !networkContext) return;
+
+  const rect = networkCanvas.getBoundingClientRect();
+  const width = Math.max(1, Math.round(rect.width));
+  const height = Math.max(1, Math.round(rect.height));
+  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  const sizeChanged =
+    width !== networkState.width ||
+    height !== networkState.height ||
+    pixelRatio !== networkState.pixelRatio;
+
+  if (!sizeChanged && networkState.particles.length) return;
+
+  networkState.width = width;
+  networkState.height = height;
+  networkState.pixelRatio = pixelRatio;
+  networkCanvas.width = Math.round(width * pixelRatio);
+  networkCanvas.height = Math.round(height * pixelRatio);
+  networkContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  seedNetworkParticles(width, height);
+}
+
+function updateNetworkParticles(deltaSeconds) {
+  const margin = 10;
+
+  networkState.particles.forEach((particle) => {
+    particle.x += particle.vx * deltaSeconds;
+    particle.y += particle.vy * deltaSeconds;
+
+    if (particle.x < margin || particle.x > networkState.width - margin) {
+      particle.vx *= -1;
+      particle.x = Math.min(networkState.width - margin, Math.max(margin, particle.x));
+    }
+
+    if (particle.y < margin || particle.y > networkState.height - margin) {
+      particle.vy *= -1;
+      particle.y = Math.min(networkState.height - margin, Math.max(margin, particle.y));
+    }
+  });
+}
+
+function drawNetworkBackground(timestamp = 0) {
+  if (!networkContext) return;
+
+  const { width, height, particles } = networkState;
+  const linkDistance = Math.min(150, Math.max(96, width * 0.16));
+
+  networkContext.clearRect(0, 0, width, height);
+  networkContext.save();
+  networkContext.globalCompositeOperation = "lighter";
+
+  for (let index = 0; index < particles.length; index += 1) {
+    for (let nextIndex = index + 1; nextIndex < particles.length; nextIndex += 1) {
+      const current = particles[index];
+      const next = particles[nextIndex];
+      const distance = Math.hypot(current.x - next.x, current.y - next.y);
+
+      if (distance > linkDistance) continue;
+
+      const opacity = Math.pow(1 - distance / linkDistance, 2) * 0.2;
+      networkContext.beginPath();
+      networkContext.moveTo(current.x, current.y);
+      networkContext.lineTo(next.x, next.y);
+      networkContext.strokeStyle = `rgba(180, 234, 255, ${opacity})`;
+      networkContext.lineWidth = 1;
+      networkContext.stroke();
+    }
+  }
+
+  particles.forEach((particle) => {
+    const pulse = 0.72 + Math.sin(timestamp * 0.002 + particle.phase) * 0.28;
+
+    networkContext.beginPath();
+    networkContext.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+    networkContext.fillStyle = `rgba(236, 250, 255, ${particle.alpha * pulse})`;
+    networkContext.shadowBlur = 10;
+    networkContext.shadowColor = "rgba(103, 232, 249, 0.55)";
+    networkContext.fill();
+  });
+
+  networkContext.restore();
+}
+
+function animateNetworkBackground(timestamp) {
+  resizeNetworkBackground();
+
+  const deltaSeconds = networkState.lastTimestamp
+    ? Math.min((timestamp - networkState.lastTimestamp) / 1000, 0.05)
+    : 0;
+  networkState.lastTimestamp = timestamp;
+
+  if (!reducedMotionQuery.matches) updateNetworkParticles(deltaSeconds);
+  drawNetworkBackground(timestamp);
+
+  if (state.view === "tree" && !reducedMotionQuery.matches) {
+    networkState.frameId = window.requestAnimationFrame(animateNetworkBackground);
+  } else {
+    networkState.frameId = null;
+    networkState.lastTimestamp = 0;
+  }
+}
+
+function startNetworkBackground() {
+  if (!networkCanvas || !networkContext) return;
+
+  resizeNetworkBackground();
+  drawNetworkBackground();
+
+  if (networkState.frameId || reducedMotionQuery.matches) return;
+
+  networkState.lastTimestamp = 0;
+  networkState.frameId = window.requestAnimationFrame(animateNetworkBackground);
+}
+
+function stopNetworkBackground() {
+  if (!networkState.frameId) return;
+
+  window.cancelAnimationFrame(networkState.frameId);
+  networkState.frameId = null;
+  networkState.lastTimestamp = 0;
+}
+
+function clamp(value, minimum, maximum) {
+  return Math.min(maximum, Math.max(minimum, value));
+}
+
+function applyGraphTransform() {
+  if (!graphViewport) return;
+
+  graphViewport.style.transform = `translate(${graphTransform.x}px, ${graphTransform.y}px) scale(${graphTransform.scale})`;
+}
+
+function getGraphPanelPoint(clientX, clientY) {
+  const rect = graphPanel.getBoundingClientRect();
+
+  return {
+    x: clientX - rect.left,
+    y: clientY - rect.top
+  };
+}
+
+function zoomGraphAt(panelX, panelY, factor) {
+  const nextScale = clamp(
+    graphTransform.scale * factor,
+    graphTransform.minScale,
+    graphTransform.maxScale
+  );
+
+  if (nextScale === graphTransform.scale) return;
+
+  const scaleRatio = nextScale / graphTransform.scale;
+  graphTransform.x = panelX - (panelX - graphTransform.x) * scaleRatio;
+  graphTransform.y = panelY - (panelY - graphTransform.y) * scaleRatio;
+  graphTransform.scale = nextScale;
+  applyGraphTransform();
+}
+
+function zoomGraphFromCenter(factor) {
+  const rect = graphPanel.getBoundingClientRect();
+  zoomGraphAt(rect.width / 2, rect.height / 2, factor);
+}
+
+function resetGraphTransform() {
+  graphTransform.x = 0;
+  graphTransform.y = 0;
+  graphTransform.scale = 1;
+  applyGraphTransform();
+}
+
 function matchesNode(node) {
   const haystack = [
     node.name,
     node.description,
     node.importance,
-    node.difficulty,
     node.status,
     ...node.tags
   ]
@@ -180,7 +463,7 @@ function relaxLayerCoordinates(layers, parents, children, coordinates) {
 function enforceMinimumSpacing(layer, coordinates) {
   if (layer.length < 2) return;
 
-  const minGap = Math.min(0.18, 0.72 / (layer.length - 1));
+  const minGap = Math.min(0.24, 0.86 / (layer.length - 1));
   const ordered = [...layer].sort((a, b) => coordinates.get(a).x - coordinates.get(b).x);
 
   for (let index = 1; index < ordered.length; index += 1) {
@@ -225,6 +508,8 @@ function computeNormalizedPositions(nodes) {
 }
 
 function renderNodeList() {
+  if (!data) return;
+
   const filteredNodes = data.nodes.filter(matchesNode);
   nodeList.innerHTML = "";
 
@@ -243,7 +528,7 @@ function renderNodeList() {
     button.dataset.id = node.id;
     button.innerHTML = `
       <strong>${node.name}</strong>
-      <span>${node.tags.slice(0, 2).join(" / ")} - ${node.difficulty}</span>
+      <span>${node.tags.slice(0, 2).join(" / ")}</span>
     `;
     button.addEventListener("click", () => openIntro(node.id));
     nodeList.append(button);
@@ -251,10 +536,11 @@ function renderNodeList() {
 }
 
 function renderGraph() {
+  if (!data) return;
+
   const selectedRelated = getRelatedIds(state.selectedId);
-  const panelRect = graphNodes.getBoundingClientRect();
-  const width = panelRect.width || 900;
-  const height = panelRect.height || 520;
+  const width = graphViewport.clientWidth || graphNodes.clientWidth || 900;
+  const height = graphViewport.clientHeight || graphNodes.clientHeight || 520;
   const nodeWidth = width < 620 ? 116 : 150;
   const nodeHeight = 58;
   const paddingX = 18;
@@ -299,8 +585,16 @@ function renderGraph() {
     button.style.left = `${x}px`;
     button.style.top = `${y}px`;
     button.dataset.id = node.id;
-    button.innerHTML = `<strong>${node.name}</strong><span>${node.difficulty}</span>`;
-    button.addEventListener("click", () => openIntro(node.id));
+    button.innerHTML = `<strong>${node.name}</strong>`;
+    button.addEventListener("click", (event) => {
+      if (graphTransform.suppressClick) {
+        event.preventDefault();
+        graphTransform.suppressClick = false;
+        return;
+      }
+
+      openIntro(node.id);
+    });
     graphNodes.append(button);
   });
 
@@ -309,7 +603,7 @@ function renderGraph() {
     const target = positions.get(relationship.target);
     const selectedEdge =
       relationship.source === state.selectedId || relationship.target === state.selectedId;
-    const color = relationship.type === "prerequisite" ? "#0f766e" : "#9d174d";
+    const color = relationship.type === "prerequisite" ? "#67e8f9" : "#f472b6";
     const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
     const verticalDistance = Math.abs(target.bottom - source.top);
     const curve = Math.max(36, verticalDistance * 0.42);
@@ -321,12 +615,14 @@ function renderGraph() {
     line.setAttribute("fill", "none");
     line.setAttribute("stroke", color);
     line.setAttribute("stroke-width", selectedEdge ? "3" : "1.6");
-    line.setAttribute("opacity", selectedEdge ? "0.88" : "0.34");
+    line.setAttribute("opacity", selectedEdge ? "0.95" : "0.48");
     edgeLayer.append(line);
   });
 }
 
 function renderIntroPage() {
+  if (!data) return;
+
   const node = nodesById.get(state.selectedId);
   const prerequisiteNames = node.prerequisites.map(getNodeName);
   const enabledNames = node.enabled.map(getNodeName);
@@ -335,7 +631,6 @@ function renderIntroPage() {
     <button id="backToTree" class="back-button" type="button">Back</button>
     <div class="meta-row">
       ${node.tags.map((tag) => `<span class="chip ${tag === "Mathematics" ? "math" : ""}">${tag}</span>`).join("")}
-      <span class="chip diff">${node.difficulty}</span>
       <span class="chip status">${node.status}</span>
     </div>
     <h2>${node.name}</h2>
@@ -381,7 +676,9 @@ function renderView() {
 
   if (showingTree) {
     renderGraph();
+    startNetworkBackground();
   } else {
+    stopNetworkBackground();
     renderIntroPage();
   }
 }
@@ -389,6 +686,16 @@ function renderView() {
 function render() {
   renderNodeList();
   renderView();
+}
+
+async function init() {
+  try {
+    data = await loadKnowledgeData();
+    nodesById = new Map(data.nodes.map((node) => [node.id, node]));
+    render();
+  } catch (error) {
+    showLoadError(error);
+  }
 }
 
 searchInput.addEventListener("input", (event) => {
@@ -404,8 +711,92 @@ filterButtons.forEach((button) => {
   });
 });
 
-window.addEventListener("resize", () => {
-  if (state.view === "tree") renderGraph();
+graphViewport.addEventListener("pointerdown", (event) => {
+  if (!event.isPrimary || event.button !== 0) return;
+
+  graphTransform.isDragging = true;
+  graphTransform.dragStartX = event.clientX;
+  graphTransform.dragStartY = event.clientY;
+  graphTransform.originX = graphTransform.x;
+  graphTransform.originY = graphTransform.y;
+  graphTransform.dragDistance = 0;
+  graphTransform.suppressClick = false;
+  graphPanel.classList.add("is-dragging");
+  graphViewport.setPointerCapture(event.pointerId);
 });
 
-render();
+graphViewport.addEventListener("pointermove", (event) => {
+  if (!graphTransform.isDragging) return;
+
+  const deltaX = event.clientX - graphTransform.dragStartX;
+  const deltaY = event.clientY - graphTransform.dragStartY;
+  graphTransform.dragDistance = Math.max(
+    graphTransform.dragDistance,
+    Math.hypot(deltaX, deltaY)
+  );
+
+  if (graphTransform.dragDistance > 3) event.preventDefault();
+
+  graphTransform.x = graphTransform.originX + deltaX;
+  graphTransform.y = graphTransform.originY + deltaY;
+  applyGraphTransform();
+});
+
+function endGraphDrag(event) {
+  if (!graphTransform.isDragging) return;
+
+  graphTransform.isDragging = false;
+  graphTransform.suppressClick = graphTransform.dragDistance > 4;
+  graphPanel.classList.remove("is-dragging");
+
+  if (graphViewport.hasPointerCapture(event.pointerId)) {
+    graphViewport.releasePointerCapture(event.pointerId);
+  }
+
+  window.setTimeout(() => {
+    graphTransform.suppressClick = false;
+  }, 0);
+}
+
+graphViewport.addEventListener("pointerup", endGraphDrag);
+graphViewport.addEventListener("pointercancel", endGraphDrag);
+
+graphPanel.addEventListener(
+  "wheel",
+  (event) => {
+    if (state.view !== "tree" || event.target.closest(".graph-toolbar")) return;
+
+    event.preventDefault();
+    const point = getGraphPanelPoint(event.clientX, event.clientY);
+    const deltaMultiplier = event.deltaMode === 1 ? 18 : 1;
+    const zoomFactor = Math.exp(-event.deltaY * deltaMultiplier * 0.0016);
+    zoomGraphAt(point.x, point.y, zoomFactor);
+  },
+  { passive: false }
+);
+
+zoomInButton.addEventListener("click", () => zoomGraphFromCenter(1.18));
+zoomOutButton.addEventListener("click", () => zoomGraphFromCenter(1 / 1.18));
+zoomResetButton.addEventListener("click", resetGraphTransform);
+
+window.addEventListener("resize", () => {
+  if (state.view !== "tree") return;
+
+  renderGraph();
+  resizeNetworkBackground();
+  drawNetworkBackground();
+});
+
+function handleMotionPreferenceChange() {
+  stopNetworkBackground();
+
+  if (state.view === "tree") startNetworkBackground();
+}
+
+if (reducedMotionQuery.addEventListener) {
+  reducedMotionQuery.addEventListener("change", handleMotionPreferenceChange);
+} else {
+  reducedMotionQuery.addListener(handleMotionPreferenceChange);
+}
+
+init();

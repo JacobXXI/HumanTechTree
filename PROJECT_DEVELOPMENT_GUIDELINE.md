@@ -68,7 +68,6 @@ Recommended fields:
 | `importance` | Why the node matters historically, scientifically, or practically. |
 | `enabled` | Later concepts, inventions, or research areas made possible by this node. |
 | `references` | Papers, books, videos, articles, or primary sources. |
-| `difficulty` | Optional level such as beginner, intermediate, or advanced. |
 | `status` | Draft, reviewed, verified, incomplete, or uncertain. |
 
 The MVP should use simple relationship types:
@@ -219,7 +218,7 @@ Goals:
 
 - Build the 2D prerequisite tree.
 - Allow users to select nodes and inspect details.
-- Support filtering by tag, field, difficulty, or status.
+- Support filtering by tag, field, or status.
 - Represent missing or uncertain relationships clearly.
 
 Acceptance criteria:
@@ -285,7 +284,6 @@ Every new or edited node should be reviewed for:
 - Correct relationship types.
 - Useful references.
 - Appropriate tags.
-- Reasonable difficulty level.
 - Honest status marking.
 
 Suggested node statuses:
