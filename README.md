@@ -52,6 +52,10 @@ npm run validate:data
 
 The validator checks required fields, duplicate IDs, relationship endpoints, allowed statuses and relationship types, reference URLs, duplicate relationships, and prerequisite cycles.
 
+## Knowledge Entry Template
+
+Use `templates/knowledge-database-entry-template.md` when adding future nodes or relationships to the knowledge database.
+
 ## GitHub Pages Deployment
 
 This repository is ready to publish with GitHub Pages using the static files at the repository root.
