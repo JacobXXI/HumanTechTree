@@ -192,7 +192,65 @@ Use it for:
 - Filtering the main view.
 - Showing a compact outline of the database.
 
-## 8. Recommended Development Phases
+## 8. Project Structure and Modular Design
+
+The project structure should make the system easy to understand, extend, and maintain. Each major responsibility should have a clear home so contributors can add content, improve visualizations, or update shared logic without searching across unrelated files.
+
+Use a modular structure that separates:
+
+- **Site content**: Introduction pages, project documentation, contribution guidance, and explanatory material.
+- **Knowledge data**: Node definitions, relationship data, tags, references, and validation rules.
+- **Shared schema and utilities**: Types, parsers, validation helpers, graph-building functions, and reusable data transforms.
+- **User interface components**: Reusable React components for node cards, detail panels, filters, legends, search, and navigation.
+- **Visualization modules**: Separate modules for the 2D dependency tree, 3D exploration view, and side tree navigator.
+- **Styling and theme configuration**: Shared visual tokens, layout rules, and Docusaurus or React styling customizations.
+- **Tests and validation scripts**: Data validation, graph consistency checks, and UI behavior tests.
+
+A recommended structure for the MVP is:
+
+```text
+/
+  docs/
+    intro.md
+    contribution-guidelines.md
+  src/
+    components/
+      NodeDetail/
+      NodeList/
+      SearchAndFilters/
+    data/
+      nodes/
+      relationships/
+      tags.ts
+    graph/
+      buildGraph.ts
+      validateGraph.ts
+      relationshipTypes.ts
+    visualizations/
+      DependencyTree2D/
+      ExplorationGraph3D/
+      SideTreeNavigator/
+    pages/
+    theme/
+    types/
+  tests/
+    data-validation/
+    visualizations/
+```
+
+The exact folders may change as the project grows, but the boundaries should stay clear. A contributor who wants to edit knowledge content should not need to understand the 3D rendering code. A developer improving the 2D tree should not need to change the node schema unless the feature truly requires it.
+
+Design modules around stable contracts:
+
+- Knowledge nodes should follow one shared schema.
+- Relationship types should be defined in one place and reused everywhere.
+- Visualizations should consume prepared graph data rather than each building their own interpretation of raw files.
+- Shared UI components should be reusable across node pages, lists, and visualization panels.
+- Validation should run against the same data used by the site.
+
+This modular design makes the structure more understandable and manageable. It also reduces the risk that new features will create hidden coupling between content, graph logic, and visual presentation.
+
+## 9. Recommended Development Phases
 
 ### Phase 1: Foundation
 
@@ -275,7 +333,7 @@ Acceptance criteria:
 - Contributors understand what makes a good node.
 - The database can grow without making the tree unreadable.
 
-## 9. Content Review Process
+## 10. Content Review Process
 
 Every new or edited node should be reviewed for:
 
@@ -296,7 +354,7 @@ Suggested node statuses:
 
 Do not hide uncertainty. Marking uncertainty is better than presenting weak knowledge as settled fact.
 
-## 10. Data Growth Strategy
+## 11. Data Growth Strategy
 
 The knowledge database should grow by coherent domains rather than random isolated entries.
 
@@ -318,7 +376,7 @@ Good early domains include:
 - Physics and engineering fundamentals.
 - Scientific instruments and measurement.
 
-## 11. Quality Guidelines
+## 12. Quality Guidelines
 
 The platform should remain:
 
@@ -337,7 +395,7 @@ Avoid:
 - Burying users in long articles when they need relationship clarity.
 - Mixing verified knowledge and speculation without labels.
 
-## 12. Testing and Validation Scenarios
+## 13. Testing and Validation Scenarios
 
 The MVP should be validated against these scenarios:
 
@@ -351,7 +409,7 @@ The MVP should be validated against these scenarios:
 - A user can identify incomplete nodes, missing references, or uncertain relationships.
 - The platform remains usable with at least 50-100 knowledge nodes.
 
-## 13. Recommended Technical Direction
+## 14. Recommended Technical Direction
 
 The current intended stack is:
 
@@ -368,7 +426,7 @@ The technical implementation should serve the product goals. Keep the first vers
 - Add validation before the database becomes large.
 - Avoid custom graph logic unless existing libraries become insufficient.
 
-## 14. Contribution Guidelines
+## 15. Contribution Guidelines
 
 Contributors should add knowledge in small, reviewable batches.
 
@@ -389,7 +447,7 @@ Reviewers should ask:
 - Does this improve the tree structure?
 - Will this make the visualization clearer or noisier?
 
-## 15. Near-Term Next Steps
+## 16. Near-Term Next Steps
 
 Recommended next tasks:
 
