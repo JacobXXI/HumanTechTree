@@ -297,6 +297,94 @@
     return coordinates;
   }
 
+  function getOrderedLayers(nodes, relationships) {
+    const { parents, children } = buildSupportGraph(nodes, relationships);
+    return orderLayers(computeLayers(nodes, parents), parents, children);
+  }
+
+  function getPrimaryDomain(node) {
+    const tags = node.tags || [];
+
+    if (tags.includes("Deep Learning")) return "Deep Learning";
+    if (tags.includes("Machine Learning")) return "Machine Learning";
+    if (tags.includes("Statistics") || tags.includes("Probability")) return "Statistics";
+    if (tags.includes("Mathematics")) return "Mathematics";
+    if (tags.includes("Computer Science") || tags.includes("Algorithm")) return "Computer Science";
+    if (
+      tags.includes("Computing Hardware") ||
+      tags.includes("Computing Systems") ||
+      tags.includes("Machine Learning Infrastructure")
+    ) {
+      return "Computing Systems";
+    }
+    if (tags.includes("Data Science")) return "Data Science";
+
+    return tags[0] || "Other";
+  }
+
+  function getDomainColor(domain) {
+    const colors = {
+      "Computer Science": "#60a5fa",
+      "Computing Systems": "#a78bfa",
+      "Data Science": "#34d399",
+      "Deep Learning": "#f472b6",
+      "Machine Learning": "#22d3ee",
+      Mathematics: "#fbbf24",
+      Other: "#cbd5e1",
+      Statistics: "#fb7185"
+    };
+
+    return colors[domain] || colors.Other;
+  }
+
+  function computeConeLayout(data, options = {}) {
+    const relationships = getRenderableRelationships(data);
+    const layers = getOrderedLayers(data.nodes, relationships);
+    const nodeIndex = getNodeIndex(data);
+    const maxLayerIndex = Math.max(layers.length - 1, 1);
+    const layerGap = options.layerGap || 2.35;
+    const bottomRadius = options.bottomRadius || 7.8;
+    const topRadius = options.topRadius || 1.25;
+    const positions = new Map();
+    const nodeDomains = new Map();
+
+    layers.forEach((layer, layerIndex) => {
+      const layerProgress = layerIndex / maxLayerIndex;
+      const radius = bottomRadius - (bottomRadius - topRadius) * layerProgress;
+      const y = (layerIndex - maxLayerIndex / 2) * layerGap;
+      const angleOffset = layerIndex * 0.42;
+
+      layer.forEach((id, orderIndex) => {
+        const angle = angleOffset + (Math.PI * 2 * orderIndex) / Math.max(layer.length, 1);
+        const node = nodeIndex.get(id);
+        const domain = node ? getPrimaryDomain(node) : "Other";
+
+        positions.set(id, {
+          angle,
+          layer: layerIndex,
+          radius,
+          x: Math.cos(angle) * radius,
+          y,
+          z: Math.sin(angle) * radius
+        });
+        nodeDomains.set(id, domain);
+      });
+    });
+
+    return {
+      domainColors: new Map(
+        [...new Set([...nodeDomains.values()])].sort().map((domain) => [
+          domain,
+          getDomainColor(domain)
+        ])
+      ),
+      layers,
+      nodeDomains,
+      positions,
+      relationships
+    };
+  }
+
   function getRelationshipColor(type) {
     if (type === "prerequisite") return "#67e8f9";
     if (type === "application") return "#f472b6";
@@ -306,8 +394,10 @@
 
   return {
     buildPrerequisiteGraph,
+    computeConeLayout,
     computeNormalizedPositions,
     getEnabledIds,
+    getDomainColor,
     getFutureNodeIds,
     getFutureNodeIndex,
     getFocusedSubgraphIds,
@@ -315,7 +405,9 @@
     getNodeIds,
     getNodeIndex,
     getNodeName,
+    getOrderedLayers,
     getOutgoingRelationships,
+    getPrimaryDomain,
     getPrerequisiteIds,
     getRelatedIds,
     getRelationshipColor,

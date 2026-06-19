@@ -8,7 +8,13 @@ const state = {
 };
 
 const nodeList = document.querySelector("#nodeList");
+const viewSwitcher = document.querySelector("#viewSwitcher");
+const viewButtons = Array.from(document.querySelectorAll(".view-button"));
 const treeView = document.querySelector("#treeView");
+const coneView = document.querySelector("#coneView");
+const coneStage = document.querySelector("#coneStage");
+const coneDomainLegend = document.querySelector("#coneDomainLegend");
+const coneRelationshipLegend = document.querySelector("#coneRelationshipLegend");
 const networkCanvas = document.querySelector("#networkBackground");
 const graphPanel = document.querySelector(".graph-panel");
 const graphViewport = document.querySelector("#graphViewport");
@@ -310,6 +316,41 @@ function renderGraph() {
   });
 }
 
+function ensureConeGraph() {
+  if (coneGraph) return true;
+
+  if (!window.HttExplorationCone3D) {
+    coneStage.innerHTML = '<p class="cone-loading">Loading 3D cone renderer...</p>';
+    return false;
+  }
+
+  coneStage.innerHTML = "";
+  coneGraph = window.HttExplorationCone3D.create({
+    container: coneStage,
+    data,
+    domainLegend: coneDomainLegend,
+    onClearSelection: clearNodeSelection,
+    onOpenNode: openIntro,
+    onSelectNode: scheduleConeNodeSelection,
+    reducedMotionQuery,
+    relationshipLegend: coneRelationshipLegend,
+    state
+  });
+
+  return true;
+}
+
+function renderConeGraph() {
+  if (!data || !ensureConeGraph()) return;
+
+  coneGraph.render(data, state);
+  coneGraph.activate();
+}
+
+function stopConeGraph() {
+  if (coneGraph) coneGraph.deactivate();
+}
+
 function renderIntroPage() {
   window.HttRenderers.renderIntroPage({
     data,
@@ -379,13 +420,13 @@ function renderFilterButtons() {
 
 function selectNode(id) {
   state.selectedId = id;
-  state.view = "tree";
+  state.view = view;
   render();
 }
 
 function clearNodeSelection() {
   clearPendingNodeSelection();
-  if (!state.selectedId || state.view !== "tree") return;
+  if (!state.selectedId || (state.view !== "tree" && state.view !== "cone")) return;
 
   state.selectedId = null;
   render();
@@ -414,34 +455,63 @@ function scheduleGraphNodeSelection(id) {
       return;
     }
 
-    selectNode(id);
+    selectNode(id, "tree");
+  }, nodeSelectionDelayMs);
+}
+
+function scheduleConeNodeSelection(id) {
+  clearPendingNodeSelection();
+  pendingNodeSelectionTimer = window.setTimeout(() => {
+    pendingNodeSelectionTimer = null;
+    selectNode(id, "cone");
   }, nodeSelectionDelayMs);
 }
 
 function openIntro(id) {
   clearPendingNodeSelection();
   state.selectedId = id;
+  state.previousView = getCurrentGraphView();
   state.view = "intro";
   render();
 }
 
 function showTree() {
-  state.selectedId = null;
-  state.view = "tree";
+  state.view = state.previousView || "tree";
   render();
 }
 
 function renderView() {
   const showingTree = state.view === "tree";
+  const showingCone = state.view === "cone";
+  const showingIntro = state.view === "intro";
+
+  viewSwitcher.hidden = showingIntro;
+  viewButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.view === getCurrentGraphView());
+  });
+
   treeView.classList.toggle("is-active", showingTree);
   treeView.hidden = !showingTree;
-  introPage.hidden = showingTree;
+  coneView.classList.toggle("is-active", showingCone);
+  coneView.hidden = !showingCone;
+  introPage.hidden = !showingIntro;
 
   if (showingTree) {
+    stopConeGraph();
     renderGraph();
     startNetworkBackground();
-  } else {
-    stopNetworkBackground();
+    return;
+  }
+
+  stopNetworkBackground();
+
+  if (showingCone) {
+    renderConeGraph();
+    return;
+  }
+
+  if (showingIntro) {
+    stopConeGraph();
     renderIntroPage();
   }
 }
@@ -483,6 +553,22 @@ function init() {
 searchInput.addEventListener("input", (event) => {
   state.query = event.target.value.trim();
   renderNodeList();
+});
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    state.filter = button.dataset.filter;
+    filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+    renderNodeList();
+  });
+});
+
+viewButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    state.view = button.dataset.view;
+    if (state.view === "tree") resetGraphTransform();
+    render();
+  });
 });
 
 graphViewport.addEventListener("pointerdown", (event) => {
@@ -562,11 +648,20 @@ zoomOutButton.addEventListener("click", () => zoomGraphFromCenter(1 / 1.18));
 zoomResetButton.addEventListener("click", resetGraphTransform);
 
 window.addEventListener("resize", () => {
+  if (state.view === "cone") {
+    coneGraph?.resize();
+    return;
+  }
+
   if (state.view !== "tree") return;
 
   renderGraph();
   resizeNetworkBackground();
   drawNetworkBackground();
+});
+
+window.addEventListener("htt:cone3d-ready", () => {
+  if (state.view === "cone") renderView();
 });
 
 function handleMotionPreferenceChange() {
