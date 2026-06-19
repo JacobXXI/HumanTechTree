@@ -29,6 +29,7 @@ const zoomResetButton = document.querySelector("#zoomReset");
 const networkContext = networkCanvas?.getContext("2d");
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const nodeSelectionDelayMs = 280;
+let coneGraph = null;
 let pendingNodeSelectionTimer = null;
 let filterButtons = [];
 
@@ -418,7 +419,7 @@ function renderFilterButtons() {
   filterButtons.forEach((button) => filterGroup.append(button));
 }
 
-function selectNode(id) {
+function selectNode(id, view = state.view) {
   state.selectedId = id;
   state.view = view;
   render();
@@ -478,6 +479,10 @@ function openIntro(id) {
 function showTree() {
   state.view = state.previousView || "tree";
   render();
+}
+
+function getCurrentGraphView() {
+  return state.view === "cone" || state.view === "tree" ? state.view : state.previousView || "tree";
 }
 
 function renderView() {
