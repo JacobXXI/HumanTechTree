@@ -61,7 +61,6 @@
       container,
       data,
       domainLegend,
-      layerLabel,
       onClearSelection,
       onOpenNode,
       onSelectNode,
@@ -72,7 +71,6 @@
       this.container = container;
       this.data = data;
       this.domainLegend = domainLegend;
-      this.layerLabel = layerLabel;
       this.onClearSelection = onClearSelection;
       this.onOpenNode = onOpenNode;
       this.onSelectNode = onSelectNode;
@@ -83,7 +81,6 @@
       this.animationFrame = null;
       this.height = 1;
       this.hitTargets = [];
-      this.layerFocusIndex = 0;
       this.layout = null;
       this.pointer = {
         dragAxis: null,
@@ -196,10 +193,6 @@
       this.data = data;
       this.state = state;
       this.layout = root.HttKnowledgeGraph.computeConeLayout(data);
-      this.layerFocusIndex = Math.min(
-        this.layout.layers.length - 1,
-        Math.max(0, this.layerFocusIndex || 0)
-      );
       this.renderLegends();
       this.resize();
       this.applySelection();
@@ -228,8 +221,6 @@
       if (this.state.selectedId) {
         this.focusNode(this.state.selectedId, false);
       }
-
-      this.updateLayerLabel();
     }
 
     resize() {
@@ -246,8 +237,7 @@
     }
 
     projectPoint(point) {
-      const focusY = this.getFocusY();
-      const y = point.y - focusY;
+      const y = point.y;
       const cosYaw = Math.cos(this.yaw);
       const sinYaw = Math.sin(this.yaw);
       const x1 = point.x * cosYaw - point.z * sinYaw;
@@ -267,12 +257,6 @@
         screenY: this.height / 2 + this.viewOffsetY - y2 * scale,
         scale
       };
-    }
-
-    getFocusY() {
-      const layer = this.layout?.layers[this.layerFocusIndex];
-      const position = layer ? this.layout.positions.get(layer[0]) : null;
-      return position?.y || 0;
     }
 
     getRelatedIds() {
@@ -347,11 +331,8 @@
           if (pointIndex === 0) context.moveTo(point.screenX, point.screenY);
           else context.lineTo(point.screenX, point.screenY);
         });
-        context.strokeStyle =
-          index === this.layerFocusIndex
-            ? "rgba(251, 191, 36, 0.42)"
-            : "rgba(125, 211, 252, 0.16)";
-        context.lineWidth = index === this.layerFocusIndex ? 2 : 1;
+        context.strokeStyle = "rgba(125, 211, 252, 0.16)";
+        context.lineWidth = 1;
         context.stroke();
       });
     }
@@ -476,28 +457,7 @@
       const position = this.layout?.positions.get(id);
       if (!position) return;
 
-      this.layerFocusIndex = position.layer;
       if (shouldRender) this.renderFrame();
-      this.updateLayerLabel();
-    }
-
-    focusLayer(delta) {
-      if (!this.layout) return;
-
-      this.layerFocusIndex = clamp(
-        this.layerFocusIndex + delta,
-        0,
-        this.layout.layers.length - 1
-      );
-      this.updateLayerLabel();
-      this.renderFrame();
-    }
-
-    updateLayerLabel() {
-      const layer = this.layout?.layers[this.layerFocusIndex] || [];
-      this.layerLabel.textContent = `Layer ${this.layerFocusIndex + 1} of ${
-        this.layout?.layers.length || 1
-      } - ${layer.length} nodes`;
     }
 
     activate() {

@@ -567,22 +567,6 @@ h3 {
   text-transform: uppercase;
 }
 
-.cone-toolbar span {
-  color: #f8fafc;
-  font-size: 0.86rem;
-}
-
-.cone-layer-controls {
-  display: flex;
-  gap: 6px;
-}
-
-.cone-layer-controls .zoom-button {
-  width: auto;
-  min-width: 48px;
-  padding: 0 9px;
-}
-
 .cone-legend {
   right: 16px;
   bottom: 16px;

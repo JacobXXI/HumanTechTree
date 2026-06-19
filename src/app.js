@@ -15,9 +15,6 @@ const coneView = document.querySelector("#coneView");
 const coneStage = document.querySelector("#coneStage");
 const coneDomainLegend = document.querySelector("#coneDomainLegend");
 const coneRelationshipLegend = document.querySelector("#coneRelationshipLegend");
-const coneLayerLabel = document.querySelector("#coneLayerLabel");
-const coneLayerDownButton = document.querySelector("#coneLayerDown");
-const coneLayerUpButton = document.querySelector("#coneLayerUp");
 const networkCanvas = document.querySelector("#networkBackground");
 const graphPanel = document.querySelector(".graph-panel");
 const graphViewport = document.querySelector("#graphViewport");
@@ -294,7 +291,6 @@ function ensureConeGraph() {
     container: coneStage,
     data,
     domainLegend: coneDomainLegend,
-    layerLabel: coneLayerLabel,
     onClearSelection: clearNodeSelection,
     onOpenNode: openIntro,
     onSelectNode: scheduleConeNodeSelection,
@@ -567,8 +563,6 @@ graphPanel.addEventListener(
 zoomInButton.addEventListener("click", () => zoomGraphFromCenter(1.18));
 zoomOutButton.addEventListener("click", () => zoomGraphFromCenter(1 / 1.18));
 zoomResetButton.addEventListener("click", resetGraphTransform);
-coneLayerDownButton.addEventListener("click", () => coneGraph?.focusLayer(-1));
-coneLayerUpButton.addEventListener("click", () => coneGraph?.focusLayer(1));
 
 window.addEventListener("resize", () => {
   if (state.view === "cone") {
