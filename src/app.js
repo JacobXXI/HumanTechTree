@@ -293,7 +293,6 @@ function renderNodeList() {
 function selectNode(id) {
   state.selectedId = id;
   state.view = "tree";
-  resetGraphTransform();
   render();
 }
 
@@ -340,6 +339,7 @@ function openIntro(id) {
 }
 
 function showTree() {
+  state.selectedId = null;
   state.view = "tree";
   render();
 }
