@@ -16,7 +16,7 @@ const graphNodes = document.querySelector("#graphNodes");
 const edgeLayer = document.querySelector("#edgeLayer");
 const introPage = document.querySelector("#introPage");
 const searchInput = document.querySelector("#searchInput");
-const filterButtons = Array.from(document.querySelectorAll(".filter-button"));
+const filterGroup = document.querySelector("#filterGroup");
 const zoomInButton = document.querySelector("#zoomIn");
 const zoomOutButton = document.querySelector("#zoomOut");
 const zoomResetButton = document.querySelector("#zoomReset");
@@ -24,6 +24,45 @@ const networkContext = networkCanvas?.getContext("2d");
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const nodeSelectionDelayMs = 280;
 let pendingNodeSelectionTimer = null;
+let filterButtons = [];
+
+const preferredFilterTags = [
+  "Machine Learning Foundation",
+  "Mathematics",
+  "Statistics",
+  "Data Science",
+  "Machine Learning Workflow",
+  "Evaluation",
+  "Classical Machine Learning",
+  "Unsupervised Learning",
+  "Machine Learning",
+  "Deep Learning",
+  "Natural Language Processing",
+  "Computer Vision",
+  "Reinforcement Learning",
+  "MLOps",
+  "Responsible AI",
+  "Machine Learning Infrastructure"
+];
+
+const filterLabels = {
+  "Classical Machine Learning": "Classical",
+  "Computer Vision": "Vision",
+  "Data Science": "Data",
+  "Deep Learning": "Deep",
+  Evaluation: "Eval",
+  Mathematics: "Math",
+  "Machine Learning": "ML",
+  "Machine Learning Foundation": "Foundations",
+  "Machine Learning Infrastructure": "Infra",
+  "Machine Learning Workflow": "Workflow",
+  MLOps: "MLOps",
+  "Natural Language Processing": "NLP",
+  "Reinforcement Learning": "RL",
+  "Responsible AI": "Responsible",
+  Statistics: "Stats",
+  "Unsupervised Learning": "Unsupervised"
+};
 
 const networkState = {
   frameId: null,
@@ -290,6 +329,54 @@ function renderNodeList() {
   });
 }
 
+function getAvailableFilterTags(knowledgeData) {
+  const availableTags = new Set(knowledgeData.nodes.flatMap((node) => node.tags));
+
+  return preferredFilterTags.filter((tag) => availableTags.has(tag));
+}
+
+function createFilterButton({ label, value, active }) {
+  const button = document.createElement("button");
+  button.className = `filter-button${active ? " is-active" : ""}`;
+  button.type = "button";
+  button.dataset.filter = value;
+  button.textContent = label;
+  button.addEventListener("click", () => {
+    state.filter = value;
+    filterButtons.forEach((item) => {
+      item.classList.toggle("is-active", item === button);
+    });
+    renderNodeList();
+  });
+  return button;
+}
+
+function renderFilterButtons() {
+  if (!filterGroup || !data) return;
+
+  const filters = getAvailableFilterTags(data);
+  if (state.filter !== "all" && !filters.includes(state.filter)) {
+    state.filter = "all";
+  }
+
+  filterGroup.innerHTML = "";
+  filterButtons = [
+    createFilterButton({
+      active: state.filter === "all",
+      label: "All",
+      value: "all"
+    }),
+    ...filters.map((tag) =>
+      createFilterButton({
+        active: state.filter === tag,
+        label: filterLabels[tag] || tag,
+        value: tag
+      })
+    )
+  ];
+  filterButtons.forEach((button) => filterGroup.append(button));
+}
+
 function selectNode(id) {
   state.selectedId = id;
   state.view = "tree";
@@ -381,6 +468,7 @@ function init() {
 
     data = window.machineLearningKnowledge;
     validateLoadedData(data);
+    renderFilterButtons();
     render();
   } catch (error) {
     window.HttRenderers.showLoadError({
@@ -395,14 +483,6 @@ function init() {
 searchInput.addEventListener("input", (event) => {
   state.query = event.target.value.trim();
   renderNodeList();
-});
-
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    state.filter = button.dataset.filter;
-    filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
-    renderNodeList();
-  });
 });
 
 graphViewport.addEventListener("pointerdown", (event) => {
