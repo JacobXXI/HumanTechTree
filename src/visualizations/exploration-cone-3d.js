@@ -10,6 +10,10 @@
     return Math.min(maximum, Math.max(minimum, value));
   }
 
+  function randomBetween(minimum, maximum) {
+    return minimum + Math.random() * (maximum - minimum);
+  }
+
   function escapeHtml(value) {
     return String(value)
       .replace(/&/g, "&amp;")
@@ -79,8 +83,10 @@
       this.state = state;
       this.active = false;
       this.animationFrame = null;
+      this.backgroundParticles = [];
       this.height = 1;
       this.hitTargets = [];
+      this.lastFrameTimestamp = 0;
       this.layout = null;
       this.pointer = {
         dragAxis: null,
@@ -134,11 +140,7 @@
         if (this.pointer.dragAxis === "horizontal") {
           this.yaw = this.pointer.startYaw + deltaX * 0.008;
         } else if (this.pointer.dragAxis === "vertical") {
-          this.viewOffsetY = clamp(
-            this.pointer.startViewOffsetY + deltaY,
-            -this.height * 0.45,
-            this.height * 0.45
-          );
+          this.viewOffsetY = this.clampViewOffsetY(this.pointer.startViewOffsetY + deltaY);
         }
 
         this.renderFrame();
@@ -173,7 +175,20 @@
         (event) => {
           event.preventDefault();
           const deltaMultiplier = event.deltaMode === 1 ? 18 : 1;
-          this.zoom = clamp(this.zoom * Math.exp(-event.deltaY * deltaMultiplier * 0.0014), 0.48, 2.8);
+
+          if (event.ctrlKey || event.metaKey) {
+            this.zoom = clamp(
+              this.zoom * Math.exp(-event.deltaY * deltaMultiplier * 0.0014),
+              0.48,
+              2.8
+            );
+            this.viewOffsetY = this.clampViewOffsetY(this.viewOffsetY);
+          } else {
+            this.viewOffsetY = this.clampViewOffsetY(
+              this.viewOffsetY - event.deltaY * deltaMultiplier
+            );
+          }
+
           this.renderFrame();
         },
         { passive: false }
@@ -225,18 +240,109 @@
 
     resize() {
       const rect = this.container.getBoundingClientRect();
-      this.width = Math.max(1, Math.round(rect.width));
-      this.height = Math.max(1, Math.round(rect.height));
-      this.pixelRatio = Math.min(root.devicePixelRatio || 1, 2);
+      const width = Math.max(1, Math.round(rect.width));
+      const height = Math.max(1, Math.round(rect.height));
+      const pixelRatio = Math.min(root.devicePixelRatio || 1, 2);
+      const sizeChanged = width !== this.width || height !== this.height;
+
+      this.width = width;
+      this.height = height;
+      this.pixelRatio = pixelRatio;
       this.canvas.width = Math.round(this.width * this.pixelRatio);
       this.canvas.height = Math.round(this.height * this.pixelRatio);
       this.canvas.style.width = `${this.width}px`;
       this.canvas.style.height = `${this.height}px`;
       this.context.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
+      if (sizeChanged || !this.backgroundParticles.length) this.seedBackgroundParticles();
+      this.viewOffsetY = this.clampViewOffsetY(this.viewOffsetY);
       this.renderFrame();
     }
 
-    projectPoint(point) {
+    createBackgroundParticle() {
+      const angle = randomBetween(0, Math.PI * 2);
+      const speed = randomBetween(14, 34);
+
+      return {
+        alpha: randomBetween(0.48, 0.9),
+        phase: randomBetween(0, Math.PI * 2),
+        radius: randomBetween(1.2, 2.4),
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        x: randomBetween(0, this.width),
+        y: randomBetween(0, this.height)
+      };
+    }
+
+    seedBackgroundParticles() {
+      const particleCount = Math.round(
+        Math.min(92, Math.max(44, (this.width * this.height) / 11000))
+      );
+
+      this.backgroundParticles = Array.from({ length: particleCount }, () =>
+        this.createBackgroundParticle()
+      );
+    }
+
+    updateBackgroundParticles(deltaSeconds) {
+      const margin = 10;
+
+      this.backgroundParticles.forEach((particle) => {
+        particle.x += particle.vx * deltaSeconds;
+        particle.y += particle.vy * deltaSeconds;
+
+        if (particle.x < margin || particle.x > this.width - margin) {
+          particle.vx *= -1;
+          particle.x = Math.min(this.width - margin, Math.max(margin, particle.x));
+        }
+
+        if (particle.y < margin || particle.y > this.height - margin) {
+          particle.vy *= -1;
+          particle.y = Math.min(this.height - margin, Math.max(margin, particle.y));
+        }
+      });
+    }
+
+    getVerticalPanBounds() {
+      const fallbackLimit = this.height * 1.15;
+
+      if (!this.layout?.positions?.size) {
+        return {
+          maximum: fallbackLimit,
+          minimum: -fallbackLimit
+        };
+      }
+
+      const edgePadding = clamp(this.height * 0.12, 56, 120);
+      let minY = Infinity;
+      let maxY = -Infinity;
+
+      this.layout.positions.forEach((position) => {
+        const projected = this.projectPoint(position, 0);
+        const outerRadius = projected.radius + 40;
+
+        minY = Math.min(minY, projected.screenY - outerRadius);
+        maxY = Math.max(maxY, projected.screenY + outerRadius);
+      });
+
+      if (!Number.isFinite(minY) || !Number.isFinite(maxY)) {
+        return {
+          maximum: fallbackLimit,
+          minimum: -fallbackLimit
+        };
+      }
+
+      return {
+        maximum: Math.max(fallbackLimit, edgePadding - minY),
+        minimum: Math.min(-fallbackLimit, this.height - edgePadding - maxY)
+      };
+    }
+
+    clampViewOffsetY(value) {
+      const { maximum, minimum } = this.getVerticalPanBounds();
+      return clamp(value, minimum, maximum);
+    }
+
+    projectPoint(point, viewOffsetY = this.viewOffsetY) {
       const y = point.y;
       const cosYaw = Math.cos(this.yaw);
       const sinYaw = Math.sin(this.yaw);
@@ -254,7 +360,7 @@
         depth: z2,
         radius: clamp(7.5 * this.zoom * perspective, 4.5, 15),
         screenX: this.width / 2 + x1 * scale,
-        screenY: this.height / 2 + this.viewOffsetY - y2 * scale,
+        screenY: this.height / 2 + viewOffsetY - y2 * scale,
         scale
       };
     }
@@ -265,17 +371,23 @@
         : new Set();
     }
 
-    renderFrame() {
+    renderFrame(timestamp = root.performance?.now?.() || 0) {
       if (!this.context || !this.layout) return;
 
       const context = this.context;
+      const deltaSeconds = this.lastFrameTimestamp
+        ? Math.min((timestamp - this.lastFrameTimestamp) / 1000, 0.05)
+        : 0;
       const relatedIds = this.getRelatedIds();
       const selectedId = this.state.selectedId;
       const nodeIndex = root.HttKnowledgeGraph.getNodeIndex(this.data);
       const projectedNodes = [];
 
+      this.lastFrameTimestamp = timestamp;
+      if (!this.reducedMotionQuery.matches) this.updateBackgroundParticles(deltaSeconds);
+
       context.clearRect(0, 0, this.width, this.height);
-      this.drawBackground(context);
+      this.drawBackground(context, timestamp);
 
       this.layout.positions.forEach((position, id) => {
         projectedNodes.push({
@@ -293,7 +405,7 @@
       this.drawLabels(context, projectedNodes, relatedIds, selectedId);
     }
 
-    drawBackground(context) {
+    drawBackground(context, timestamp) {
       const gradient = context.createRadialGradient(
         this.width * 0.5,
         this.height * 0.45,
@@ -307,6 +419,50 @@
       gradient.addColorStop(1, "rgba(3, 7, 18, 0.96)");
       context.fillStyle = gradient;
       context.fillRect(0, 0, this.width, this.height);
+
+      this.drawParticleBackground(context, timestamp);
+    }
+
+    drawParticleBackground(context, timestamp) {
+      const linkDistance = Math.min(150, Math.max(96, this.width * 0.16));
+
+      context.save();
+      context.globalCompositeOperation = "lighter";
+
+      for (let index = 0; index < this.backgroundParticles.length; index += 1) {
+        for (
+          let nextIndex = index + 1;
+          nextIndex < this.backgroundParticles.length;
+          nextIndex += 1
+        ) {
+          const current = this.backgroundParticles[index];
+          const next = this.backgroundParticles[nextIndex];
+          const distance = Math.hypot(current.x - next.x, current.y - next.y);
+
+          if (distance > linkDistance) continue;
+
+          const opacity = Math.pow(1 - distance / linkDistance, 2) * 0.2;
+          context.beginPath();
+          context.moveTo(current.x, current.y);
+          context.lineTo(next.x, next.y);
+          context.strokeStyle = `rgba(180, 234, 255, ${opacity})`;
+          context.lineWidth = 1;
+          context.stroke();
+        }
+      }
+
+      this.backgroundParticles.forEach((particle) => {
+        const pulse = 0.72 + Math.sin(timestamp * 0.002 + particle.phase) * 0.28;
+
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.fillStyle = `rgba(236, 250, 255, ${particle.alpha * pulse})`;
+        context.shadowBlur = 10;
+        context.shadowColor = "rgba(103, 232, 249, 0.55)";
+        context.fill();
+      });
+
+      context.restore();
     }
 
     drawRings(context) {
@@ -466,13 +622,13 @@
 
       if (this.animationFrame || this.reducedMotionQuery.matches) return;
 
-      const tick = () => {
+      const tick = (timestamp) => {
         if (!this.active) {
           this.animationFrame = null;
           return;
         }
 
-        this.renderFrame();
+        this.renderFrame(timestamp);
         this.animationFrame = root.requestAnimationFrame(tick);
       };
 
@@ -485,6 +641,7 @@
         root.cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
       }
+      this.lastFrameTimestamp = 0;
     }
   }
 

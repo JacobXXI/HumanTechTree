@@ -673,6 +673,10 @@ function handleMotionPreferenceChange() {
   stopNetworkBackground();
 
   if (state.view === "tree") startNetworkBackground();
+  if (state.view === "cone") {
+    coneGraph?.deactivate();
+    coneGraph?.activate();
+  }
 }
 
 if (reducedMotionQuery.addEventListener) {
