@@ -12,8 +12,9 @@ python3 -m http.server 8000
 
 Then visit `http://localhost:8000/`. It includes:
 
-- 30 reviewed technology and machine learning knowledge nodes.
-- A searchable and filterable side navigator.
+- 110 reviewed technology and machine learning knowledge nodes.
+- 197 relationship records covering prerequisites, influences, applications, and alternative paths.
+- A searchable side navigator with data-driven high-level tag filters.
 - A full-pane 2D prerequisite graph.
 - A knowledge introduction page opened from either the sidebar or the tree.
 - Descriptions, derived prerequisites, derived enabled ideas, tags, status, and references for each node.
@@ -78,40 +79,19 @@ After GitHub Pages finishes publishing, the project will be available at:
 https://jacobxxi.github.io/HumanTechTree/
 ```
 
-## Knowledge Nodes
+## Knowledge Coverage
 
-The first demo covers:
+The demo now covers a curated machine learning map across:
 
-1. Linear Algebra
-2. Probability Theory
-3. Calculus
-4. Statistics
-5. Optimization
-6. Gradient Descent
-7. Supervised Learning
-8. Decision Trees
-9. Neural Networks
-10. Backpropagation
-11. Discrete Mathematics
-12. Graph Theory
-13. Algorithms
-14. Data Structures
-15. Programming Languages
-16. Computer Architecture
-17. Parallel Computing
-18. GPU Computing
-19. Information Theory
-20. Numerical Methods
-21. Automatic Differentiation
-22. Linear Regression
-23. Bayesian Inference
-24. Unsupervised Learning
-25. Reinforcement Learning
-26. Ensemble Methods
-27. Representation Learning
-28. Deep Learning
-29. Transformers
-30. Large Language Models
+- Mathematical and computing foundations.
+- Data, preprocessing, leakage, feature work, and evaluation workflow.
+- Learning theory, regularization, metrics, calibration, and model selection.
+- Classical supervised algorithms, ensemble methods, probabilistic models, and semi-supervised learning.
+- Unsupervised learning, clustering, dimensionality reduction, manifold methods, mixture models, and matrix factorization.
+- Deep learning architecture and training concepts, including tensors, computational graphs, optimizers, CNNs, RNNs, attention, generative models, transfer learning, and foundation models.
+- Applied areas such as NLP, computer vision, speech recognition, recommenders, information retrieval, and retrieval-augmented generation.
+- Reinforcement learning foundations.
+- MLOps and responsible AI topics, including pipelines, monitoring, efficient inference, fairness, interpretability, adversarial robustness, model cards, datasheets, and AI risk management.
 
 ## Next Steps
 

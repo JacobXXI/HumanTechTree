@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Human Technology Tree - Machine Learning Demo</title>
+    <title>Human Technology Tree</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -12,8 +12,7 @@
         <div class="brand">
           <span class="brand-mark" aria-hidden="true">HT</span>
           <div>
-            <p class="eyebrow">Human Technology Tree</p>
-            <h1>Machine Learning Demo</h1>
+            <h1>Human Technology Tree</h1>
           </div>
         </div>
 
@@ -32,21 +31,42 @@
       </aside>
 
       <section class="workspace" aria-label="Knowledge workspace">
+        <div id="viewSwitcher" class="view-switcher" aria-label="Visualization view switcher">
+          <button class="view-button is-active" data-view="tree" type="button">2D</button>
+          <button class="view-button" data-view="cone" type="button">3D</button>
+        </div>
+
         <section id="treeView" class="tree-view is-active" aria-label="2D dependency graph">
           <section class="graph-panel">
             <canvas id="networkBackground" class="network-background" aria-hidden="true"></canvas>
             <div class="graph-toolbar" aria-label="Relationship legend">
               <span><i class="legend-dot prerequisite"></i>Prerequisite</span>
               <span><i class="legend-dot application"></i>Application</span>
-              <div class="zoom-controls" aria-label="Tree zoom controls">
-                <button id="zoomOut" class="zoom-button" type="button" aria-label="Zoom out" title="Zoom out">−</button>
-                <button id="zoomReset" class="zoom-button" type="button" aria-label="Reset view" title="Reset view">1×</button>
-                <button id="zoomIn" class="zoom-button" type="button" aria-label="Zoom in" title="Zoom in">+</button>
-              </div>
+            </div>
+            <div class="zoom-controls" aria-label="Tree zoom controls">
+              <button id="zoomOut" class="zoom-button" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+              <button id="zoomReset" class="zoom-button" type="button" aria-label="Reset view" title="Reset view">1×</button>
+              <button id="zoomIn" class="zoom-button" type="button" aria-label="Zoom in" title="Zoom in">+</button>
             </div>
             <div id="graphViewport" class="graph-viewport">
               <svg id="edgeLayer" class="edge-layer" role="img" aria-label="Knowledge relationship lines"></svg>
               <div id="graphNodes" class="graph-nodes"></div>
+            </div>
+          </section>
+        </section>
+
+        <section id="coneView" class="tree-view cone-view" aria-label="3D cone dependency graph" hidden>
+          <section class="graph-panel cone-panel">
+            <div id="coneStage" class="cone-stage" aria-label="Interactive 3D cone tree"></div>
+            <div class="cone-legend" aria-label="3D cone legend">
+              <div>
+                <strong>Domains</strong>
+                <div id="coneDomainLegend" class="cone-legend-row"></div>
+              </div>
+              <div>
+                <strong>Relationships</strong>
+                <div id="coneRelationshipLegend" class="cone-legend-row"></div>
+              </div>
             </div>
           </section>
         </section>
@@ -59,6 +79,7 @@
     <script src="src/graph/knowledge-graph.js"></script>
     <script src="src/validation/knowledge-data-validation.js"></script>
     <script src="src/ui/renderers.js"></script>
+    <script src="src/visualizations/exploration-cone-3d.js"></script>
     <script src="src/app.js"></script>
   </body>
 </html>

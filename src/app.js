@@ -8,7 +8,13 @@ const state = {
 };
 
 const nodeList = document.querySelector("#nodeList");
+const viewSwitcher = document.querySelector("#viewSwitcher");
+const viewButtons = Array.from(document.querySelectorAll(".view-button"));
 const treeView = document.querySelector("#treeView");
+const coneView = document.querySelector("#coneView");
+const coneStage = document.querySelector("#coneStage");
+const coneDomainLegend = document.querySelector("#coneDomainLegend");
+const coneRelationshipLegend = document.querySelector("#coneRelationshipLegend");
 const networkCanvas = document.querySelector("#networkBackground");
 const graphPanel = document.querySelector(".graph-panel");
 const graphViewport = document.querySelector("#graphViewport");
@@ -16,14 +22,54 @@ const graphNodes = document.querySelector("#graphNodes");
 const edgeLayer = document.querySelector("#edgeLayer");
 const introPage = document.querySelector("#introPage");
 const searchInput = document.querySelector("#searchInput");
-const filterButtons = Array.from(document.querySelectorAll(".filter-button"));
+const filterGroup = document.querySelector("#filterGroup");
 const zoomInButton = document.querySelector("#zoomIn");
 const zoomOutButton = document.querySelector("#zoomOut");
 const zoomResetButton = document.querySelector("#zoomReset");
 const networkContext = networkCanvas?.getContext("2d");
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const nodeSelectionDelayMs = 280;
+let coneGraph = null;
 let pendingNodeSelectionTimer = null;
+let filterButtons = [];
+
+const preferredFilterTags = [
+  "Machine Learning Foundation",
+  "Mathematics",
+  "Statistics",
+  "Data Science",
+  "Machine Learning Workflow",
+  "Evaluation",
+  "Classical Machine Learning",
+  "Unsupervised Learning",
+  "Machine Learning",
+  "Deep Learning",
+  "Natural Language Processing",
+  "Computer Vision",
+  "Reinforcement Learning",
+  "MLOps",
+  "Responsible AI",
+  "Machine Learning Infrastructure"
+];
+
+const filterLabels = {
+  "Classical Machine Learning": "Classical",
+  "Computer Vision": "Vision",
+  "Data Science": "Data",
+  "Deep Learning": "Deep",
+  Evaluation: "Eval",
+  Mathematics: "Math",
+  "Machine Learning": "ML",
+  "Machine Learning Foundation": "Foundations",
+  "Machine Learning Infrastructure": "Infra",
+  "Machine Learning Workflow": "Workflow",
+  MLOps: "MLOps",
+  "Natural Language Processing": "NLP",
+  "Reinforcement Learning": "RL",
+  "Responsible AI": "Responsible",
+  Statistics: "Stats",
+  "Unsupervised Learning": "Unsupervised"
+};
 
 const networkState = {
   frameId: null,
@@ -271,6 +317,41 @@ function renderGraph() {
   });
 }
 
+function ensureConeGraph() {
+  if (coneGraph) return true;
+
+  if (!window.HttExplorationCone3D) {
+    coneStage.innerHTML = '<p class="cone-loading">Loading 3D cone renderer...</p>';
+    return false;
+  }
+
+  coneStage.innerHTML = "";
+  coneGraph = window.HttExplorationCone3D.create({
+    container: coneStage,
+    data,
+    domainLegend: coneDomainLegend,
+    onClearSelection: clearNodeSelection,
+    onOpenNode: openIntro,
+    onSelectNode: scheduleConeNodeSelection,
+    reducedMotionQuery,
+    relationshipLegend: coneRelationshipLegend,
+    state
+  });
+
+  return true;
+}
+
+function renderConeGraph() {
+  if (!data || !ensureConeGraph()) return;
+
+  coneGraph.render(data, state);
+  coneGraph.activate();
+}
+
+function stopConeGraph() {
+  if (coneGraph) coneGraph.deactivate();
+}
+
 function renderIntroPage() {
   window.HttRenderers.renderIntroPage({
     data,
@@ -290,16 +371,63 @@ function renderNodeList() {
   });
 }
 
-function selectNode(id) {
+function getAvailableFilterTags(knowledgeData) {
+  const availableTags = new Set(knowledgeData.nodes.flatMap((node) => node.tags));
+
+  return preferredFilterTags.filter((tag) => availableTags.has(tag));
+}
+
+function createFilterButton({ label, value, active }) {
+  const button = document.createElement("button");
+  button.className = `filter-button${active ? " is-active" : ""}`;
+  button.type = "button";
+  button.dataset.filter = value;
+  button.textContent = label;
+  button.addEventListener("click", () => {
+    state.filter = value;
+    filterButtons.forEach((item) => {
+      item.classList.toggle("is-active", item === button);
+    });
+    renderNodeList();
+  });
+  return button;
+}
+
+function renderFilterButtons() {
+  if (!filterGroup || !data) return;
+
+  const filters = getAvailableFilterTags(data);
+  if (state.filter !== "all" && !filters.includes(state.filter)) {
+    state.filter = "all";
+  }
+
+  filterGroup.innerHTML = "";
+  filterButtons = [
+    createFilterButton({
+      active: state.filter === "all",
+      label: "All",
+      value: "all"
+    }),
+    ...filters.map((tag) =>
+      createFilterButton({
+        active: state.filter === tag,
+        label: filterLabels[tag] || tag,
+        value: tag
+      })
+    )
+  ];
+  filterButtons.forEach((button) => filterGroup.append(button));
+}
+
+function selectNode(id, view = state.view) {
   state.selectedId = id;
-  state.view = "tree";
-  resetGraphTransform();
+  state.view = view;
   render();
 }
 
 function clearNodeSelection() {
   clearPendingNodeSelection();
-  if (!state.selectedId || state.view !== "tree") return;
+  if (!state.selectedId || (state.view !== "tree" && state.view !== "cone")) return;
 
   state.selectedId = null;
   render();
@@ -328,33 +456,67 @@ function scheduleGraphNodeSelection(id) {
       return;
     }
 
-    selectNode(id);
+    selectNode(id, "tree");
+  }, nodeSelectionDelayMs);
+}
+
+function scheduleConeNodeSelection(id) {
+  clearPendingNodeSelection();
+  pendingNodeSelectionTimer = window.setTimeout(() => {
+    pendingNodeSelectionTimer = null;
+    selectNode(id, "cone");
   }, nodeSelectionDelayMs);
 }
 
 function openIntro(id) {
   clearPendingNodeSelection();
   state.selectedId = id;
+  state.previousView = getCurrentGraphView();
   state.view = "intro";
   render();
 }
 
 function showTree() {
-  state.view = "tree";
+  state.view = state.previousView || "tree";
   render();
+}
+
+function getCurrentGraphView() {
+  return state.view === "cone" || state.view === "tree" ? state.view : state.previousView || "tree";
 }
 
 function renderView() {
   const showingTree = state.view === "tree";
+  const showingCone = state.view === "cone";
+  const showingIntro = state.view === "intro";
+
+  viewSwitcher.hidden = showingIntro;
+  viewButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.view === getCurrentGraphView());
+  });
+
   treeView.classList.toggle("is-active", showingTree);
   treeView.hidden = !showingTree;
-  introPage.hidden = showingTree;
+  coneView.classList.toggle("is-active", showingCone);
+  coneView.hidden = !showingCone;
+  introPage.hidden = !showingIntro;
 
   if (showingTree) {
+    stopConeGraph();
     renderGraph();
     startNetworkBackground();
-  } else {
-    stopNetworkBackground();
+    return;
+  }
+
+  stopNetworkBackground();
+
+  if (showingCone) {
+    renderConeGraph();
+    return;
+  }
+
+  if (showingIntro) {
+    stopConeGraph();
     renderIntroPage();
   }
 }
@@ -381,6 +543,7 @@ function init() {
 
     data = window.machineLearningKnowledge;
     validateLoadedData(data);
+    renderFilterButtons();
     render();
   } catch (error) {
     window.HttRenderers.showLoadError({
@@ -402,6 +565,14 @@ filterButtons.forEach((button) => {
     state.filter = button.dataset.filter;
     filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
     renderNodeList();
+  });
+});
+
+viewButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    state.view = button.dataset.view;
+    if (state.view === "tree") resetGraphTransform();
+    render();
   });
 });
 
@@ -482,6 +653,11 @@ zoomOutButton.addEventListener("click", () => zoomGraphFromCenter(1 / 1.18));
 zoomResetButton.addEventListener("click", resetGraphTransform);
 
 window.addEventListener("resize", () => {
+  if (state.view === "cone") {
+    coneGraph?.resize();
+    return;
+  }
+
   if (state.view !== "tree") return;
 
   renderGraph();
@@ -489,10 +665,18 @@ window.addEventListener("resize", () => {
   drawNetworkBackground();
 });
 
+window.addEventListener("htt:cone3d-ready", () => {
+  if (state.view === "cone") renderView();
+});
+
 function handleMotionPreferenceChange() {
   stopNetworkBackground();
 
   if (state.view === "tree") startNetworkBackground();
+  if (state.view === "cone") {
+    coneGraph?.deactivate();
+    coneGraph?.activate();
+  }
 }
 
 if (reducedMotionQuery.addEventListener) {
