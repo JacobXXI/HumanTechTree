@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "validate:data": "node tests/data-validation/validate-knowledge-data.mjs",
-    "test": "npm run validate:data"
+    "validate:static-app": "node tests/smoke/validate-static-app.mjs",
+    "test": "npm run validate:data && npm run validate:static-app"
   }
 }

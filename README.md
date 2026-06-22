@@ -45,13 +45,18 @@ This keeps content data, graph logic, UI rendering, validation, and application 
 
 ## Validation
 
-Run the knowledge data validation before expanding or editing the seed database:
+Run the project checks before expanding or editing the seed database:
 
 ```sh
-npm run validate:data
+npm test
 ```
 
-The validator checks required fields, duplicate IDs, relationship endpoints, allowed statuses and relationship types, reference URLs, duplicate relationships, and prerequisite cycles.
+This runs:
+
+- `npm run validate:data` for knowledge content integrity.
+- `npm run validate:static-app` for static app structure, required DOM hooks, and script load order.
+
+The data validator checks required fields, duplicate IDs, relationship endpoints, allowed statuses and relationship types, reference URLs, duplicate relationships, and prerequisite cycles.
 
 ## Knowledge Entry Template
 
