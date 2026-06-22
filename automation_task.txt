@@ -1,0 +1,2 @@
+1. The nodes will exceed the canvas because there are too much nodes. Enlarge or change canvas logic to fix that
+2. Research on a filtering stregety therefore only nodes in selected category are shown.
