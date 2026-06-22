@@ -18,6 +18,7 @@ const requiredScriptSources = [
 
 const requiredIds = [
   "searchInput",
+  "filterGroup",
   "nodeList",
   "viewSwitcher",
   "treeView",

@@ -388,7 +388,7 @@ function createFilterButton({ label, value, active }) {
     filterButtons.forEach((item) => {
       item.classList.toggle("is-active", item === button);
     });
-    renderNodeList();
+    render();
   });
   return button;
 }
@@ -557,15 +557,7 @@ function init() {
 
 searchInput.addEventListener("input", (event) => {
   state.query = event.target.value.trim();
-  renderNodeList();
-});
-
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    state.filter = button.dataset.filter;
-    filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
-    renderNodeList();
-  });
+  render();
 });
 
 viewButtons.forEach((button) => {

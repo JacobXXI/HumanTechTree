@@ -143,12 +143,17 @@
   }) {
     if (!data) return;
 
-    const focusedIds = state.selectedId
-      ? KnowledgeGraph.getFocusedSubgraphIds(data, state.selectedId)
-      : KnowledgeGraph.getNodeIds(data);
-    const displayNodes = data.nodes;
-    const displayRelationships = KnowledgeGraph.getRenderableRelationships(data);
-    const selectedRelated = state.selectedId ? focusedIds : new Set();
+    const displayNodes = data.nodes.filter((node) => matchesNode(node, state));
+    const displayNodeIds = new Set(displayNodes.map((node) => node.id));
+    const activeSelectedId = displayNodeIds.has(state.selectedId) ? state.selectedId : null;
+    const focusedIds = activeSelectedId
+      ? KnowledgeGraph.getFocusedSubgraphIds(data, activeSelectedId)
+      : displayNodeIds;
+    const displayRelationships = KnowledgeGraph.getRenderableRelationships(data).filter(
+      (relationship) =>
+        displayNodeIds.has(relationship.source) && displayNodeIds.has(relationship.target)
+    );
+    const selectedRelated = activeSelectedId ? focusedIds : new Set();
     const panelWidth = graphViewport.parentElement?.clientWidth || graphNodes.clientWidth || 900;
     const panelHeight = graphViewport.parentElement?.clientHeight || graphNodes.clientHeight || 520;
     const nodeWidth = panelWidth < 620 ? 116 : 150;
@@ -156,6 +161,16 @@
     const paddingX = 18;
     const paddingTop = 56;
     const paddingBottom = 36;
+
+    graphViewport.style.width = `${panelWidth}px`;
+    graphViewport.style.height = `${panelHeight}px`;
+    graphNodes.innerHTML = "";
+    edgeLayer.innerHTML = "";
+    edgeLayer.setAttribute("viewBox", `0 0 ${panelWidth} ${panelHeight}`);
+    edgeLayer.innerHTML = "<defs></defs>";
+
+    if (!displayNodes.length) return;
+
     const normalizedPositions = KnowledgeGraph.computeNormalizedPositions(
       displayNodes,
       displayRelationships
@@ -196,11 +211,11 @@
 
       const button = document.createElement("button");
       button.className = "graph-node";
-      if (node.id === state.selectedId) button.classList.add("is-selected");
-      if (state.selectedId && selectedRelated.has(node.id) && node.id !== state.selectedId) {
+      if (node.id === activeSelectedId) button.classList.add("is-selected");
+      if (activeSelectedId && selectedRelated.has(node.id) && node.id !== activeSelectedId) {
         button.classList.add("is-related");
       }
-      if (state.selectedId && !selectedRelated.has(node.id)) button.classList.add("is-dimmed");
+      if (activeSelectedId && !selectedRelated.has(node.id)) button.classList.add("is-dimmed");
       button.type = "button";
       button.style.left = `${x}px`;
       button.style.top = `${y}px`;
@@ -232,9 +247,9 @@
       if (!source || !target) return;
 
       const selectedEdge =
-        relationship.source === state.selectedId || relationship.target === state.selectedId;
+        relationship.source === activeSelectedId || relationship.target === activeSelectedId;
       const isFocusedEdge =
-        !state.selectedId ||
+        !activeSelectedId ||
         (focusedIds.has(relationship.source) && focusedIds.has(relationship.target));
       const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
       const verticalDistance = Math.abs(target.bottom - source.top);
