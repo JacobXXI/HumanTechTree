@@ -36,6 +36,8 @@ src/
     renderers.js
   validation/
     knowledge-data-validation.js
+  visualizations/
+    exploration-cone-3d.js
 tests/
   data-validation/
     validate-knowledge-data.mjs

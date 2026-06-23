@@ -36,6 +36,7 @@ let filterButtons = [];
 const preferredFilterTags = [
   "Machine Learning Foundation",
   "Mathematics",
+  "Optimization",
   "Statistics",
   "Data Science",
   "Machine Learning Workflow",
@@ -65,6 +66,7 @@ const filterLabels = {
   "Machine Learning Workflow": "Workflow",
   MLOps: "MLOps",
   "Natural Language Processing": "NLP",
+  Optimization: "Optim",
   "Reinforcement Learning": "RL",
   "Responsible AI": "Responsible",
   Statistics: "Stats",
