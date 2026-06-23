@@ -83,8 +83,10 @@ const graphTransform = {
   dragDistance: 0,
   dragStartX: 0,
   dragStartY: 0,
+  hasAutoFit: false,
   isDragging: false,
   maxScale: 2.4,
+  manualOverride: false,
   minScale: 0.55,
   originX: 0,
   originY: 0,
@@ -253,6 +255,35 @@ function applyGraphTransform() {
   graphViewport.style.transform = `translate(${graphTransform.x}px, ${graphTransform.y}px) scale(${graphTransform.scale})`;
 }
 
+function fitGraphToPanel() {
+  if (!graphPanel || !graphViewport) return;
+
+  const panelWidth = graphPanel.clientWidth;
+  const panelHeight = graphPanel.clientHeight;
+  const viewportWidth = graphViewport.offsetWidth;
+  const viewportHeight = graphViewport.offsetHeight;
+
+  if (!panelWidth || !panelHeight || !viewportWidth || !viewportHeight) return;
+
+  const inset = 24;
+  const fitScale = clamp(
+    Math.min(
+      1,
+      (panelWidth - inset * 2) / viewportWidth,
+      (panelHeight - inset * 2) / viewportHeight
+    ),
+    graphTransform.minScale,
+    graphTransform.maxScale
+  );
+
+  graphTransform.scale = fitScale;
+  graphTransform.x = Math.round((panelWidth - viewportWidth * fitScale) / 2);
+  graphTransform.y = Math.round((panelHeight - viewportHeight * fitScale) / 2);
+  graphTransform.hasAutoFit = true;
+  graphTransform.manualOverride = false;
+  applyGraphTransform();
+}
+
 function getGraphPanelPoint(clientX, clientY) {
   const rect = graphPanel.getBoundingClientRect();
 
@@ -275,6 +306,8 @@ function zoomGraphAt(panelX, panelY, factor) {
   graphTransform.x = panelX - (panelX - graphTransform.x) * scaleRatio;
   graphTransform.y = panelY - (panelY - graphTransform.y) * scaleRatio;
   graphTransform.scale = nextScale;
+  graphTransform.hasAutoFit = false;
+  graphTransform.manualOverride = true;
   applyGraphTransform();
 }
 
@@ -284,10 +317,7 @@ function zoomGraphFromCenter(factor) {
 }
 
 function resetGraphTransform() {
-  graphTransform.x = 0;
-  graphTransform.y = 0;
-  graphTransform.scale = 1;
-  applyGraphTransform();
+  fitGraphToPanel();
 }
 
 function clearPendingNodeSelection() {
@@ -302,6 +332,10 @@ function shouldSuppressGraphClick() {
 
   graphTransform.suppressClick = false;
   return true;
+}
+
+function shouldIgnoreGraphPanelPointerEvent(target) {
+  return Boolean(target.closest(".graph-node, .graph-toolbar, .zoom-controls"));
 }
 
 function renderGraph() {
@@ -504,6 +538,9 @@ function renderView() {
   if (showingTree) {
     stopConeGraph();
     renderGraph();
+    if (!graphTransform.hasAutoFit && !graphTransform.manualOverride && !graphTransform.isDragging) {
+      fitGraphToPanel();
+    }
     startNetworkBackground();
     return;
   }
@@ -568,9 +605,10 @@ viewButtons.forEach((button) => {
   });
 });
 
-graphViewport.addEventListener("pointerdown", (event) => {
+graphPanel.addEventListener("pointerdown", (event) => {
+  if (state.view !== "tree") return;
   if (!event.isPrimary || event.button !== 0) return;
-  if (event.target.closest(".graph-node")) return;
+  if (shouldIgnoreGraphPanelPointerEvent(event.target)) return;
 
   graphTransform.isDragging = true;
   graphTransform.dragStartX = event.clientX;
@@ -580,10 +618,10 @@ graphViewport.addEventListener("pointerdown", (event) => {
   graphTransform.dragDistance = 0;
   graphTransform.suppressClick = false;
   graphPanel.classList.add("is-dragging");
-  graphViewport.setPointerCapture(event.pointerId);
+  graphPanel.setPointerCapture(event.pointerId);
 });
 
-graphViewport.addEventListener("pointermove", (event) => {
+graphPanel.addEventListener("pointermove", (event) => {
   if (!graphTransform.isDragging) return;
 
   const deltaX = event.clientX - graphTransform.dragStartX;
@@ -597,6 +635,8 @@ graphViewport.addEventListener("pointermove", (event) => {
 
   graphTransform.x = graphTransform.originX + deltaX;
   graphTransform.y = graphTransform.originY + deltaY;
+  graphTransform.hasAutoFit = false;
+  graphTransform.manualOverride = true;
   applyGraphTransform();
 });
 
@@ -607,8 +647,8 @@ function endGraphDrag(event) {
   graphTransform.suppressClick = graphTransform.dragDistance > 4;
   graphPanel.classList.remove("is-dragging");
 
-  if (graphViewport.hasPointerCapture(event.pointerId)) {
-    graphViewport.releasePointerCapture(event.pointerId);
+  if (graphPanel.hasPointerCapture(event.pointerId)) {
+    graphPanel.releasePointerCapture(event.pointerId);
   }
 
   window.setTimeout(() => {
@@ -616,11 +656,11 @@ function endGraphDrag(event) {
   }, 0);
 }
 
-graphViewport.addEventListener("pointerup", endGraphDrag);
-graphViewport.addEventListener("pointercancel", endGraphDrag);
+graphPanel.addEventListener("pointerup", endGraphDrag);
+graphPanel.addEventListener("pointercancel", endGraphDrag);
 
-graphViewport.addEventListener("click", (event) => {
-  if (event.target.closest(".graph-node")) return;
+graphPanel.addEventListener("click", (event) => {
+  if (shouldIgnoreGraphPanelPointerEvent(event.target)) return;
   if (shouldSuppressGraphClick()) return;
 
   clearNodeSelection();
@@ -653,6 +693,7 @@ window.addEventListener("resize", () => {
   if (state.view !== "tree") return;
 
   renderGraph();
+  if (graphTransform.hasAutoFit) fitGraphToPanel();
   resizeNetworkBackground();
   drawNetworkBackground();
 });
