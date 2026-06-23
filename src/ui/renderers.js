@@ -194,7 +194,10 @@
     graphViewport.style.height = `${height}px`;
     graphNodes.innerHTML = "";
     edgeLayer.innerHTML = "";
+    edgeLayer.setAttribute("width", String(width));
+    edgeLayer.setAttribute("height", String(height));
     edgeLayer.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    edgeLayer.setAttribute("preserveAspectRatio", "none");
     edgeLayer.innerHTML = "<defs></defs>";
 
     displayNodes.forEach((node) => {
