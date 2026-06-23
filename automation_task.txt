@@ -1,1 +1,2 @@
-1. Research on the necessary skills for making a computer, like how to make chips, CPU, etc
+1. Migrate the whole project to a Next.js + react framework
+2. Research on the necessary skills for making a computer, like how to make chips, CPU, etc
