@@ -19,7 +19,7 @@ Then visit `http://localhost:8000/`. It includes:
 - A knowledge introduction page opened from either the sidebar or the tree.
 - Descriptions, derived prerequisites, derived enabled ideas, tags, status, and references for each node.
 
-The seed data lives in `src/data/machine-learning-knowledge.js` so the same source can later drive a Docusaurus or React implementation. Relationship records are the source of truth for prerequisites and enabled ideas.
+The seed data lives in `src/data/machine-learning-knowledge.js` so the same source can later drive a Next.js and React implementation. Relationship records are the source of truth for prerequisites and enabled ideas.
 
 ## Project Structure
 
@@ -64,6 +64,13 @@ The data validator checks required fields, duplicate IDs, relationship endpoints
 
 Use `templates/knowledge-database-entry-template.md` when adding future nodes or relationships to the knowledge database.
 
+## Planning And Research Assets
+
+The repository now includes two planning documents that support the next expansion phase:
+
+- `data/nextjs-react-migration-plan.md` outlines a conservative path from the static MVP to a Next.js and React application.
+- `data/computer-systems-skill-tree.md` maps the prerequisite skills needed to understand how computers are designed, built, and manufactured.
+
 ## GitHub Pages Deployment
 
 This repository is ready to publish with GitHub Pages using the static files at the repository root.
@@ -102,4 +109,6 @@ The demo now covers a curated machine learning map across:
 
 ## Next Steps
 
-The guideline recommends evolving this into a Docusaurus site with React-driven interactive views. A practical next step is to move the demo data into a schema-validated JSON file and render it through Docusaurus pages and reusable React components.
+The current prototype is a stable reference implementation. A practical next step is to follow `data/nextjs-react-migration-plan.md`, starting with a framework-neutral data module and a small read-only Next.js page before porting the interactive graph.
+
+For content expansion beyond machine learning, `data/computer-systems-skill-tree.md` provides a structured starting point for a future hardware and computer-engineering knowledge track.
