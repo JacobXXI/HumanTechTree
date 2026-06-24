@@ -57,6 +57,12 @@ The validator checks required fields, duplicate IDs, relationship endpoints, all
 
 Use `templates/knowledge-database-entry-template.md` when adding future nodes or relationships to the knowledge database.
 
+## Research Assets
+
+The repository now includes a research note that supports future content expansion:
+
+- `data/computer-systems-skill-tree.md` maps the prerequisite skills needed to understand how computers are designed, built, and manufactured.
+
 ## GitHub Pages Deployment
 
 This repository is ready to publish with GitHub Pages using the static files at the repository root.
@@ -96,3 +102,5 @@ The demo now covers a curated machine learning map across:
 ## Next Steps
 
 The guideline recommends evolving this into a Docusaurus site with React-driven interactive views. A practical next step is to move the demo data into a schema-validated JSON file and render it through Docusaurus pages and reusable React components.
+
+For content expansion beyond machine learning, `data/computer-systems-skill-tree.md` provides a structured starting point for a future hardware and computer-engineering knowledge track.
