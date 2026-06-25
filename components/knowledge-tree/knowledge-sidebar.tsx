@@ -8,8 +8,8 @@ interface KnowledgeSidebarProps {
   query: string;
   selectedId: string | null;
   onFilterChange: (filter: string) => void;
+  onOpen: (id: string) => void;
   onQueryChange: (query: string) => void;
-  onSelect: (id: string) => void;
 }
 
 export function KnowledgeSidebar(props: KnowledgeSidebarProps) {
@@ -39,7 +39,7 @@ export function KnowledgeSidebar(props: KnowledgeSidebarProps) {
             <button
               className={`node-button${node.id === props.selectedId ? " is-active" : ""}`}
               key={node.id}
-              onClick={() => props.onSelect(node.id)}
+              onClick={() => props.onOpen(node.id)}
               type="button"
             >
               <strong>{node.name}</strong>

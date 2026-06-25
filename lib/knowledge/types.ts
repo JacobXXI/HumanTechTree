@@ -11,6 +11,8 @@ export type RelationshipType =
   | "application"
   | "alternative-path";
 
+export type VisualizationMode = "2d" | "3d";
+
 export interface KnowledgeReference {
   title: string;
   url: string;
