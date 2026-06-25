@@ -1,0 +1,3296 @@
+{
+  "futureNodes": [],
+  "nodes": [
+    {
+      "id": "linear-algebra",
+      "name": "Linear Algebra",
+      "tags": [
+        "Mathematics",
+        "Machine Learning Foundation"
+      ],
+      "description": "The study of vectors, matrices, linear transformations, and vector spaces. It provides the language used to represent datasets, model parameters, embeddings, and neural network layers.",
+      "importance": "Most machine learning systems store data and model operations as vectors and matrices, so linear algebra is a core foundation for understanding how models compute.",
+      "references": [
+        {
+          "title": "Mathematics for Machine Learning",
+          "url": "https://mml-book.github.io/",
+          "type": "Book"
+        },
+        {
+          "title": "Introduction to Linear Algebra",
+          "url": "https://math.mit.edu/~gs/linearalgebra/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "probability-theory",
+      "name": "Probability Theory",
+      "tags": [
+        "Mathematics",
+        "Statistics",
+        "Machine Learning Foundation"
+      ],
+      "description": "A mathematical framework for reasoning about uncertainty, random variables, distributions, expectation, and conditional dependence.",
+      "importance": "Machine learning uses probability to model uncertain data, evaluate predictions, estimate risk, and reason about noisy observations.",
+      "references": [
+        {
+          "title": "Pattern Recognition and Machine Learning",
+          "url": "https://www.microsoft.com/en-us/research/people/cmbishop/prml-book/",
+          "type": "Book"
+        },
+        {
+          "title": "Seeing Theory",
+          "url": "https://seeing-theory.brown.edu/",
+          "type": "Interactive explainer"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "calculus",
+      "name": "Calculus",
+      "tags": [
+        "Mathematics",
+        "Optimization"
+      ],
+      "description": "The study of change through derivatives, gradients, limits, and integrals. In machine learning it is most often used to understand how a loss changes as model parameters change.",
+      "importance": "Gradients make it possible to improve model parameters systematically instead of searching blindly.",
+      "references": [
+        {
+          "title": "MIT OpenCourseWare Single Variable Calculus",
+          "url": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/",
+          "type": "Course"
+        },
+        {
+          "title": "Essence of Calculus",
+          "url": "https://www.3blue1brown.com/topics/calculus",
+          "type": "Video series"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "statistics",
+      "name": "Statistics",
+      "tags": [
+        "Statistics",
+        "Data Science"
+      ],
+      "description": "Methods for summarizing data, estimating unknown quantities, testing hypotheses, and measuring uncertainty from observations.",
+      "importance": "Statistics gives machine learning its language for generalization, sampling, estimation, bias, variance, and evaluation.",
+      "references": [
+        {
+          "title": "The Elements of Statistical Learning",
+          "url": "https://hastie.su.domains/ElemStatLearn/",
+          "type": "Book"
+        },
+        {
+          "title": "OpenIntro Statistics",
+          "url": "https://www.openintro.org/book/os/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "optimization",
+      "name": "Optimization",
+      "tags": [
+        "Mathematics",
+        "Algorithm",
+        "Optimization"
+      ],
+      "description": "The study of choosing values that minimize or maximize an objective function under constraints.",
+      "importance": "Training a machine learning model is usually an optimization problem: find parameters that minimize prediction error while controlling complexity.",
+      "references": [
+        {
+          "title": "Convex Optimization",
+          "url": "https://web.stanford.edu/~boyd/cvxbook/",
+          "type": "Book"
+        },
+        {
+          "title": "Numerical Optimization",
+          "url": "https://link.springer.com/book/10.1007/978-0-387-40065-5",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "gradient-descent",
+      "name": "Gradient Descent",
+      "tags": [
+        "Algorithm",
+        "Optimization",
+        "Machine Learning"
+      ],
+      "description": "An iterative optimization method that updates parameters in the direction that most reduces a loss function locally.",
+      "importance": "Gradient descent and its variants are central to training linear models, neural networks, and many large-scale machine learning systems.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 8",
+          "url": "https://www.deeplearningbook.org/contents/optimization.html",
+          "type": "Book chapter"
+        },
+        {
+          "title": "An overview of gradient descent optimization algorithms",
+          "url": "https://arxiv.org/abs/1609.04747",
+          "type": "Survey"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "supervised-learning",
+      "name": "Supervised Learning",
+      "tags": [
+        "Machine Learning",
+        "Data Science"
+      ],
+      "description": "A learning setting where models are trained on input examples paired with known target labels or values.",
+      "importance": "Supervised learning powers many practical prediction systems, including classification, regression, ranking, and forecasting.",
+      "references": [
+        {
+          "title": "An Introduction to Statistical Learning",
+          "url": "https://www.statlearning.com/",
+          "type": "Book"
+        },
+        {
+          "title": "The Elements of Statistical Learning",
+          "url": "https://hastie.su.domains/ElemStatLearn/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "decision-trees",
+      "name": "Decision Trees",
+      "tags": [
+        "Machine Learning",
+        "Algorithm",
+        "Interpretable Models"
+      ],
+      "description": "A supervised learning model that recursively splits data by feature conditions to make predictions through a tree of decisions.",
+      "importance": "Decision trees are intuitive, interpretable, and foundational for stronger ensemble methods such as random forests and gradient boosted trees.",
+      "references": [
+        {
+          "title": "Classification and Regression Trees",
+          "url": "https://www.routledge.com/Classification-and-Regression-Trees/Breiman-Friedman-Olshen-Stone/p/book/9780412048418",
+          "type": "Book"
+        },
+        {
+          "title": "scikit-learn Decision Trees",
+          "url": "https://scikit-learn.org/stable/modules/tree.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "neural-networks",
+      "name": "Neural Networks",
+      "tags": [
+        "Machine Learning",
+        "Deep Learning"
+      ],
+      "description": "Parameterized models built from layers of simple differentiable functions that can learn complex mappings from data.",
+      "importance": "Neural networks are the foundation of modern deep learning systems for vision, language, speech, robotics, and scientific modeling.",
+      "references": [
+        {
+          "title": "Deep Learning",
+          "url": "https://www.deeplearningbook.org/",
+          "type": "Book"
+        },
+        {
+          "title": "Neural Networks and Deep Learning",
+          "url": "http://neuralnetworksanddeeplearning.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "backpropagation",
+      "name": "Backpropagation",
+      "tags": [
+        "Machine Learning",
+        "Deep Learning",
+        "Algorithm"
+      ],
+      "description": "An efficient algorithm for computing gradients through layered differentiable models by applying the chain rule backward from the loss.",
+      "importance": "Backpropagation made practical training of multi-layer neural networks possible and remains a core mechanism in deep learning frameworks.",
+      "references": [
+        {
+          "title": "Learning representations by back-propagating errors",
+          "url": "https://www.nature.com/articles/323533a0",
+          "type": "Paper"
+        },
+        {
+          "title": "Deep Learning, Chapter 6",
+          "url": "https://www.deeplearningbook.org/contents/mlp.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "discrete-mathematics",
+      "name": "Discrete Mathematics",
+      "tags": [
+        "Mathematics",
+        "Computer Science"
+      ],
+      "description": "The study of countable structures such as sets, relations, logic, combinatorics, and proof techniques used to reason about finite systems.",
+      "importance": "Discrete mathematics underpins algorithms, data structures, graphs, programming languages, cryptography, and many models of computation.",
+      "references": [
+        {
+          "title": "MIT OpenCourseWare Mathematics for Computer Science",
+          "url": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/",
+          "type": "Course"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "graph-theory",
+      "name": "Graph Theory",
+      "tags": [
+        "Mathematics",
+        "Computer Science",
+        "Networks"
+      ],
+      "description": "A branch of mathematics that models relationships with vertices and edges, including trees, paths, cycles, networks, and connectivity.",
+      "importance": "Graphs provide a compact language for representing dependencies, search spaces, networks, computation flows, and many knowledge structures.",
+      "references": [
+        {
+          "title": "Graph Theory",
+          "url": "https://diestel-graph-theory.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "algorithms",
+      "name": "Algorithms",
+      "tags": [
+        "Computer Science",
+        "Algorithm"
+      ],
+      "description": "Finite, precise procedures for solving computational problems, transforming inputs into outputs, or making decisions step by step.",
+      "importance": "Algorithms turn mathematical ideas into repeatable methods and make it possible to compare solutions by correctness, efficiency, and scalability.",
+      "references": [
+        {
+          "title": "Introduction to Algorithms",
+          "url": "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "data-structures",
+      "name": "Data Structures",
+      "tags": [
+        "Computer Science",
+        "Programming"
+      ],
+      "description": "Ways of organizing data in memory or storage so that operations such as lookup, insertion, deletion, and traversal can be performed efficiently.",
+      "importance": "Data structures make algorithms practical by matching the representation of information to the operations a system needs to perform.",
+      "references": [
+        {
+          "title": "Open Data Structures",
+          "url": "https://opendatastructures.org/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "programming-languages",
+      "name": "Programming Languages",
+      "tags": [
+        "Computer Science",
+        "Software Engineering"
+      ],
+      "description": "Formal languages and execution models used to express algorithms, manage abstraction, control state, and build software systems.",
+      "importance": "Programming languages make algorithms executable and shape how people design, verify, maintain, and scale technological systems.",
+      "references": [
+        {
+          "title": "Crafting Interpreters",
+          "url": "https://craftinginterpreters.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "computer-architecture",
+      "name": "Computer Architecture",
+      "tags": [
+        "Computer Science",
+        "Computing Hardware"
+      ],
+      "description": "The design of computer processors, memory systems, instruction sets, and input-output structures that determine how software runs on hardware.",
+      "importance": "Architecture choices constrain speed, energy use, memory access, parallelism, and the feasibility of large-scale computation.",
+      "references": [
+        {
+          "title": "Computer Organization and Design RISC-V Edition",
+          "url": "https://www.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/9780128203316",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "parallel-computing",
+      "name": "Parallel Computing",
+      "tags": [
+        "Computer Science",
+        "Computing Systems"
+      ],
+      "description": "The practice of dividing computation across multiple processing units so work can proceed concurrently.",
+      "importance": "Parallel computing makes large simulations, data processing pipelines, scientific workloads, and machine learning training feasible at useful scales.",
+      "references": [
+        {
+          "title": "Introduction to Parallel Computing Tutorial",
+          "url": "https://hpc.llnl.gov/documentation/tutorials/introduction-parallel-computing-tutorial",
+          "type": "Tutorial"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "gpu-computing",
+      "name": "GPU Computing",
+      "tags": [
+        "Computing Hardware",
+        "Parallel Computing",
+        "Machine Learning Infrastructure"
+      ],
+      "description": "The use of graphics processing units for general-purpose, massively parallel numerical computation.",
+      "importance": "GPU computing accelerates matrix operations and tensor workloads, making modern deep learning and many scientific simulations practical.",
+      "references": [
+        {
+          "title": "CUDA C++ Programming Guide",
+          "url": "https://docs.nvidia.com/cuda/cuda-c-programming-guide/",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "information-theory",
+      "name": "Information Theory",
+      "tags": [
+        "Mathematics",
+        "Statistics",
+        "Communication"
+      ],
+      "description": "A mathematical theory of information, entropy, compression, coding, and communication over noisy channels.",
+      "importance": "Information theory provides tools for reasoning about uncertainty, representation, compression, prediction, and limits on communication.",
+      "references": [
+        {
+          "title": "Elements of Information Theory",
+          "url": "https://onlinelibrary.wiley.com/doi/book/10.1002/047174882X",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "numerical-methods",
+      "name": "Numerical Methods",
+      "tags": [
+        "Mathematics",
+        "Computing",
+        "Optimization"
+      ],
+      "description": "Algorithms for approximating mathematical operations such as solving equations, optimizing functions, integrating systems, and computing with finite precision.",
+      "importance": "Numerical methods make continuous mathematics executable on real computers, where exact symbolic answers are often unavailable or impractical.",
+      "references": [
+        {
+          "title": "Fundamentals of Numerical Computation",
+          "url": "https://fncbook.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "automatic-differentiation",
+      "name": "Automatic Differentiation",
+      "tags": [
+        "Mathematics",
+        "Algorithm",
+        "Machine Learning Infrastructure"
+      ],
+      "description": "A family of techniques for computing derivatives of programs by propagating derivative information through elementary operations.",
+      "importance": "Automatic differentiation powers modern machine learning frameworks by making gradient computation reliable, efficient, and composable.",
+      "references": [
+        {
+          "title": "Automatic Differentiation in Machine Learning: A Survey",
+          "url": "https://jmlr.org/papers/v18/17-468.html",
+          "type": "Survey"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "linear-regression",
+      "name": "Linear Regression",
+      "tags": [
+        "Statistics",
+        "Machine Learning",
+        "Interpretable Models"
+      ],
+      "description": "A supervised modeling method that estimates a linear relationship between input variables and a numeric target.",
+      "importance": "Linear regression is a fundamental baseline for prediction, statistical inference, model evaluation, and understanding more complex supervised methods.",
+      "references": [
+        {
+          "title": "An Introduction to Statistical Learning",
+          "url": "https://www.statlearning.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "bayesian-inference",
+      "name": "Bayesian Inference",
+      "tags": [
+        "Statistics",
+        "Probability",
+        "Data Science"
+      ],
+      "description": "A framework for updating beliefs about unknown quantities by combining prior assumptions with observed evidence through probability.",
+      "importance": "Bayesian inference gives data analysis and machine learning a principled way to express uncertainty, compare models, and incorporate prior knowledge.",
+      "references": [
+        {
+          "title": "Bayesian Data Analysis",
+          "url": "http://www.stat.columbia.edu/~gelman/book/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "unsupervised-learning",
+      "name": "Unsupervised Learning",
+      "tags": [
+        "Machine Learning",
+        "Data Science"
+      ],
+      "description": "A learning setting where algorithms search for structure, patterns, clusters, or compressed representations in data without explicit target labels.",
+      "importance": "Unsupervised learning helps explore datasets, reduce dimensionality, discover groups, and build representations when labeled data is scarce.",
+      "references": [
+        {
+          "title": "The Elements of Statistical Learning",
+          "url": "https://hastie.su.domains/ElemStatLearn/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "reinforcement-learning",
+      "name": "Reinforcement Learning",
+      "tags": [
+        "Machine Learning",
+        "Decision Making",
+        "Optimization"
+      ],
+      "description": "A learning framework where agents choose actions through interaction with an environment and improve behavior using rewards or costs.",
+      "importance": "Reinforcement learning connects machine learning to control, planning, robotics, games, and sequential decision-making under uncertainty.",
+      "references": [
+        {
+          "title": "Reinforcement Learning: An Introduction",
+          "url": "http://incompleteideas.net/book/the-book-2nd.html",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "ensemble-methods",
+      "name": "Ensemble Methods",
+      "tags": [
+        "Machine Learning",
+        "Algorithm"
+      ],
+      "description": "Methods that combine multiple models so their collective predictions are more accurate, stable, or robust than a single model alone.",
+      "importance": "Ensembles such as random forests and boosting are practical workhorses for tabular data and demonstrate how weak models can form strong systems.",
+      "references": [
+        {
+          "title": "scikit-learn Ensemble Methods",
+          "url": "https://scikit-learn.org/stable/modules/ensemble.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "representation-learning",
+      "name": "Representation Learning",
+      "tags": [
+        "Machine Learning",
+        "Deep Learning"
+      ],
+      "description": "Approaches that learn useful features or internal encodings from data instead of relying entirely on manually designed representations.",
+      "importance": "Representation learning reduces the need for hand-crafted features and is a major reason neural networks can adapt across vision, language, and science tasks.",
+      "references": [
+        {
+          "title": "Representation Learning: A Review and New Perspectives",
+          "url": "https://arxiv.org/abs/1206.5538",
+          "type": "Review"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "deep-learning",
+      "name": "Deep Learning",
+      "tags": [
+        "Machine Learning",
+        "Deep Learning"
+      ],
+      "description": "A family of machine learning methods based on neural networks with many layers that learn hierarchical representations from data.",
+      "importance": "Deep learning transformed computer vision, speech recognition, natural language processing, robotics, and scientific modeling through scalable representation learning.",
+      "references": [
+        {
+          "title": "Deep Learning",
+          "url": "https://www.deeplearningbook.org/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "transformers",
+      "name": "Transformers",
+      "tags": [
+        "Machine Learning",
+        "Deep Learning",
+        "Natural Language Processing"
+      ],
+      "description": "Neural network architectures built around attention mechanisms that model relationships among tokens or other sequence elements.",
+      "importance": "Transformers became the dominant architecture for large language models and many multimodal systems because they scale well with data and compute.",
+      "references": [
+        {
+          "title": "Attention Is All You Need",
+          "url": "https://arxiv.org/abs/1706.03762",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "large-language-models",
+      "name": "Large Language Models",
+      "tags": [
+        "Machine Learning",
+        "Natural Language Processing",
+        "Technology"
+      ],
+      "description": "Large neural language models trained on massive text or multimodal corpora to predict, generate, transform, and reason over sequences.",
+      "importance": "Large language models are a major modern technology platform for search, coding, writing, education, scientific assistance, and human-computer interaction.",
+      "references": [
+        {
+          "title": "Language Models are Few-Shot Learners",
+          "url": "https://arxiv.org/abs/2005.14165",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "datasets",
+      "name": "Datasets",
+      "tags": [
+        "Data Science",
+        "Machine Learning Workflow"
+      ],
+      "description": "Collections of examples used to train, validate, test, benchmark, or analyze machine learning systems.",
+      "importance": "Dataset design strongly shapes what a model can learn, which populations or conditions it represents, and how trustworthy evaluation results are.",
+      "references": [
+        {
+          "title": "Datasheets for Datasets",
+          "url": "https://arxiv.org/abs/1803.09010",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "labels",
+      "name": "Labels",
+      "tags": [
+        "Data Science",
+        "Supervised Learning",
+        "Machine Learning Workflow"
+      ],
+      "description": "Target values, classes, annotations, or judgments attached to examples so a supervised model has something to predict.",
+      "importance": "Label quality often sets an upper bound on supervised learning performance because noisy or biased labels teach the wrong target behavior.",
+      "references": [
+        {
+          "title": "An Introduction to Statistical Learning",
+          "url": "https://www.statlearning.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "features",
+      "name": "Features",
+      "tags": [
+        "Data Science",
+        "Machine Learning Workflow"
+      ],
+      "description": "Measurable input variables or learned representations used by a model to make predictions or discover structure.",
+      "importance": "Feature choices determine what information is available to a model and can dominate performance in classical machine learning systems.",
+      "references": [
+        {
+          "title": "An Introduction to Statistical Learning",
+          "url": "https://www.statlearning.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "train-validation-test-split",
+      "name": "Train/Validation/Test Split",
+      "tags": [
+        "Machine Learning Workflow",
+        "Evaluation"
+      ],
+      "description": "A data partitioning practice that separates examples used for fitting, model selection, and final evaluation.",
+      "importance": "Clean splits help estimate generalization and reduce the chance that model choices are tuned to the final test set.",
+      "references": [
+        {
+          "title": "scikit-learn Model Selection and Evaluation",
+          "url": "https://scikit-learn.org/stable/model_selection.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "data-preprocessing",
+      "name": "Data Preprocessing",
+      "tags": [
+        "Data Science",
+        "Machine Learning Workflow"
+      ],
+      "description": "The preparation of raw data into a representation suitable for modeling, including cleaning, scaling, encoding, and transformation.",
+      "importance": "Preprocessing turns messy observations into model-ready inputs and often determines whether algorithms behave reliably.",
+      "references": [
+        {
+          "title": "scikit-learn Preprocessing Data",
+          "url": "https://scikit-learn.org/stable/modules/preprocessing.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "feature-scaling",
+      "name": "Feature Scaling",
+      "tags": [
+        "Data Science",
+        "Machine Learning Workflow"
+      ],
+      "description": "Transforming numeric features onto comparable ranges or distributions, such as standardization or min-max scaling.",
+      "importance": "Many distance-based and gradient-based methods behave poorly when features have very different scales.",
+      "references": [
+        {
+          "title": "scikit-learn Preprocessing Data",
+          "url": "https://scikit-learn.org/stable/modules/preprocessing.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "categorical-encoding",
+      "name": "Categorical Encoding",
+      "tags": [
+        "Data Science",
+        "Machine Learning Workflow"
+      ],
+      "description": "Representing categories as numeric values, indicator columns, target encodings, or learned embeddings so algorithms can process them.",
+      "importance": "Encoding decisions affect model capacity, leakage risk, memory use, and how categorical structure is exposed to learning algorithms.",
+      "references": [
+        {
+          "title": "scikit-learn Encoding Categorical Features",
+          "url": "https://scikit-learn.org/stable/modules/preprocessing.html#encoding-categorical-features",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "missing-data-imputation",
+      "name": "Missing Data Imputation",
+      "tags": [
+        "Data Science",
+        "Machine Learning Workflow",
+        "Statistics"
+      ],
+      "description": "Methods for replacing missing values with estimates, indicators, or model-based predictions before or during learning.",
+      "importance": "Real datasets often have missing values, and the handling strategy can change both model performance and interpretation.",
+      "references": [
+        {
+          "title": "scikit-learn Imputation of Missing Values",
+          "url": "https://scikit-learn.org/stable/modules/impute.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "data-leakage",
+      "name": "Data Leakage",
+      "tags": [
+        "Machine Learning Workflow",
+        "Evaluation"
+      ],
+      "description": "A modeling error where training or validation uses information that would not be available at prediction time.",
+      "importance": "Leakage can create deceptively strong evaluation results while producing models that fail in real deployment.",
+      "references": [
+        {
+          "title": "Common Pitfalls and Recommended Practices",
+          "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "feature-engineering",
+      "name": "Feature Engineering",
+      "tags": [
+        "Data Science",
+        "Machine Learning Workflow"
+      ],
+      "description": "Designing, transforming, combining, or selecting input variables so models can more easily capture useful patterns.",
+      "importance": "Feature engineering remains a major driver of model quality, especially for tabular, scientific, and production systems with structured data.",
+      "references": [
+        {
+          "title": "Feature Engineering and Selection",
+          "url": "https://bookdown.org/max/FES/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "empirical-risk-minimization",
+      "name": "Empirical Risk Minimization",
+      "tags": [
+        "Machine Learning",
+        "Learning Theory",
+        "Optimization"
+      ],
+      "description": "A learning principle that chooses a model by minimizing average loss on observed training examples.",
+      "importance": "Empirical risk minimization gives supervised learning a formal bridge between data, loss functions, optimization, and generalization.",
+      "references": [
+        {
+          "title": "The Nature of Statistical Learning Theory",
+          "url": "https://link.springer.com/book/10.1007/978-1-4757-3264-1",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "loss-functions",
+      "name": "Loss Functions",
+      "tags": [
+        "Machine Learning",
+        "Optimization",
+        "Evaluation"
+      ],
+      "description": "Functions that measure how costly a model prediction is relative to a target, preference, or desired behavior.",
+      "importance": "The loss function defines what training optimizes and can change which errors a model learns to avoid.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 5",
+          "url": "https://www.deeplearningbook.org/contents/ml.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "generalization",
+      "name": "Generalization",
+      "tags": [
+        "Machine Learning",
+        "Learning Theory",
+        "Evaluation"
+      ],
+      "description": "A model's ability to perform well on unseen examples drawn from the task distribution rather than only memorizing training data.",
+      "importance": "Generalization is the central goal of machine learning and the reason careful evaluation matters.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 5",
+          "url": "https://www.deeplearningbook.org/contents/ml.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "overfitting",
+      "name": "Overfitting",
+      "tags": [
+        "Machine Learning",
+        "Learning Theory",
+        "Evaluation"
+      ],
+      "description": "A failure mode where a model fits training data too closely and performs poorly on new data.",
+      "importance": "Recognizing overfitting helps practitioners choose simpler models, more data, regularization, or better validation strategies.",
+      "references": [
+        {
+          "title": "An Introduction to Statistical Learning",
+          "url": "https://www.statlearning.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "bias-variance-tradeoff",
+      "name": "Bias-Variance Tradeoff",
+      "tags": [
+        "Machine Learning",
+        "Statistics",
+        "Learning Theory"
+      ],
+      "description": "A framework that decomposes prediction error into systematic error, sensitivity to training data, and irreducible noise.",
+      "importance": "The tradeoff explains why both overly simple and overly flexible models can generalize poorly.",
+      "references": [
+        {
+          "title": "An Introduction to Statistical Learning",
+          "url": "https://www.statlearning.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "regularization",
+      "name": "Regularization",
+      "tags": [
+        "Machine Learning",
+        "Optimization",
+        "Learning Theory"
+      ],
+      "description": "Techniques that constrain or penalize models to improve generalization, reduce variance, or encode preferences about solutions.",
+      "importance": "Regularization is one of the main practical tools for controlling overfitting across linear models, kernels, and neural networks.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 7",
+          "url": "https://www.deeplearningbook.org/contents/regularization.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "cross-validation",
+      "name": "Cross-Validation",
+      "tags": [
+        "Machine Learning Workflow",
+        "Evaluation",
+        "Statistics"
+      ],
+      "description": "A model evaluation strategy that repeatedly trains and tests on different data splits to estimate performance more robustly.",
+      "importance": "Cross-validation helps compare models and tune choices when a single validation split would be noisy or wasteful.",
+      "references": [
+        {
+          "title": "scikit-learn Cross-Validation",
+          "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "hyperparameter-tuning",
+      "name": "Hyperparameter Tuning",
+      "tags": [
+        "Machine Learning Workflow",
+        "Optimization"
+      ],
+      "description": "Choosing model or training settings that are not directly learned from data, such as depth, penalty strength, or learning rate.",
+      "importance": "Hyperparameters can strongly affect accuracy, speed, memory use, and robustness, so tuning is a core workflow step.",
+      "references": [
+        {
+          "title": "scikit-learn Tuning the Hyper-Parameters",
+          "url": "https://scikit-learn.org/stable/modules/grid_search.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "classification-metrics",
+      "name": "Classification Metrics",
+      "tags": [
+        "Evaluation",
+        "Supervised Learning",
+        "Statistics"
+      ],
+      "description": "Measures such as accuracy, precision, recall, F1 score, and related summaries for evaluating categorical predictions.",
+      "importance": "Different classification metrics emphasize different error types, which matters when classes are imbalanced or error costs differ.",
+      "references": [
+        {
+          "title": "scikit-learn Classification Metrics",
+          "url": "https://scikit-learn.org/stable/modules/model_evaluation.html#classification-metrics",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "regression-metrics",
+      "name": "Regression Metrics",
+      "tags": [
+        "Evaluation",
+        "Supervised Learning",
+        "Statistics"
+      ],
+      "description": "Measures such as mean squared error, mean absolute error, and R-squared for evaluating numeric predictions.",
+      "importance": "Regression metrics make model errors comparable and express whether large mistakes, average mistakes, or explained variation matter most.",
+      "references": [
+        {
+          "title": "scikit-learn Regression Metrics",
+          "url": "https://scikit-learn.org/stable/modules/model_evaluation.html#regression-metrics",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "calibration",
+      "name": "Calibration",
+      "tags": [
+        "Evaluation",
+        "Statistics",
+        "Supervised Learning"
+      ],
+      "description": "The agreement between predicted probabilities and observed frequencies, often assessed or improved after classification.",
+      "importance": "Well-calibrated probabilities are important for decision systems where confidence estimates affect actions, risk, or triage.",
+      "references": [
+        {
+          "title": "scikit-learn Probability Calibration",
+          "url": "https://scikit-learn.org/stable/modules/calibration.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "confusion-matrix",
+      "name": "Confusion Matrix",
+      "tags": [
+        "Evaluation",
+        "Supervised Learning"
+      ],
+      "description": "A table that counts predicted versus true classes, exposing false positives, false negatives, and class-specific errors.",
+      "importance": "Confusion matrices make classification failures concrete and support more targeted metric selection and error analysis.",
+      "references": [
+        {
+          "title": "scikit-learn Confusion Matrix",
+          "url": "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "logistic-regression",
+      "name": "Logistic Regression",
+      "tags": [
+        "Machine Learning",
+        "Classical Machine Learning",
+        "Interpretable Models"
+      ],
+      "description": "A linear classification model that estimates class probabilities through a logistic or softmax link function.",
+      "importance": "Logistic regression is a strong baseline for classification and a useful bridge between statistics, linear models, and probabilistic prediction.",
+      "references": [
+        {
+          "title": "An Introduction to Statistical Learning",
+          "url": "https://www.statlearning.com/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "naive-bayes",
+      "name": "Naive Bayes",
+      "tags": [
+        "Machine Learning",
+        "Classical Machine Learning",
+        "Probabilistic Models"
+      ],
+      "description": "A family of probabilistic classifiers that apply Bayes' rule with a simplifying conditional independence assumption among features.",
+      "importance": "Naive Bayes is fast, interpretable, and historically important for text classification and other high-dimensional problems.",
+      "references": [
+        {
+          "title": "scikit-learn Naive Bayes",
+          "url": "https://scikit-learn.org/stable/modules/naive_bayes.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "k-nearest-neighbors",
+      "name": "k-Nearest Neighbors",
+      "tags": [
+        "Machine Learning",
+        "Classical Machine Learning",
+        "Algorithm"
+      ],
+      "description": "A non-parametric method that predicts from the labels or values of nearby training examples in a chosen feature space.",
+      "importance": "k-nearest neighbors shows how representation, distance metrics, and local similarity can define learning without explicit training parameters.",
+      "references": [
+        {
+          "title": "scikit-learn Nearest Neighbors",
+          "url": "https://scikit-learn.org/stable/modules/neighbors.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "support-vector-machines",
+      "name": "Support Vector Machines",
+      "tags": [
+        "Machine Learning",
+        "Classical Machine Learning",
+        "Optimization"
+      ],
+      "description": "Supervised models that find separating margins for classification or regression, often using kernels for nonlinear boundaries.",
+      "importance": "Support vector machines connect convex optimization, geometry, regularization, and kernel methods in a durable classical ML framework.",
+      "references": [
+        {
+          "title": "scikit-learn Support Vector Machines",
+          "url": "https://scikit-learn.org/stable/modules/svm.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "kernel-methods",
+      "name": "Kernel Methods",
+      "tags": [
+        "Machine Learning",
+        "Classical Machine Learning",
+        "Mathematics"
+      ],
+      "description": "Methods that compute similarities through kernel functions, allowing linear algorithms to act in implicit feature spaces.",
+      "importance": "Kernel methods made nonlinear learning mathematically tractable and influenced support vector machines, Gaussian processes, and similarity-based modeling.",
+      "references": [
+        {
+          "title": "Kernel Methods for Pattern Analysis",
+          "url": "https://www.cambridge.org/core/books/kernel-methods-for-pattern-analysis/4F4A7A4DEB2516952A60D2F870DB8A91",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "random-forests",
+      "name": "Random Forests",
+      "tags": [
+        "Machine Learning",
+        "Classical Machine Learning",
+        "Ensemble Methods"
+      ],
+      "description": "Ensembles of decision trees trained with randomness in examples and features to reduce variance and improve prediction stability.",
+      "importance": "Random forests are robust, practical baselines for tabular data and demonstrate the power of averaging many noisy models.",
+      "references": [
+        {
+          "title": "Random Forests",
+          "url": "https://link.springer.com/article/10.1023/A:1010933404324",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "gradient-boosting",
+      "name": "Gradient Boosting",
+      "tags": [
+        "Machine Learning",
+        "Classical Machine Learning",
+        "Ensemble Methods"
+      ],
+      "description": "An ensemble technique that builds models sequentially so each new model improves the current prediction by following a loss gradient.",
+      "importance": "Gradient boosting is one of the most effective families of methods for structured and tabular prediction tasks.",
+      "references": [
+        {
+          "title": "Greedy Function Approximation: A Gradient Boosting Machine",
+          "url": "https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation--A-gradient-boosting-machine/10.1214/aos/1013203451.full",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "gaussian-processes",
+      "name": "Gaussian Processes",
+      "tags": [
+        "Machine Learning",
+        "Probabilistic Models",
+        "Statistics"
+      ],
+      "description": "Bayesian non-parametric models that define distributions over functions using covariance kernels.",
+      "importance": "Gaussian processes provide calibrated uncertainty and flexible function modeling, especially valuable for small-data regression and Bayesian optimization.",
+      "references": [
+        {
+          "title": "Gaussian Processes for Machine Learning",
+          "url": "https://gaussianprocess.org/gpml/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "semi-supervised-learning",
+      "name": "Semi-Supervised Learning",
+      "tags": [
+        "Machine Learning",
+        "Data Science"
+      ],
+      "description": "A learning setting that uses a small amount of labeled data together with larger amounts of unlabeled data.",
+      "importance": "Semi-supervised learning is useful when labels are expensive but unlabeled data is plentiful.",
+      "references": [
+        {
+          "title": "scikit-learn Semi-Supervised Learning",
+          "url": "https://scikit-learn.org/stable/modules/semi_supervised.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "clustering",
+      "name": "Clustering",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Data Science"
+      ],
+      "description": "Unsupervised methods that group examples according to similarity, density, connectivity, or probabilistic structure.",
+      "importance": "Clustering supports exploratory analysis, segmentation, compression, and discovery when explicit labels are unavailable.",
+      "references": [
+        {
+          "title": "scikit-learn Clustering",
+          "url": "https://scikit-learn.org/stable/modules/clustering.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "k-means",
+      "name": "k-Means",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Algorithm"
+      ],
+      "description": "A clustering algorithm that partitions data into k groups by repeatedly assigning points to centroids and updating those centroids.",
+      "importance": "k-means is a simple, scalable baseline for cluster discovery and vector quantization.",
+      "references": [
+        {
+          "title": "scikit-learn k-Means",
+          "url": "https://scikit-learn.org/stable/modules/clustering.html#k-means",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "hierarchical-clustering",
+      "name": "Hierarchical Clustering",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Algorithm"
+      ],
+      "description": "Clustering methods that build nested group structures by repeatedly merging or splitting clusters.",
+      "importance": "Hierarchical clustering helps reveal multi-scale structure and can be inspected without choosing a single flat partition first.",
+      "references": [
+        {
+          "title": "scikit-learn Hierarchical Clustering",
+          "url": "https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "dbscan",
+      "name": "DBSCAN",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Algorithm"
+      ],
+      "description": "A density-based clustering method that groups points in dense regions and marks isolated points as noise.",
+      "importance": "DBSCAN can find irregularly shaped clusters and identify outliers without specifying the number of clusters in advance.",
+      "references": [
+        {
+          "title": "A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise",
+          "url": "https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "dimensionality-reduction",
+      "name": "Dimensionality Reduction",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Data Science"
+      ],
+      "description": "Methods that represent high-dimensional data with fewer variables while preserving selected structure or variation.",
+      "importance": "Dimensionality reduction supports visualization, compression, denoising, and faster modeling on complex datasets.",
+      "references": [
+        {
+          "title": "scikit-learn Decomposing Signals in Components",
+          "url": "https://scikit-learn.org/stable/modules/decomposition.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "principal-component-analysis",
+      "name": "Principal Component Analysis",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Linear Algebra"
+      ],
+      "description": "A linear dimensionality reduction method that finds orthogonal directions of maximum variance in data.",
+      "importance": "PCA is a foundational method for compression, visualization, denoising, and understanding linear structure in datasets.",
+      "references": [
+        {
+          "title": "Mathematics for Machine Learning",
+          "url": "https://mml-book.github.io/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "manifold-learning",
+      "name": "Manifold Learning",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Mathematics"
+      ],
+      "description": "A family of methods that assume high-dimensional data lies near lower-dimensional curved structures.",
+      "importance": "Manifold learning motivates nonlinear visualization and representation methods for data with complex geometry.",
+      "references": [
+        {
+          "title": "scikit-learn Manifold Learning",
+          "url": "https://scikit-learn.org/stable/modules/manifold.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "t-sne",
+      "name": "t-SNE",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Visualization"
+      ],
+      "description": "A nonlinear embedding method that visualizes high-dimensional data by preserving local neighbor relationships.",
+      "importance": "t-SNE became a widely used exploratory visualization tool for embeddings, images, biological data, and learned representations.",
+      "references": [
+        {
+          "title": "Visualizing Data using t-SNE",
+          "url": "https://jmlr.org/papers/v9/vandermaaten08a.html",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "gaussian-mixture-models",
+      "name": "Gaussian Mixture Models",
+      "tags": [
+        "Machine Learning",
+        "Unsupervised Learning",
+        "Probabilistic Models"
+      ],
+      "description": "Probabilistic models that represent data as a mixture of Gaussian distributions with latent component assignments.",
+      "importance": "Gaussian mixture models provide soft clustering and illustrate how latent-variable models can capture multimodal data.",
+      "references": [
+        {
+          "title": "scikit-learn Gaussian Mixture Models",
+          "url": "https://scikit-learn.org/stable/modules/mixture.html",
+          "type": "Documentation"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "expectation-maximization",
+      "name": "Expectation-Maximization",
+      "tags": [
+        "Algorithm",
+        "Statistics",
+        "Probabilistic Models"
+      ],
+      "description": "An iterative algorithm for maximum likelihood estimation in latent-variable models by alternating expectation and maximization steps.",
+      "importance": "Expectation-maximization is a central method for fitting models with hidden structure, including mixture models.",
+      "references": [
+        {
+          "title": "Maximum Likelihood from Incomplete Data via the EM Algorithm",
+          "url": "https://www.jstor.org/stable/2984875",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "matrix-factorization",
+      "name": "Matrix Factorization",
+      "tags": [
+        "Machine Learning",
+        "Linear Algebra",
+        "Recommender Systems"
+      ],
+      "description": "Methods that approximate a matrix as a product of lower-rank factors, often revealing latent structure.",
+      "importance": "Matrix factorization supports recommender systems, dimensionality reduction, topic models, and representation learning.",
+      "references": [
+        {
+          "title": "Matrix Factorization Techniques for Recommender Systems",
+          "url": "https://ieeexplore.ieee.org/document/5197422",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "tensors",
+      "name": "Tensors",
+      "tags": [
+        "Mathematics",
+        "Deep Learning",
+        "Machine Learning Infrastructure"
+      ],
+      "description": "Multi-dimensional arrays that generalize scalars, vectors, and matrices for numerical computation.",
+      "importance": "Tensors are the basic data structure for modern deep learning frameworks, representing batches, activations, parameters, images, text, and gradients.",
+      "references": [
+        {
+          "title": "Deep Learning",
+          "url": "https://www.deeplearningbook.org/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "computational-graphs",
+      "name": "Computational Graphs",
+      "tags": [
+        "Deep Learning",
+        "Machine Learning Infrastructure",
+        "Algorithm"
+      ],
+      "description": "Graph representations of computations where nodes are operations or values and edges show data dependencies.",
+      "importance": "Computational graphs make automatic differentiation, optimization, scheduling, and deployment of neural models tractable.",
+      "references": [
+        {
+          "title": "Automatic Differentiation in Machine Learning: A Survey",
+          "url": "https://jmlr.org/papers/v18/17-468.html",
+          "type": "Survey"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "activation-functions",
+      "name": "Activation Functions",
+      "tags": [
+        "Deep Learning",
+        "Neural Networks"
+      ],
+      "description": "Nonlinear functions applied inside neural networks so layered models can represent nonlinear relationships.",
+      "importance": "Activation functions determine gradient flow, representational capacity, and training behavior in neural networks.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 6",
+          "url": "https://www.deeplearningbook.org/contents/mlp.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "stochastic-gradient-descent",
+      "name": "Stochastic Gradient Descent",
+      "tags": [
+        "Optimization",
+        "Algorithm",
+        "Deep Learning"
+      ],
+      "description": "A gradient-based training method that estimates updates from individual examples or small random subsets of data.",
+      "importance": "Stochastic gradient descent makes large-scale learning possible by trading exact gradients for noisy but cheap updates.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 8",
+          "url": "https://www.deeplearningbook.org/contents/optimization.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "mini-batch-training",
+      "name": "Mini-Batch Training",
+      "tags": [
+        "Deep Learning",
+        "Optimization",
+        "Machine Learning Workflow"
+      ],
+      "description": "Training that computes updates from small batches of examples rather than the entire dataset or a single example.",
+      "importance": "Mini-batches balance noisy gradient estimates, hardware efficiency, and memory constraints in modern neural network training.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 8",
+          "url": "https://www.deeplearningbook.org/contents/optimization.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "adaptive-optimizers",
+      "name": "Adaptive Optimizers",
+      "tags": [
+        "Deep Learning",
+        "Optimization",
+        "Algorithm"
+      ],
+      "description": "Gradient-based optimizers such as AdaGrad, RMSProp, and Adam that adapt update sizes from gradient history.",
+      "importance": "Adaptive optimizers reduce manual tuning and are widely used for training deep networks and large language models.",
+      "references": [
+        {
+          "title": "Adam: A Method for Stochastic Optimization",
+          "url": "https://arxiv.org/abs/1412.6980",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "batch-normalization",
+      "name": "Batch Normalization",
+      "tags": [
+        "Deep Learning",
+        "Neural Networks",
+        "Optimization"
+      ],
+      "description": "A neural network layer that normalizes intermediate activations using batch statistics and learned scale and shift parameters.",
+      "importance": "Batch normalization helped stabilize and accelerate deep network training and influenced many later normalization techniques.",
+      "references": [
+        {
+          "title": "Batch Normalization",
+          "url": "https://arxiv.org/abs/1502.03167",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "dropout",
+      "name": "Dropout",
+      "tags": [
+        "Deep Learning",
+        "Neural Networks",
+        "Regularization"
+      ],
+      "description": "A regularization technique that randomly omits units during training to reduce co-adaptation and improve generalization.",
+      "importance": "Dropout became a standard tool for controlling overfitting in neural networks and inspired broader stochastic regularization methods.",
+      "references": [
+        {
+          "title": "Dropout: A Simple Way to Prevent Neural Networks from Overfitting",
+          "url": "https://jmlr.org/papers/v15/srivastava14a.html",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "convolutional-neural-networks",
+      "name": "Convolutional Neural Networks",
+      "tags": [
+        "Deep Learning",
+        "Computer Vision",
+        "Neural Networks"
+      ],
+      "description": "Neural networks that use convolutional filters and shared weights to process grid-like data such as images.",
+      "importance": "Convolutional neural networks drove major progress in computer vision and remain important for images, video, audio, and scientific signals.",
+      "references": [
+        {
+          "title": "CS231n Convolutional Neural Networks",
+          "url": "https://cs231n.github.io/convolutional-networks/",
+          "type": "Course notes"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "recurrent-neural-networks",
+      "name": "Recurrent Neural Networks",
+      "tags": [
+        "Deep Learning",
+        "Natural Language Processing",
+        "Neural Networks"
+      ],
+      "description": "Neural networks with recurrent state connections that process sequences step by step.",
+      "importance": "Recurrent neural networks were foundational for sequence modeling before transformers and remain conceptually important for temporal data.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 10",
+          "url": "https://www.deeplearningbook.org/contents/rnn.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "lstm-gru",
+      "name": "LSTM and GRU",
+      "tags": [
+        "Deep Learning",
+        "Natural Language Processing",
+        "Neural Networks"
+      ],
+      "description": "Gated recurrent architectures that improve sequence modeling by controlling how information is stored, updated, and forgotten.",
+      "importance": "LSTM and GRU models made recurrent networks more practical for language, speech, time series, and other long-context sequence tasks.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 10",
+          "url": "https://www.deeplearningbook.org/contents/rnn.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "attention-mechanisms",
+      "name": "Attention Mechanisms",
+      "tags": [
+        "Deep Learning",
+        "Natural Language Processing",
+        "Neural Networks"
+      ],
+      "description": "Neural components that compute context-dependent weighted combinations of information from other positions or representations.",
+      "importance": "Attention made sequence models better at long-range dependencies and became the defining operation behind transformer architectures.",
+      "references": [
+        {
+          "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+          "url": "https://arxiv.org/abs/1409.0473",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "embeddings",
+      "name": "Embeddings",
+      "tags": [
+        "Machine Learning",
+        "Representation Learning",
+        "Natural Language Processing"
+      ],
+      "description": "Dense vector representations that place discrete items, text, images, users, or entities into learned geometric spaces.",
+      "importance": "Embeddings let models compare, retrieve, cluster, and compose symbolic or complex objects using linear algebra.",
+      "references": [
+        {
+          "title": "Efficient Estimation of Word Representations in Vector Space",
+          "url": "https://arxiv.org/abs/1301.3781",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "sequence-to-sequence-models",
+      "name": "Sequence-to-Sequence Models",
+      "tags": [
+        "Deep Learning",
+        "Natural Language Processing"
+      ],
+      "description": "Models that map an input sequence to an output sequence, commonly using encoder-decoder structures.",
+      "importance": "Sequence-to-sequence modeling powered major advances in machine translation, summarization, speech, and dialogue systems.",
+      "references": [
+        {
+          "title": "Sequence to Sequence Learning with Neural Networks",
+          "url": "https://arxiv.org/abs/1409.3215",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "autoencoders",
+      "name": "Autoencoders",
+      "tags": [
+        "Deep Learning",
+        "Representation Learning",
+        "Unsupervised Learning"
+      ],
+      "description": "Neural networks trained to reconstruct their inputs through a compressed or structured internal representation.",
+      "importance": "Autoencoders connect reconstruction, compression, representation learning, denoising, anomaly detection, and generative modeling.",
+      "references": [
+        {
+          "title": "Deep Learning, Chapter 14",
+          "url": "https://www.deeplearningbook.org/contents/autoencoders.html",
+          "type": "Book chapter"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "generative-adversarial-networks",
+      "name": "Generative Adversarial Networks",
+      "tags": [
+        "Deep Learning",
+        "Generative AI"
+      ],
+      "description": "Generative models trained through a game between a generator that creates samples and a discriminator that distinguishes generated from real data.",
+      "importance": "GANs produced influential results in image generation and shaped modern thinking about learned generative objectives.",
+      "references": [
+        {
+          "title": "Generative Adversarial Networks",
+          "url": "https://arxiv.org/abs/1406.2661",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "diffusion-models",
+      "name": "Diffusion Models",
+      "tags": [
+        "Deep Learning",
+        "Generative AI"
+      ],
+      "description": "Generative models that learn to reverse a gradual noising process to synthesize data from noise.",
+      "importance": "Diffusion models became a leading approach for high-quality image, audio, video, and multimodal generation.",
+      "references": [
+        {
+          "title": "Denoising Diffusion Probabilistic Models",
+          "url": "https://arxiv.org/abs/2006.11239",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "self-supervised-learning",
+      "name": "Self-Supervised Learning",
+      "tags": [
+        "Machine Learning",
+        "Representation Learning",
+        "Deep Learning"
+      ],
+      "description": "Learning representations from unlabeled data by creating predictive training tasks from the data itself.",
+      "importance": "Self-supervised learning made it possible to exploit massive unlabeled corpora and underpins many modern foundation models.",
+      "references": [
+        {
+          "title": "Self-supervised Learning: Generative or Contrastive",
+          "url": "https://arxiv.org/abs/2006.08218",
+          "type": "Survey"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "transfer-learning",
+      "name": "Transfer Learning",
+      "tags": [
+        "Machine Learning",
+        "Deep Learning",
+        "Representation Learning"
+      ],
+      "description": "Reusing knowledge learned from one task, dataset, or model as a starting point for another task.",
+      "importance": "Transfer learning reduces data and compute needs and is central to fine-tuning pretrained models.",
+      "references": [
+        {
+          "title": "A Survey on Transfer Learning",
+          "url": "https://ieeexplore.ieee.org/document/5288526",
+          "type": "Survey"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "foundation-models",
+      "name": "Foundation Models",
+      "tags": [
+        "Machine Learning",
+        "Deep Learning",
+        "Generative AI"
+      ],
+      "description": "Large pretrained models that can be adapted to many downstream tasks through prompting, fine-tuning, or added components.",
+      "importance": "Foundation models changed how AI systems are built by making broad pretrained capabilities a reusable platform.",
+      "references": [
+        {
+          "title": "On the Opportunities and Risks of Foundation Models",
+          "url": "https://arxiv.org/abs/2108.07258",
+          "type": "Report"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "natural-language-processing",
+      "name": "Natural Language Processing",
+      "tags": [
+        "Machine Learning",
+        "Natural Language Processing"
+      ],
+      "description": "The field of building computational systems that analyze, generate, retrieve, translate, or interact through human language.",
+      "importance": "Natural language processing connects machine learning to search, writing, translation, assistants, coding, education, and knowledge work.",
+      "references": [
+        {
+          "title": "Speech and Language Processing",
+          "url": "https://web.stanford.edu/~jurafsky/slp3/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "computer-vision",
+      "name": "Computer Vision",
+      "tags": [
+        "Machine Learning",
+        "Computer Vision"
+      ],
+      "description": "The field of extracting, recognizing, generating, or acting on information from images, video, and visual sensor data.",
+      "importance": "Computer vision powers medical imaging, robotics, autonomous systems, inspection, accessibility, and visual media tools.",
+      "references": [
+        {
+          "title": "CS231n Convolutional Neural Networks for Visual Recognition",
+          "url": "https://cs231n.stanford.edu/",
+          "type": "Course"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "speech-recognition",
+      "name": "Speech Recognition",
+      "tags": [
+        "Machine Learning",
+        "Natural Language Processing",
+        "Speech"
+      ],
+      "description": "The task of converting spoken audio into text or structured linguistic representations.",
+      "importance": "Speech recognition enables voice interfaces, transcription, accessibility, call analytics, and multimodal assistants.",
+      "references": [
+        {
+          "title": "Speech and Language Processing",
+          "url": "https://web.stanford.edu/~jurafsky/slp3/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "recommender-systems",
+      "name": "Recommender Systems",
+      "tags": [
+        "Machine Learning",
+        "Recommender Systems",
+        "Data Science"
+      ],
+      "description": "Systems that predict, rank, or personalize items for users based on behavior, content, context, or learned representations.",
+      "importance": "Recommender systems shape media, commerce, education, search, and discovery experiences at large scale.",
+      "references": [
+        {
+          "title": "Recommender Systems Handbook",
+          "url": "https://link.springer.com/book/10.1007/978-1-0716-2197-4",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "information-retrieval",
+      "name": "Information Retrieval",
+      "tags": [
+        "Machine Learning",
+        "Natural Language Processing",
+        "Search"
+      ],
+      "description": "The study of finding relevant documents, passages, items, or facts from large collections in response to an information need.",
+      "importance": "Information retrieval underlies search engines, question answering, recommendation, and retrieval-augmented generation systems.",
+      "references": [
+        {
+          "title": "Introduction to Information Retrieval",
+          "url": "https://nlp.stanford.edu/IR-book/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "retrieval-augmented-generation",
+      "name": "Retrieval-Augmented Generation",
+      "tags": [
+        "Machine Learning",
+        "Natural Language Processing",
+        "Generative AI"
+      ],
+      "description": "A system design that retrieves external information and conditions a generative model on that context before producing an answer.",
+      "importance": "Retrieval-augmented generation helps language models use current or domain-specific information while grounding responses in inspectable sources.",
+      "references": [
+        {
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "url": "https://arxiv.org/abs/2005.11401",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "markov-decision-processes",
+      "name": "Markov Decision Processes",
+      "tags": [
+        "Reinforcement Learning",
+        "Decision Making",
+        "Probability"
+      ],
+      "description": "Mathematical models of sequential decision-making with states, actions, transition probabilities, and rewards.",
+      "importance": "Markov decision processes provide the formal foundation for much of reinforcement learning, planning, and control.",
+      "references": [
+        {
+          "title": "Reinforcement Learning: An Introduction",
+          "url": "http://incompleteideas.net/book/the-book-2nd.html",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "value-functions",
+      "name": "Value Functions",
+      "tags": [
+        "Reinforcement Learning",
+        "Decision Making"
+      ],
+      "description": "Functions that estimate expected long-term return from states, actions, or policies.",
+      "importance": "Value functions let reinforcement learning agents compare choices by future consequences rather than immediate reward alone.",
+      "references": [
+        {
+          "title": "Reinforcement Learning: An Introduction",
+          "url": "http://incompleteideas.net/book/the-book-2nd.html",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "q-learning",
+      "name": "Q-Learning",
+      "tags": [
+        "Reinforcement Learning",
+        "Algorithm",
+        "Decision Making"
+      ],
+      "description": "A model-free reinforcement learning algorithm that learns action-value estimates for choosing actions.",
+      "importance": "Q-learning is a foundational algorithm for learning control from experience without requiring a known environment model.",
+      "references": [
+        {
+          "title": "Q-learning",
+          "url": "https://link.springer.com/article/10.1007/BF00992698",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "ml-pipelines",
+      "name": "ML Pipelines",
+      "tags": [
+        "MLOps",
+        "Machine Learning Infrastructure",
+        "Machine Learning Workflow"
+      ],
+      "description": "Repeatable workflows that connect data ingestion, preprocessing, training, evaluation, deployment, and maintenance.",
+      "importance": "Pipelines make machine learning systems reproducible, testable, and maintainable across experiments and production releases.",
+      "references": [
+        {
+          "title": "Rules of Machine Learning",
+          "url": "https://developers.google.com/machine-learning/guides/rules-of-ml",
+          "type": "Guide"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "model-monitoring",
+      "name": "Model Monitoring",
+      "tags": [
+        "MLOps",
+        "Evaluation",
+        "Machine Learning Infrastructure"
+      ],
+      "description": "Tracking model inputs, outputs, performance, failures, and distribution changes after deployment.",
+      "importance": "Monitoring helps teams detect drift, degradation, incidents, and feedback loops that offline evaluation may miss.",
+      "references": [
+        {
+          "title": "Hidden Technical Debt in Machine Learning Systems",
+          "url": "https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "efficient-inference",
+      "name": "Efficient Inference",
+      "tags": [
+        "MLOps",
+        "Machine Learning Infrastructure",
+        "Deep Learning"
+      ],
+      "description": "Techniques such as compression, pruning, quantization, distillation, batching, and hardware-aware serving that reduce inference cost.",
+      "importance": "Efficient inference makes deployed models faster, cheaper, lower power, and more practical on edge or high-traffic systems.",
+      "references": [
+        {
+          "title": "Deep Compression",
+          "url": "https://arxiv.org/abs/1510.00149",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "fairness-in-machine-learning",
+      "name": "Fairness in Machine Learning",
+      "tags": [
+        "Responsible AI",
+        "Evaluation",
+        "Machine Learning"
+      ],
+      "description": "The study of how model behavior affects people across groups, contexts, and decision settings, including measurement and mitigation of unfair harms.",
+      "importance": "Fairness work helps machine learning systems avoid reinforcing discrimination and supports more accountable deployment decisions.",
+      "references": [
+        {
+          "title": "Fairness and Machine Learning",
+          "url": "https://fairmlbook.org/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "model-interpretability",
+      "name": "Model Interpretability",
+      "tags": [
+        "Responsible AI",
+        "Interpretable Models",
+        "Evaluation"
+      ],
+      "description": "Methods for understanding, explaining, or auditing how models use inputs to produce predictions or decisions.",
+      "importance": "Interpretability supports debugging, trust calibration, scientific insight, safety analysis, and regulatory review.",
+      "references": [
+        {
+          "title": "Interpretable Machine Learning",
+          "url": "https://christophm.github.io/interpretable-ml-book/",
+          "type": "Book"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "adversarial-robustness",
+      "name": "Adversarial Robustness",
+      "tags": [
+        "Responsible AI",
+        "Security",
+        "Deep Learning"
+      ],
+      "description": "The study of model behavior under intentionally crafted inputs, distribution shifts, or attacks designed to cause errors.",
+      "importance": "Adversarial robustness is important for safety-critical and security-sensitive ML systems where inputs may be malicious or unusual.",
+      "references": [
+        {
+          "title": "Explaining and Harnessing Adversarial Examples",
+          "url": "https://arxiv.org/abs/1412.6572",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "model-cards",
+      "name": "Model Cards",
+      "tags": [
+        "Responsible AI",
+        "Documentation",
+        "MLOps"
+      ],
+      "description": "Structured reports that document a model's intended use, evaluation results, limitations, ethical considerations, and deployment context.",
+      "importance": "Model cards help users, reviewers, and deployers understand model behavior and limits before relying on a system.",
+      "references": [
+        {
+          "title": "Model Cards for Model Reporting",
+          "url": "https://arxiv.org/abs/1810.03993",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "datasheets-for-datasets",
+      "name": "Datasheets for Datasets",
+      "tags": [
+        "Responsible AI",
+        "Documentation",
+        "Data Science"
+      ],
+      "description": "Structured documentation for datasets covering motivation, collection, composition, recommended uses, distribution, and maintenance.",
+      "importance": "Datasheets make dataset assumptions, limitations, and provenance visible, reducing hidden risks in downstream model development.",
+      "references": [
+        {
+          "title": "Datasheets for Datasets",
+          "url": "https://arxiv.org/abs/1803.09010",
+          "type": "Paper"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "ai-risk-management",
+      "name": "AI Risk Management",
+      "tags": [
+        "Responsible AI",
+        "Governance",
+        "MLOps"
+      ],
+      "description": "Practices for identifying, measuring, managing, and communicating risks from AI systems across their lifecycle.",
+      "importance": "Risk management turns technical evaluation, documentation, monitoring, and governance into a repeatable process for safer deployment.",
+      "references": [
+        {
+          "title": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "type": "Framework"
+        }
+      ],
+      "status": "reviewed"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "probability-theory",
+      "target": "statistics",
+      "type": "prerequisite",
+      "note": "Statistical estimation and inference rely on probability models."
+    },
+    {
+      "source": "calculus",
+      "target": "optimization",
+      "type": "prerequisite",
+      "note": "Derivatives and gradients are central tools for continuous optimization."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "optimization",
+      "type": "application",
+      "note": "Optimization methods often operate on vectors, matrices, and parameter spaces."
+    },
+    {
+      "source": "optimization",
+      "target": "gradient-descent",
+      "type": "prerequisite",
+      "note": "Gradient descent is a specific optimization method."
+    },
+    {
+      "source": "calculus",
+      "target": "gradient-descent",
+      "type": "prerequisite",
+      "note": "The method uses gradients to decide update directions."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "supervised-learning",
+      "type": "prerequisite",
+      "note": "Training examples and model parameters are commonly represented as vectors and matrices."
+    },
+    {
+      "source": "probability-theory",
+      "target": "supervised-learning",
+      "type": "prerequisite",
+      "note": "Prediction, uncertainty, and loss functions often use probabilistic assumptions."
+    },
+    {
+      "source": "statistics",
+      "target": "supervised-learning",
+      "type": "prerequisite",
+      "note": "Generalization and evaluation are statistical questions."
+    },
+    {
+      "source": "statistics",
+      "target": "decision-trees",
+      "type": "prerequisite",
+      "note": "Splits and predictions depend on measures of data distribution and impurity."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "decision-trees",
+      "type": "prerequisite",
+      "note": "Decision trees are usually introduced as supervised models."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "neural-networks",
+      "type": "application",
+      "note": "Many neural networks are trained for supervised prediction tasks."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "neural-networks",
+      "type": "prerequisite",
+      "note": "Layer computations are built from vector and matrix operations."
+    },
+    {
+      "source": "optimization",
+      "target": "neural-networks",
+      "type": "prerequisite",
+      "note": "Training neural networks means optimizing parameters against a loss."
+    },
+    {
+      "source": "gradient-descent",
+      "target": "neural-networks",
+      "type": "application",
+      "note": "Gradient-based optimizers are the usual way to train neural networks."
+    },
+    {
+      "source": "calculus",
+      "target": "backpropagation",
+      "type": "prerequisite",
+      "note": "Backpropagation is an efficient use of the chain rule."
+    },
+    {
+      "source": "gradient-descent",
+      "target": "backpropagation",
+      "type": "application",
+      "note": "Backpropagation supplies gradients used by gradient-based training."
+    },
+    {
+      "source": "neural-networks",
+      "target": "backpropagation",
+      "type": "prerequisite",
+      "note": "The algorithm is defined over layered differentiable models."
+    },
+    {
+      "source": "discrete-mathematics",
+      "target": "graph-theory",
+      "type": "prerequisite",
+      "note": "Graph theory builds on discrete structures, relations, and proof techniques."
+    },
+    {
+      "source": "discrete-mathematics",
+      "target": "algorithms",
+      "type": "prerequisite",
+      "note": "Algorithm analysis often uses discrete structures, counting, logic, and proof."
+    },
+    {
+      "source": "data-structures",
+      "target": "algorithms",
+      "type": "prerequisite",
+      "note": "Efficient algorithms depend on data representations suited to their operations."
+    },
+    {
+      "source": "algorithms",
+      "target": "gradient-descent",
+      "type": "prerequisite",
+      "note": "Gradient descent is an iterative algorithm with update rules and convergence behavior."
+    },
+    {
+      "source": "graph-theory",
+      "target": "decision-trees",
+      "type": "prerequisite",
+      "note": "Decision trees use graph-shaped structures with branching paths from root to leaves."
+    },
+    {
+      "source": "algorithms",
+      "target": "programming-languages",
+      "type": "influence",
+      "note": "Algorithmic needs shape language features for control flow, abstraction, and data manipulation."
+    },
+    {
+      "source": "computer-architecture",
+      "target": "parallel-computing",
+      "type": "prerequisite",
+      "note": "Parallel programs depend on hardware organization, memory systems, and processing units."
+    },
+    {
+      "source": "parallel-computing",
+      "target": "gpu-computing",
+      "type": "prerequisite",
+      "note": "GPU computing is a specialized form of massively parallel computation."
+    },
+    {
+      "source": "gpu-computing",
+      "target": "deep-learning",
+      "type": "application",
+      "note": "GPU acceleration makes large tensor operations and deep learning training practical."
+    },
+    {
+      "source": "probability-theory",
+      "target": "information-theory",
+      "type": "prerequisite",
+      "note": "Entropy, coding, and channel models are defined with probabilistic concepts."
+    },
+    {
+      "source": "calculus",
+      "target": "numerical-methods",
+      "type": "prerequisite",
+      "note": "Numerical methods approximate derivatives, integrals, and continuous systems."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "numerical-methods",
+      "type": "prerequisite",
+      "note": "Many numerical methods operate on matrices, vectors, and linear systems."
+    },
+    {
+      "source": "calculus",
+      "target": "automatic-differentiation",
+      "type": "prerequisite",
+      "note": "Automatic differentiation computes derivatives by applying calculus rules to programs."
+    },
+    {
+      "source": "automatic-differentiation",
+      "target": "backpropagation",
+      "type": "application",
+      "note": "Backpropagation can be understood as reverse-mode automatic differentiation through layered models."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "linear-regression",
+      "type": "prerequisite",
+      "note": "Linear regression is commonly expressed with vectors, matrices, and linear systems."
+    },
+    {
+      "source": "statistics",
+      "target": "linear-regression",
+      "type": "prerequisite",
+      "note": "Fitting and evaluating linear regression models uses statistical estimation and uncertainty."
+    },
+    {
+      "source": "linear-regression",
+      "target": "supervised-learning",
+      "type": "application",
+      "note": "Linear regression is a canonical supervised learning method for numeric prediction."
+    },
+    {
+      "source": "probability-theory",
+      "target": "bayesian-inference",
+      "type": "prerequisite",
+      "note": "Bayesian inference updates probability distributions using observed evidence."
+    },
+    {
+      "source": "statistics",
+      "target": "bayesian-inference",
+      "type": "prerequisite",
+      "note": "Bayesian inference is a statistical framework for estimation and model comparison."
+    },
+    {
+      "source": "statistics",
+      "target": "unsupervised-learning",
+      "type": "prerequisite",
+      "note": "Unsupervised methods use statistical structure, variation, and distributional assumptions."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "unsupervised-learning",
+      "type": "prerequisite",
+      "note": "Clustering, embedding, and dimensionality reduction often depend on vector spaces."
+    },
+    {
+      "source": "probability-theory",
+      "target": "reinforcement-learning",
+      "type": "prerequisite",
+      "note": "Reinforcement learning models uncertain outcomes, transitions, and expected returns."
+    },
+    {
+      "source": "optimization",
+      "target": "reinforcement-learning",
+      "type": "prerequisite",
+      "note": "Reinforcement learning searches for policies that optimize long-term reward."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "ensemble-methods",
+      "type": "prerequisite",
+      "note": "Many ensemble methods combine supervised models to improve prediction."
+    },
+    {
+      "source": "decision-trees",
+      "target": "ensemble-methods",
+      "type": "application",
+      "note": "Decision trees are commonly combined into stronger ensemble methods."
+    },
+    {
+      "source": "neural-networks",
+      "target": "representation-learning",
+      "type": "application",
+      "note": "Neural networks can learn useful intermediate representations from data."
+    },
+    {
+      "source": "backpropagation",
+      "target": "deep-learning",
+      "type": "application",
+      "note": "Deep learning systems rely on scalable gradient training through layered models."
+    },
+    {
+      "source": "backpropagation",
+      "target": "large-language-models",
+      "type": "application",
+      "note": "Large language models use gradient-based training through deep neural architectures."
+    },
+    {
+      "source": "representation-learning",
+      "target": "deep-learning",
+      "type": "influence",
+      "note": "The goal of learning useful representations shaped many deep learning architectures."
+    },
+    {
+      "source": "deep-learning",
+      "target": "transformers",
+      "type": "prerequisite",
+      "note": "Transformers are deep neural architectures built from trainable layers."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "transformers",
+      "type": "prerequisite",
+      "note": "Transformer attention and feed-forward blocks rely on vector and matrix operations."
+    },
+    {
+      "source": "transformers",
+      "target": "large-language-models",
+      "type": "prerequisite",
+      "note": "Most modern large language models are built on transformer architectures."
+    },
+    {
+      "source": "deep-learning",
+      "target": "large-language-models",
+      "type": "prerequisite",
+      "note": "Large language models scale deep learning methods to large text and multimodal corpora."
+    },
+    {
+      "source": "information-theory",
+      "target": "large-language-models",
+      "type": "influence",
+      "note": "Language modeling uses ideas related to entropy, prediction, compression, and uncertainty."
+    },
+    {
+      "source": "datasets",
+      "target": "data-preprocessing",
+      "type": "prerequisite",
+      "note": "Preprocessing starts from collected examples that must be cleaned or transformed."
+    },
+    {
+      "source": "datasets",
+      "target": "train-validation-test-split",
+      "type": "prerequisite",
+      "note": "Train, validation, and test sets are partitions of a dataset."
+    },
+    {
+      "source": "datasets",
+      "target": "datasheets-for-datasets",
+      "type": "application",
+      "note": "Datasheets document how datasets were created, maintained, and intended to be used."
+    },
+    {
+      "source": "features",
+      "target": "feature-engineering",
+      "type": "prerequisite",
+      "note": "Feature engineering modifies or creates input variables."
+    },
+    {
+      "source": "data-preprocessing",
+      "target": "feature-scaling",
+      "type": "application",
+      "note": "Feature scaling is a common numeric preprocessing step."
+    },
+    {
+      "source": "data-preprocessing",
+      "target": "categorical-encoding",
+      "type": "application",
+      "note": "Categorical encoding prepares non-numeric categories for learning algorithms."
+    },
+    {
+      "source": "data-preprocessing",
+      "target": "missing-data-imputation",
+      "type": "application",
+      "note": "Imputation is a preprocessing strategy for incomplete datasets."
+    },
+    {
+      "source": "feature-engineering",
+      "target": "supervised-learning",
+      "type": "application",
+      "note": "Engineered features often improve supervised model performance."
+    },
+    {
+      "source": "labels",
+      "target": "supervised-learning",
+      "type": "prerequisite",
+      "note": "Supervised learning requires target values or labels for training examples."
+    },
+    {
+      "source": "features",
+      "target": "supervised-learning",
+      "type": "prerequisite",
+      "note": "Supervised models learn from input features paired with targets."
+    },
+    {
+      "source": "train-validation-test-split",
+      "target": "generalization",
+      "type": "application",
+      "note": "Held-out splits provide evidence about performance on unseen data."
+    },
+    {
+      "source": "data-leakage",
+      "target": "train-validation-test-split",
+      "type": "influence",
+      "note": "Avoiding leakage shapes how train, validation, and test partitions are built."
+    },
+    {
+      "source": "loss-functions",
+      "target": "empirical-risk-minimization",
+      "type": "prerequisite",
+      "note": "Empirical risk is computed from losses over observed examples."
+    },
+    {
+      "source": "statistics",
+      "target": "empirical-risk-minimization",
+      "type": "prerequisite",
+      "note": "Empirical risk minimization reasons from samples about expected performance."
+    },
+    {
+      "source": "optimization",
+      "target": "empirical-risk-minimization",
+      "type": "application",
+      "note": "Training by empirical risk minimization requires optimizing model parameters."
+    },
+    {
+      "source": "empirical-risk-minimization",
+      "target": "supervised-learning",
+      "type": "influence",
+      "note": "Many supervised training procedures can be framed as empirical risk minimization."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "generalization",
+      "type": "application",
+      "note": "Generalization is the central evaluation question for supervised prediction."
+    },
+    {
+      "source": "generalization",
+      "target": "overfitting",
+      "type": "prerequisite",
+      "note": "Overfitting is defined by poor generalization relative to training performance."
+    },
+    {
+      "source": "statistics",
+      "target": "bias-variance-tradeoff",
+      "type": "prerequisite",
+      "note": "The bias-variance framework decomposes statistical prediction error."
+    },
+    {
+      "source": "bias-variance-tradeoff",
+      "target": "overfitting",
+      "type": "influence",
+      "note": "High variance is one explanation for overfitting behavior."
+    },
+    {
+      "source": "overfitting",
+      "target": "regularization",
+      "type": "prerequisite",
+      "note": "Regularization is commonly introduced as a way to reduce overfitting."
+    },
+    {
+      "source": "regularization",
+      "target": "linear-regression",
+      "type": "application",
+      "note": "Regularized linear models constrain coefficients to improve generalization."
+    },
+    {
+      "source": "regularization",
+      "target": "neural-networks",
+      "type": "application",
+      "note": "Neural networks use regularization to control overfitting and improve robustness."
+    },
+    {
+      "source": "train-validation-test-split",
+      "target": "cross-validation",
+      "type": "prerequisite",
+      "note": "Cross-validation repeatedly applies the idea of training and testing on held-out splits."
+    },
+    {
+      "source": "cross-validation",
+      "target": "hyperparameter-tuning",
+      "type": "application",
+      "note": "Cross-validation is often used to compare hyperparameter settings."
+    },
+    {
+      "source": "statistics",
+      "target": "classification-metrics",
+      "type": "influence",
+      "note": "Classification metrics summarize statistical errors over labeled examples."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "classification-metrics",
+      "type": "application",
+      "note": "Classification metrics evaluate supervised models with categorical targets."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "regression-metrics",
+      "type": "application",
+      "note": "Regression metrics evaluate supervised models with numeric targets."
+    },
+    {
+      "source": "probability-theory",
+      "target": "calibration",
+      "type": "prerequisite",
+      "note": "Calibration compares predicted probabilities with observed frequencies."
+    },
+    {
+      "source": "classification-metrics",
+      "target": "confusion-matrix",
+      "type": "application",
+      "note": "A confusion matrix provides raw counts underlying many classification metrics."
+    },
+    {
+      "source": "classification-metrics",
+      "target": "calibration",
+      "type": "alternative-path",
+      "note": "Calibration is another way to assess classifiers when predicted probabilities matter."
+    },
+    {
+      "source": "statistics",
+      "target": "logistic-regression",
+      "type": "prerequisite",
+      "note": "Logistic regression estimates probabilistic classification models from data."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "logistic-regression",
+      "type": "prerequisite",
+      "note": "Logistic regression is commonly expressed with vectors, coefficients, and linear predictors."
+    },
+    {
+      "source": "logistic-regression",
+      "target": "classification-metrics",
+      "type": "application",
+      "note": "Logistic regression is a common classifier evaluated with classification metrics."
+    },
+    {
+      "source": "probability-theory",
+      "target": "naive-bayes",
+      "type": "prerequisite",
+      "note": "Naive Bayes applies probabilistic modeling and Bayes' rule."
+    },
+    {
+      "source": "features",
+      "target": "k-nearest-neighbors",
+      "type": "prerequisite",
+      "note": "Nearest-neighbor prediction depends on examples represented in a feature space."
+    },
+    {
+      "source": "feature-scaling",
+      "target": "k-nearest-neighbors",
+      "type": "application",
+      "note": "Feature scaling often matters because k-nearest neighbors uses distances."
+    },
+    {
+      "source": "optimization",
+      "target": "support-vector-machines",
+      "type": "prerequisite",
+      "note": "Support vector machines are trained through margin-based optimization problems."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "kernel-methods",
+      "type": "prerequisite",
+      "note": "Kernel methods rely on inner products and similarity functions in vector spaces."
+    },
+    {
+      "source": "kernel-methods",
+      "target": "support-vector-machines",
+      "type": "application",
+      "note": "Kernels allow support vector machines to learn nonlinear decision boundaries."
+    },
+    {
+      "source": "probability-theory",
+      "target": "gaussian-processes",
+      "type": "prerequisite",
+      "note": "Gaussian processes define probability distributions over functions."
+    },
+    {
+      "source": "kernel-methods",
+      "target": "gaussian-processes",
+      "type": "application",
+      "note": "Gaussian processes use covariance kernels to express function similarity."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "logistic-regression",
+      "type": "prerequisite",
+      "note": "Logistic regression is a supervised classification method."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "naive-bayes",
+      "type": "prerequisite",
+      "note": "Naive Bayes is commonly used as a supervised classifier."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "k-nearest-neighbors",
+      "type": "prerequisite",
+      "note": "k-nearest neighbors can perform supervised classification or regression."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "support-vector-machines",
+      "type": "prerequisite",
+      "note": "Support vector machines are supervised margin-based models."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "gaussian-processes",
+      "type": "application",
+      "note": "Gaussian processes are often used for supervised regression and classification."
+    },
+    {
+      "source": "decision-trees",
+      "target": "random-forests",
+      "type": "prerequisite",
+      "note": "Random forests are ensembles of decision trees."
+    },
+    {
+      "source": "ensemble-methods",
+      "target": "random-forests",
+      "type": "prerequisite",
+      "note": "Random forests use ensemble averaging to improve prediction stability."
+    },
+    {
+      "source": "ensemble-methods",
+      "target": "gradient-boosting",
+      "type": "prerequisite",
+      "note": "Gradient boosting is a sequential ensemble method."
+    },
+    {
+      "source": "loss-functions",
+      "target": "gradient-boosting",
+      "type": "prerequisite",
+      "note": "Gradient boosting improves predictions by optimizing a chosen loss."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "semi-supervised-learning",
+      "type": "alternative-path",
+      "note": "Semi-supervised learning extends supervised learning when labeled data is limited."
+    },
+    {
+      "source": "unsupervised-learning",
+      "target": "semi-supervised-learning",
+      "type": "alternative-path",
+      "note": "Semi-supervised learning also uses structure from unlabeled data."
+    },
+    {
+      "source": "unsupervised-learning",
+      "target": "clustering",
+      "type": "prerequisite",
+      "note": "Clustering is a core unsupervised learning task."
+    },
+    {
+      "source": "clustering",
+      "target": "k-means",
+      "type": "prerequisite",
+      "note": "k-means is a specific clustering algorithm."
+    },
+    {
+      "source": "clustering",
+      "target": "hierarchical-clustering",
+      "type": "prerequisite",
+      "note": "Hierarchical clustering is a family of clustering methods."
+    },
+    {
+      "source": "clustering",
+      "target": "dbscan",
+      "type": "prerequisite",
+      "note": "DBSCAN is a density-based clustering method."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "k-means",
+      "type": "prerequisite",
+      "note": "k-means represents examples and centroids as vectors in a feature space."
+    },
+    {
+      "source": "features",
+      "target": "clustering",
+      "type": "prerequisite",
+      "note": "Clustering depends on a representation in which similarity can be measured."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "dimensionality-reduction",
+      "type": "prerequisite",
+      "note": "Many dimensionality reduction methods operate on matrices and vector spaces."
+    },
+    {
+      "source": "unsupervised-learning",
+      "target": "dimensionality-reduction",
+      "type": "application",
+      "note": "Dimensionality reduction is a common unsupervised representation task."
+    },
+    {
+      "source": "dimensionality-reduction",
+      "target": "principal-component-analysis",
+      "type": "prerequisite",
+      "note": "PCA is a linear dimensionality reduction method."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "principal-component-analysis",
+      "type": "prerequisite",
+      "note": "PCA is built from covariance matrices, eigenvectors, or singular value decompositions."
+    },
+    {
+      "source": "dimensionality-reduction",
+      "target": "manifold-learning",
+      "type": "alternative-path",
+      "note": "Manifold learning is a nonlinear route to lower-dimensional representation."
+    },
+    {
+      "source": "manifold-learning",
+      "target": "t-sne",
+      "type": "application",
+      "note": "t-SNE is a popular nonlinear manifold-style visualization method."
+    },
+    {
+      "source": "probability-theory",
+      "target": "expectation-maximization",
+      "type": "prerequisite",
+      "note": "Expectation-maximization uses probabilistic latent-variable models."
+    },
+    {
+      "source": "statistics",
+      "target": "expectation-maximization",
+      "type": "prerequisite",
+      "note": "EM estimates statistical model parameters from incomplete or latent data."
+    },
+    {
+      "source": "expectation-maximization",
+      "target": "gaussian-mixture-models",
+      "type": "application",
+      "note": "Gaussian mixture models are commonly fit with expectation-maximization."
+    },
+    {
+      "source": "probability-theory",
+      "target": "gaussian-mixture-models",
+      "type": "prerequisite",
+      "note": "Gaussian mixture models are probabilistic models of latent cluster membership."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "matrix-factorization",
+      "type": "prerequisite",
+      "note": "Matrix factorization is defined through matrix products and low-rank approximation."
+    },
+    {
+      "source": "matrix-factorization",
+      "target": "recommender-systems",
+      "type": "application",
+      "note": "Matrix factorization is a classic approach for collaborative filtering."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "tensors",
+      "type": "prerequisite",
+      "note": "Tensors generalize vectors and matrices to higher dimensions."
+    },
+    {
+      "source": "tensors",
+      "target": "deep-learning",
+      "type": "application",
+      "note": "Deep learning frameworks represent data, parameters, and activations as tensors."
+    },
+    {
+      "source": "data-structures",
+      "target": "computational-graphs",
+      "type": "prerequisite",
+      "note": "Computational graphs are structured representations of operations and dependencies."
+    },
+    {
+      "source": "computational-graphs",
+      "target": "automatic-differentiation",
+      "type": "application",
+      "note": "Automatic differentiation can traverse computational graphs to compute derivatives."
+    },
+    {
+      "source": "computational-graphs",
+      "target": "deep-learning",
+      "type": "application",
+      "note": "Deep learning systems use computational graphs to organize forward and backward passes."
+    },
+    {
+      "source": "neural-networks",
+      "target": "activation-functions",
+      "type": "prerequisite",
+      "note": "Activation functions are components inside neural network layers."
+    },
+    {
+      "source": "activation-functions",
+      "target": "deep-learning",
+      "type": "application",
+      "note": "Deep networks depend on nonlinear activations for expressive layered computation."
+    },
+    {
+      "source": "gradient-descent",
+      "target": "stochastic-gradient-descent",
+      "type": "prerequisite",
+      "note": "Stochastic gradient descent is a noisy, sample-based variant of gradient descent."
+    },
+    {
+      "source": "stochastic-gradient-descent",
+      "target": "deep-learning",
+      "type": "application",
+      "note": "Stochastic gradient methods are central to scalable deep learning training."
+    },
+    {
+      "source": "datasets",
+      "target": "mini-batch-training",
+      "type": "prerequisite",
+      "note": "Mini-batch training draws small batches from training data."
+    },
+    {
+      "source": "mini-batch-training",
+      "target": "stochastic-gradient-descent",
+      "type": "application",
+      "note": "Mini-batches provide practical gradient estimates for SGD."
+    },
+    {
+      "source": "stochastic-gradient-descent",
+      "target": "adaptive-optimizers",
+      "type": "prerequisite",
+      "note": "Adaptive optimizers build on stochastic gradient updates with learned step-size behavior."
+    },
+    {
+      "source": "adaptive-optimizers",
+      "target": "deep-learning",
+      "type": "application",
+      "note": "Adaptive optimizers are widely used to train deep neural networks."
+    },
+    {
+      "source": "neural-networks",
+      "target": "batch-normalization",
+      "type": "prerequisite",
+      "note": "Batch normalization is a layer used within neural networks."
+    },
+    {
+      "source": "neural-networks",
+      "target": "dropout",
+      "type": "prerequisite",
+      "note": "Dropout regularizes neural network units during training."
+    },
+    {
+      "source": "regularization",
+      "target": "dropout",
+      "type": "application",
+      "note": "Dropout is a regularization method for neural networks."
+    },
+    {
+      "source": "neural-networks",
+      "target": "convolutional-neural-networks",
+      "type": "prerequisite",
+      "note": "Convolutional neural networks are a specialized neural architecture."
+    },
+    {
+      "source": "deep-learning",
+      "target": "convolutional-neural-networks",
+      "type": "prerequisite",
+      "note": "CNNs are a major family of deep neural networks."
+    },
+    {
+      "source": "convolutional-neural-networks",
+      "target": "computer-vision",
+      "type": "application",
+      "note": "CNNs are widely used for image and visual recognition tasks."
+    },
+    {
+      "source": "neural-networks",
+      "target": "recurrent-neural-networks",
+      "type": "prerequisite",
+      "note": "Recurrent neural networks are neural architectures with recurrent state."
+    },
+    {
+      "source": "recurrent-neural-networks",
+      "target": "lstm-gru",
+      "type": "prerequisite",
+      "note": "LSTM and GRU models are gated recurrent architectures."
+    },
+    {
+      "source": "recurrent-neural-networks",
+      "target": "sequence-to-sequence-models",
+      "type": "application",
+      "note": "Early sequence-to-sequence models often used recurrent encoder-decoder architectures."
+    },
+    {
+      "source": "attention-mechanisms",
+      "target": "sequence-to-sequence-models",
+      "type": "application",
+      "note": "Attention improved encoder-decoder sequence models by focusing on relevant context."
+    },
+    {
+      "source": "attention-mechanisms",
+      "target": "transformers",
+      "type": "prerequisite",
+      "note": "Transformers are built around self-attention mechanisms."
+    },
+    {
+      "source": "linear-algebra",
+      "target": "embeddings",
+      "type": "prerequisite",
+      "note": "Embeddings represent objects as vectors in learned spaces."
+    },
+    {
+      "source": "representation-learning",
+      "target": "embeddings",
+      "type": "application",
+      "note": "Embeddings are learned representations used across ML systems."
+    },
+    {
+      "source": "embeddings",
+      "target": "large-language-models",
+      "type": "application",
+      "note": "Language models represent tokens and context using embedding spaces."
+    },
+    {
+      "source": "neural-networks",
+      "target": "autoencoders",
+      "type": "prerequisite",
+      "note": "Autoencoders are neural networks trained to reconstruct inputs."
+    },
+    {
+      "source": "representation-learning",
+      "target": "autoencoders",
+      "type": "application",
+      "note": "Autoencoders learn internal representations through reconstruction."
+    },
+    {
+      "source": "deep-learning",
+      "target": "generative-adversarial-networks",
+      "type": "prerequisite",
+      "note": "GANs are a deep learning approach to generative modeling."
+    },
+    {
+      "source": "neural-networks",
+      "target": "generative-adversarial-networks",
+      "type": "prerequisite",
+      "note": "GANs train neural generator and discriminator models."
+    },
+    {
+      "source": "deep-learning",
+      "target": "diffusion-models",
+      "type": "prerequisite",
+      "note": "Diffusion models use deep networks to learn denoising processes."
+    },
+    {
+      "source": "probability-theory",
+      "target": "diffusion-models",
+      "type": "prerequisite",
+      "note": "Diffusion models are probabilistic generative models over noisy transformations."
+    },
+    {
+      "source": "unsupervised-learning",
+      "target": "self-supervised-learning",
+      "type": "alternative-path",
+      "note": "Self-supervised learning uses unlabeled data while constructing its own training signal."
+    },
+    {
+      "source": "representation-learning",
+      "target": "self-supervised-learning",
+      "type": "application",
+      "note": "Self-supervised objectives are widely used to learn reusable representations."
+    },
+    {
+      "source": "self-supervised-learning",
+      "target": "foundation-models",
+      "type": "prerequisite",
+      "note": "Many foundation models are pretrained with self-supervised objectives."
+    },
+    {
+      "source": "representation-learning",
+      "target": "transfer-learning",
+      "type": "application",
+      "note": "Reusable representations make transfer learning effective."
+    },
+    {
+      "source": "transfer-learning",
+      "target": "foundation-models",
+      "type": "application",
+      "note": "Foundation models are adapted to downstream tasks through transfer learning techniques."
+    },
+    {
+      "source": "transformers",
+      "target": "foundation-models",
+      "type": "application",
+      "note": "Many modern foundation models use transformer architectures."
+    },
+    {
+      "source": "foundation-models",
+      "target": "large-language-models",
+      "type": "application",
+      "note": "Large language models are a prominent class of foundation models."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "natural-language-processing",
+      "type": "application",
+      "note": "Many NLP systems are trained on labeled or aligned language tasks."
+    },
+    {
+      "source": "embeddings",
+      "target": "natural-language-processing",
+      "type": "application",
+      "note": "NLP systems commonly use token, word, sentence, or document embeddings."
+    },
+    {
+      "source": "natural-language-processing",
+      "target": "large-language-models",
+      "type": "prerequisite",
+      "note": "Large language models are built for language modeling and NLP tasks."
+    },
+    {
+      "source": "deep-learning",
+      "target": "speech-recognition",
+      "type": "application",
+      "note": "Modern speech recognition systems rely heavily on deep learning."
+    },
+    {
+      "source": "natural-language-processing",
+      "target": "speech-recognition",
+      "type": "application",
+      "note": "Speech recognition connects audio modeling to linguistic output."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "computer-vision",
+      "type": "application",
+      "note": "Image classification and detection often use supervised training data."
+    },
+    {
+      "source": "embeddings",
+      "target": "information-retrieval",
+      "type": "application",
+      "note": "Dense retrieval uses embeddings to search by semantic similarity."
+    },
+    {
+      "source": "natural-language-processing",
+      "target": "information-retrieval",
+      "type": "application",
+      "note": "Text retrieval is a central information retrieval task."
+    },
+    {
+      "source": "information-retrieval",
+      "target": "retrieval-augmented-generation",
+      "type": "prerequisite",
+      "note": "RAG systems retrieve relevant information before generation."
+    },
+    {
+      "source": "large-language-models",
+      "target": "retrieval-augmented-generation",
+      "type": "application",
+      "note": "RAG commonly conditions large language models on retrieved context."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "recommender-systems",
+      "type": "application",
+      "note": "Many recommender systems learn from explicit or implicit supervised signals."
+    },
+    {
+      "source": "embeddings",
+      "target": "recommender-systems",
+      "type": "application",
+      "note": "Embeddings represent users and items for similarity and ranking."
+    },
+    {
+      "source": "probability-theory",
+      "target": "markov-decision-processes",
+      "type": "prerequisite",
+      "note": "MDPs model uncertain state transitions and expected rewards."
+    },
+    {
+      "source": "markov-decision-processes",
+      "target": "reinforcement-learning",
+      "type": "prerequisite",
+      "note": "MDPs provide a standard formal model for reinforcement learning problems."
+    },
+    {
+      "source": "markov-decision-processes",
+      "target": "value-functions",
+      "type": "prerequisite",
+      "note": "Value functions estimate returns within Markov decision processes."
+    },
+    {
+      "source": "value-functions",
+      "target": "q-learning",
+      "type": "prerequisite",
+      "note": "Q-learning learns action-value functions."
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "q-learning",
+      "type": "prerequisite",
+      "note": "Q-learning is a foundational reinforcement learning algorithm."
+    },
+    {
+      "source": "data-preprocessing",
+      "target": "ml-pipelines",
+      "type": "application",
+      "note": "Production ML pipelines include repeatable preprocessing steps."
+    },
+    {
+      "source": "supervised-learning",
+      "target": "ml-pipelines",
+      "type": "application",
+      "note": "Supervised models often move through pipeline stages from training to evaluation and release."
+    },
+    {
+      "source": "cross-validation",
+      "target": "ml-pipelines",
+      "type": "application",
+      "note": "Pipelines commonly automate validation and model selection procedures."
+    },
+    {
+      "source": "ml-pipelines",
+      "target": "model-monitoring",
+      "type": "application",
+      "note": "Monitoring extends pipelines after deployment to track model behavior."
+    },
+    {
+      "source": "classification-metrics",
+      "target": "model-monitoring",
+      "type": "application",
+      "note": "Monitoring can track classification metrics over time when labels become available."
+    },
+    {
+      "source": "deep-learning",
+      "target": "efficient-inference",
+      "type": "application",
+      "note": "Efficient inference methods are often needed to serve deep models within latency and cost constraints."
+    },
+    {
+      "source": "gpu-computing",
+      "target": "efficient-inference",
+      "type": "application",
+      "note": "Hardware-aware inference uses accelerators and parallel computation efficiently."
+    },
+    {
+      "source": "statistics",
+      "target": "fairness-in-machine-learning",
+      "type": "influence",
+      "note": "Fairness work extends statistical evaluation to harms and performance differences across groups."
+    },
+    {
+      "source": "classification-metrics",
+      "target": "fairness-in-machine-learning",
+      "type": "application",
+      "note": "Fairness audits often compare error rates and outcomes across groups."
+    },
+    {
+      "source": "linear-regression",
+      "target": "model-interpretability",
+      "type": "influence",
+      "note": "Interpretable model families such as linear regression influenced broader methods for explaining model behavior."
+    },
+    {
+      "source": "decision-trees",
+      "target": "model-interpretability",
+      "type": "application",
+      "note": "Decision trees are a common example of inherently interpretable models."
+    },
+    {
+      "source": "deep-learning",
+      "target": "adversarial-robustness",
+      "type": "application",
+      "note": "Adversarial robustness is a major concern for deep neural models."
+    },
+    {
+      "source": "classification-metrics",
+      "target": "model-cards",
+      "type": "application",
+      "note": "Model cards summarize evaluation results, intended uses, and limitations."
+    },
+    {
+      "source": "model-monitoring",
+      "target": "model-cards",
+      "type": "application",
+      "note": "Monitoring results can inform ongoing model documentation."
+    },
+    {
+      "source": "datasheets-for-datasets",
+      "target": "model-cards",
+      "type": "influence",
+      "note": "Dataset documentation complements model documentation."
+    },
+    {
+      "source": "fairness-in-machine-learning",
+      "target": "ai-risk-management",
+      "type": "application",
+      "note": "Fairness analysis is one part of managing AI system risk."
+    },
+    {
+      "source": "model-cards",
+      "target": "ai-risk-management",
+      "type": "application",
+      "note": "Model cards provide documentation that supports lifecycle risk management."
+    },
+    {
+      "source": "model-monitoring",
+      "target": "ai-risk-management",
+      "type": "application",
+      "note": "Risk management depends on observing deployed model behavior over time."
+    }
+  ]
+}

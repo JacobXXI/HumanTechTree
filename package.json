@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "validate:data": "node tests/data-validation/validate-knowledge-data.mjs",
+    "export:framework-data": "node scripts/export-framework-knowledge-data.mjs",
+    "validate:data": "node tests/data-validation/validate-knowledge-data.mjs && node tests/data-validation/validate-framework-data.mjs",
     "validate:static-app": "node tests/smoke/validate-static-app.mjs",
     "test": "npm run validate:data && npm run validate:static-app"
   }

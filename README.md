@@ -19,7 +19,7 @@ Then visit `http://localhost:8000/`. It includes:
 - A knowledge introduction page opened from either the sidebar or the tree.
 - Descriptions, derived prerequisites, derived enabled ideas, tags, status, and references for each node.
 
-The seed data lives in `src/data/machine-learning-knowledge.js` so the same source can later drive a Next.js and React implementation. Relationship records are the source of truth for prerequisites and enabled ideas.
+The seed data source of truth lives in `src/data/machine-learning-knowledge.js`. A framework-neutral export is checked in at `data/machine-learning-knowledge.json` for future Next.js and React work. Relationship records are the source of truth for prerequisites and enabled ideas.
 
 ## Project Structure
 
@@ -59,6 +59,12 @@ This runs:
 - `npm run validate:static-app` for static app structure, required DOM hooks, and script load order.
 
 The data validator checks required fields, duplicate IDs, relationship endpoints, allowed statuses and relationship types, reference URLs, duplicate relationships, and prerequisite cycles.
+
+When updating the seed data source, refresh the framework-neutral export with:
+
+```sh
+npm run export:framework-data
+```
 
 ## Knowledge Entry Template
 
