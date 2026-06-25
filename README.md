@@ -41,6 +41,10 @@ src/
 tests/
   data-validation/
     validate-knowledge-data.mjs
+  docs/
+    validate-project-messaging.mjs
+  smoke/
+    validate-static-app.mjs
 ```
 
 This keeps content data, graph logic, UI rendering, validation, and application wiring separate while preserving the no-build static demo.
@@ -57,6 +61,7 @@ This runs:
 
 - `npm run validate:data` for knowledge content integrity.
 - `npm run validate:static-app` for static app structure, required DOM hooks, and script load order.
+- `npm run validate:docs` for project-overview and migration-messaging consistency.
 
 The data validator checks required fields, duplicate IDs, relationship endpoints, allowed statuses and relationship types, reference URLs, duplicate relationships, and prerequisite cycles.
 

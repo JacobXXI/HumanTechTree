@@ -23,24 +23,35 @@ The platform also allows users to explore related fields and identify prior know
 
 
 # Technology Involved
-The website is built using the React framework, with Docusaurus as the site generator, and additional React libraries such as:
-1. React Three Fiber for 3D layout
-2. MUI Tree View for simple side-tree widgets
+The current prototype is a no-build static app built with HTML, CSS, and modular JavaScript.
+
+Supporting project infrastructure currently includes:
+1. Node.js validation scripts for knowledge data and static app smoke checks
+2. A framework-neutral JSON export for future framework work
+3. Planning notes for the Next.js + React migration path and computer-systems knowledge expansion
+
+The planned framework target is a Next.js + React application. The migration path is documented in `data/nextjs-react-migration-plan.md`, and the computer-hardware learning expansion is outlined in `data/computer-systems-skill-tree.md`.
 
 # Project Structure
-The project has three major components:
+The project currently has five major components:
 
-Knowledge database - Contains a table of inventions.
+Knowledge database - Contains the machine learning seed knowledge map and related relationship data.
 Schema:
 1. id
 2. Name
-3. Prerequisites (inventions required beforehand)
-4. Tag (e.g. Math, Algorithm, Data Science, Dimension Reduction)
-5. Description (including introductory text and external reference links)
+3. Tags
+4. Description
+5. Importance
+6. References
+7. Status
 
-Tree layout - See "img/2DTree.jpg" and "img/3DTree.jpg" for detailed structure. Ask if you have any questions.
+Relationship graph - Relationship records define prerequisite, influence, application, and alternative-path edges between nodes.
 
-Introduction page - Includes the brief introduction text and references to detailed descriptions, such as academic papers, videos, or other resources.
+Static demo - `index.html`, `styles.css`, and `src/` modules render the current searchable sidebar, 2D tree, 3D cone view, and node detail experience.
+
+Validation scripts - `tests/data-validation/` and `tests/smoke/` verify data integrity, framework-neutral export sync, and required static app structure.
+
+Planning artifacts - `data/nextjs-react-migration-plan.md` and `data/computer-systems-skill-tree.md` capture the next safe framework milestone and the broader hardware-skills research direction.
 
 # Development Guideline
 See [PROJECT_DEVELOPMENT_GUIDELINE.md](PROJECT_DEVELOPMENT_GUIDELINE.md) for the MVP-first product, content, visualization, and contribution guideline.
