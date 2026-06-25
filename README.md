@@ -1,107 +1,37 @@
 # Human Technology Tree
 
-This repository contains an MVP demo for the Human Technology Tree idea described in `PROJECT_DEVELOPMENT_GUIDELINE.md`.
+A Next.js and React application for exploring the dependencies between machine-learning and computing concepts.
 
-## Demo
-
-Open `index.html` in a browser to try the machine learning knowledge demo, or run a local server from the repository root:
+## Development
 
 ```sh
-python3 -m http.server 8000
+npm install
+npm run dev
 ```
 
-Then visit `http://localhost:8000/`. It includes:
+Open `http://localhost:3000`.
 
-- 110 reviewed technology and machine learning knowledge nodes.
-- 197 relationship records covering prerequisites, influences, applications, and alternative paths.
-- A searchable side navigator with data-driven high-level tag filters.
-- A full-pane 2D prerequisite graph.
-- A knowledge introduction page opened from either the sidebar or the tree.
-- Descriptions, derived prerequisites, derived enabled ideas, tags, status, and references for each node.
-
-The seed data lives in `src/data/machine-learning-knowledge.js` so the same source can later drive a Next.js and React implementation. Relationship records are the source of truth for prerequisites and enabled ideas.
-
-## Project Structure
-
-The demo is split into focused modules:
-
-```text
-src/
-  app.js
-  data/
-    machine-learning-knowledge.js
-  graph/
-    knowledge-graph.js
-  ui/
-    renderers.js
-  validation/
-    knowledge-data-validation.js
-tests/
-  data-validation/
-    validate-knowledge-data.mjs
-```
-
-This keeps content data, graph logic, UI rendering, validation, and application wiring separate while preserving the no-build static demo.
-
-## Validation
-
-Run the knowledge data validation before expanding or editing the seed database:
-
-```sh
-npm run validate:data
-```
-
-The validator checks required fields, duplicate IDs, relationship endpoints, allowed statuses and relationship types, reference URLs, duplicate relationships, and prerequisite cycles.
-
-## Knowledge Entry Template
-
-Use `templates/knowledge-database-entry-template.md` when adding future nodes or relationships to the knowledge database.
-
-## Planning And Research Assets
-
-The repository now includes two planning documents that support the next expansion phase:
-
-- `data/nextjs-react-migration-plan.md` outlines a conservative path from the static MVP to a Next.js and React application.
-- `data/computer-systems-skill-tree.md` maps the prerequisite skills needed to understand how computers are designed, built, and manufactured.
-
-## GitHub Pages Deployment
-
-This repository is ready to publish with GitHub Pages using the static files at the repository root.
-
-Before deploying, run:
+## Validation and production export
 
 ```sh
 npm test
+npm run build
 ```
 
-In GitHub, open `Settings -> Pages`, then set:
+The production build uses Next.js static export and writes the deployable site to `out/`.
 
-- Source: `Deploy from a branch`
-- Branch: `main`
-- Folder: `/ (root)`
-
-After GitHub Pages finishes publishing, the project will be available at:
+## Project structure
 
 ```text
-https://jacobxxi.github.io/HumanTechTree/
+app/                         Next.js routes and global styles
+components/knowledge-tree/   React tree, sidebar, details, and 3D canvas
+data/                        Knowledge dataset
+lib/knowledge/               Typed graph, selector, and validation logic
+tests/data-validation/       Dataset validation
 ```
 
-## Knowledge Coverage
+The knowledge relationships are the source of truth for prerequisites and enabled concepts.
 
-The demo now covers a curated machine learning map across:
+## GitHub Pages
 
-- Mathematical and computing foundations.
-- Data, preprocessing, leakage, feature work, and evaluation workflow.
-- Learning theory, regularization, metrics, calibration, and model selection.
-- Classical supervised algorithms, ensemble methods, probabilistic models, and semi-supervised learning.
-- Unsupervised learning, clustering, dimensionality reduction, manifold methods, mixture models, and matrix factorization.
-- Deep learning architecture and training concepts, including tensors, computational graphs, optimizers, CNNs, RNNs, attention, generative models, transfer learning, and foundation models.
-- Applied areas such as NLP, computer vision, speech recognition, recommenders, information retrieval, and retrieval-augmented generation.
-- Reinforcement learning foundations.
-- MLOps and responsible AI topics, including pipelines, monitoring, efficient inference, fairness, interpretability, adversarial robustness, model cards, datasheets, and AI risk management.
-
-## Next Steps
-
-The current prototype is a stable reference implementation. A practical next step is to follow `data/nextjs-react-migration-plan.md`, starting with a framework-neutral data module and a small read-only Next.js page before porting the interactive graph.
-
-For content expansion beyond machine learning, `data/computer-systems-skill-tree.md` provides a structured starting point for a future hardware and computer-engineering knowledge track.
+The application can be deployed to GitHub Pages from the generated `out/` directory. For a project site such as `username.github.io/HumanTechTree`, configure the repository name as the Next.js `basePath` and deploy with GitHub Actions.

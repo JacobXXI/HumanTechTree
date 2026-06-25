@@ -1,4 +1,4 @@
-import rawKnowledgeData from "@/src/data/machine-learning-knowledge.js";
+import rawKnowledgeData from "@/data/machine-learning-knowledge.js";
 
 import type { KnowledgeData } from "./types";
 
