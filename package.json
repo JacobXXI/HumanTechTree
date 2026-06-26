@@ -3,10 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "export:framework-data": "node scripts/export-framework-knowledge-data.mjs",
     "validate:data": "node tests/data-validation/validate-knowledge-data.mjs && node tests/data-validation/validate-framework-data.mjs",
+    "validate:app": "node tests/smoke/validate-next-app.mjs",
     "validate:docs": "node tests/docs/validate-project-messaging.mjs",
-    "validate:static-app": "node tests/smoke/validate-static-app.mjs",
-    "test": "npm run validate:data && npm run validate:static-app && npm run validate:docs"
+    "test": "npm run validate:data && npm run validate:app && npm run validate:docs"
+  },
+  "dependencies": {
+    "next": "^15.5.9",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.8.3"
   }
 }

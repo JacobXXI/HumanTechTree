@@ -4,11 +4,11 @@ import { fileURLToPath } from "node:url";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(currentDirectory, "..", "..");
-const introPath = path.join(repositoryRoot, "intro.md");
+const introRoutePath = path.join(repositoryRoot, "app", "intro", "page.tsx");
 const readmePath = path.join(repositoryRoot, "README.md");
 
-const [intro, readme] = await Promise.all([
-  readFile(introPath, "utf8"),
+const [introRoute, readme] = await Promise.all([
+  readFile(introRoutePath, "utf8"),
   readFile(readmePath, "utf8")
 ]);
 
@@ -30,45 +30,39 @@ function expectNoMatch(content, expression, message) {
 }
 
 expectMatch(
-  intro,
-  /no-build static (app|prototype)/i,
-  'intro.md must describe the current implementation as a no-build static app or prototype.'
+  introRoute,
+  /Explore the tree/i,
+  'app/intro/page.tsx must keep a clear call to action back to the knowledge tree.'
 );
 
 expectMatch(
-  intro,
-  /HTML,\s*CSS,\s*and modular JavaScript/i,
-  'intro.md must describe the current stack as HTML, CSS, and modular JavaScript.'
+  introRoute,
+  /machine learning/i,
+  'app/intro/page.tsx must describe the machine learning focus of the current dataset.'
 );
 
 expectMatch(
-  intro,
-  /Next\.js \+ React migration path/i,
-  'intro.md must reference the Next.js + React migration path.'
-);
-
-expectMatch(
-  intro,
-  /computer-hardware learning expansion|computer-systems-skill-tree\.md/i,
-  'intro.md must reference the computer systems skills planning note.'
-);
-
-expectNoMatch(
-  intro,
-  /built using the React framework/i,
-  'intro.md must not claim the current site is already built with React.'
-);
-
-expectNoMatch(
-  intro,
-  /Docusaurus as the site generator/i,
-  'intro.md must not claim the current site is already built with Docusaurus.'
+  readme,
+  /Next\.js and React application/i,
+  'README.md must describe the current stack as a Next.js and React application.'
 );
 
 expectMatch(
   readme,
   /npm run validate:docs/i,
   'README.md must document the docs validation check.'
+);
+
+expectMatch(
+  readme,
+  /npm run build/i,
+  'README.md must document the production build step.'
+);
+
+expectNoMatch(
+  readme,
+  /index\.html/i,
+  'README.md must not describe the removed static entrypoint.'
 );
 
 console.log("Project messaging validation passed.");

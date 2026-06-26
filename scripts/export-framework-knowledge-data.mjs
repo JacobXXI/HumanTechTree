@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(currentDirectory, "..");
-const knowledgeData = require("../src/data/machine-learning-knowledge.js");
+const knowledgeData = require("../data/machine-learning-knowledge.js");
 const outputPath = path.join(repositoryRoot, "data", "machine-learning-knowledge.json");
 
 await writeFile(outputPath, `${JSON.stringify(knowledgeData, null, 2)}\n`, "utf8");
