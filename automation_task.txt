@@ -1,4 +1,2 @@
-1. Merge migration branch into this branch, only keeping the new framework (Next.js + react), remove the files related to the old html framework.
-2. Add back the particle effect for the 2D tree view, becareful not to set a fixed canvas size where lines exceeding the canvas wll disappear.
-3. Once all the changes are implemented, run a review on the current codebase. Provide a report of wether it is good to merge to making
-4. If any problem is spotted, fix that.
+1. Add a category selector on the left to enable nodes to be shown on the tree view. Therefore we can remove unecessary nodes on the view.
+2. For the 3D tree, make the nodes at the back mostly transparent, where the nodes at the front can gain focus. Also, make the sliding actions smoother.
