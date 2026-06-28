@@ -1,28 +1,31 @@
 interface KnowledgeFiltersProps {
-  activeFilter: string;
-  filters: string[];
-  onChange: (filter: string) => void;
+  activeCategory: string;
+  categories: string[];
+  onChange: (category: string) => void;
 }
 
 const labels: Record<string, string> = {
+  "Computer Science": "CS",
+  "Computing Systems": "Systems",
+  "Data Science": "Data",
   Mathematics: "Math",
   Statistics: "Stats",
   "Machine Learning": "ML",
   "Deep Learning": "Deep",
-  Optimization: "Optim"
+  Other: "Other"
 };
 
-export function KnowledgeFilters({ activeFilter, filters, onChange }: KnowledgeFiltersProps) {
+export function KnowledgeFilters({ activeCategory, categories, onChange }: KnowledgeFiltersProps) {
   return (
-    <div className="filter-group" aria-label="Filter by tag">
-      {["all", ...filters].map((filter) => (
+    <div className="filter-group" aria-label="Filter tree by category">
+      {["all", ...categories].map((category) => (
         <button
-          className={`filter-button${filter === activeFilter ? " is-active" : ""}`}
-          key={filter}
-          onClick={() => onChange(filter)}
+          className={`filter-button${category === activeCategory ? " is-active" : ""}`}
+          key={category}
+          onClick={() => onChange(category)}
           type="button"
         >
-          {filter === "all" ? "All" : labels[filter] ?? filter}
+          {category === "all" ? "All" : labels[category] ?? category}
         </button>
       ))}
     </div>

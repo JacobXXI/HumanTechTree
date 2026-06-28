@@ -134,6 +134,12 @@ class ConeCanvasRenderer {
   private pixelRatio = 1;
   private reducedMotion = false;
   private selectedId: string | null = null;
+  private readonly targetCamera: ConeCamera = {
+    pitch: -0.38,
+    viewOffsetY: 0,
+    yaw: 0.78,
+    zoom: 1
+  };
   private width = 1;
 
   constructor(
@@ -168,6 +174,7 @@ class ConeCanvasRenderer {
     this.canvas.style.height = `${this.height}px`;
     this.context.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
     if (sizeChanged || !this.backgroundParticles.length) this.seedBackgroundParticles();
+    this.targetCamera.viewOffsetY = this.clampViewOffsetY(this.targetCamera.viewOffsetY);
     this.camera.viewOffsetY = this.clampViewOffsetY(this.camera.viewOffsetY);
     this.renderFrame();
   }
@@ -181,7 +188,12 @@ class ConeCanvasRenderer {
       : new Set<string>();
 
     this.lastFrameTimestamp = timestamp;
-    if (!this.reducedMotion) this.updateBackgroundParticles(deltaSeconds);
+    if (this.reducedMotion) {
+      this.syncCameraToTarget();
+    } else {
+      this.easeCamera(deltaSeconds);
+      this.updateBackgroundParticles(deltaSeconds);
+    }
     this.context.clearRect(0, 0, this.width, this.height);
     this.drawBackground(timestamp);
 
@@ -227,6 +239,31 @@ class ConeCanvasRenderer {
     this.lastFrameTimestamp = 0;
   }
 
+  getTargetCamera() {
+    return { ...this.targetCamera };
+  }
+
+  setViewOffsetY(value: number) {
+    const nextValue = this.clampViewOffsetY(value);
+    this.targetCamera.viewOffsetY = nextValue;
+    if (this.reducedMotion) this.camera.viewOffsetY = nextValue;
+  }
+
+  setYaw(value: number) {
+    this.targetCamera.yaw = value;
+    if (this.reducedMotion) this.camera.yaw = value;
+  }
+
+  setZoom(value: number) {
+    const nextZoom = clamp(value, 0.48, 2.8);
+    this.targetCamera.zoom = nextZoom;
+    this.targetCamera.viewOffsetY = this.clampViewOffsetY(this.targetCamera.viewOffsetY);
+    if (this.reducedMotion) {
+      this.camera.zoom = nextZoom;
+      this.camera.viewOffsetY = this.targetCamera.viewOffsetY;
+    }
+  }
+
   private createBackgroundParticle(): BackgroundParticle {
     const angle = randomBetween(0, Math.PI * 2);
     const speed = randomBetween(14, 34);
@@ -246,6 +283,24 @@ class ConeCanvasRenderer {
     this.backgroundParticles = Array.from({ length: count }, () =>
       this.createBackgroundParticle()
     );
+  }
+
+  private easeCamera(deltaSeconds: number) {
+    const easing = deltaSeconds ? 1 - Math.exp(-deltaSeconds * 14) : 0.24;
+    const step = (current: number, target: number, threshold: number) => {
+      const next = current + (target - current) * easing;
+      return Math.abs(target - next) < threshold ? target : next;
+    };
+
+    this.camera.yaw = step(this.camera.yaw, this.targetCamera.yaw, 0.0008);
+    this.camera.viewOffsetY = step(this.camera.viewOffsetY, this.targetCamera.viewOffsetY, 0.12);
+    this.camera.zoom = step(this.camera.zoom, this.targetCamera.zoom, 0.0012);
+  }
+
+  private syncCameraToTarget() {
+    this.camera.yaw = this.targetCamera.yaw;
+    this.camera.viewOffsetY = this.targetCamera.viewOffsetY;
+    this.camera.zoom = this.targetCamera.zoom;
   }
 
   private updateBackgroundParticles(deltaSeconds: number) {
@@ -435,12 +490,24 @@ class ConeCanvasRenderer {
 
   private drawNodes(projectedNodes: ProjectedNode[], relatedIds: Set<string>) {
     this.hitTargets = [];
+    const radii = projectedNodes.map(({ projected }) => projected.radius);
+    const minimumRadius = Math.min(...radii);
+    const maximumRadius = Math.max(...radii);
     projectedNodes
       .sort((left, right) => left.projected.depth - right.projected.depth)
       .forEach(({ domain, id, projected }) => {
         const selected = id === this.selectedId;
         const related = Boolean(this.selectedId && relatedIds.has(id));
-        const opacity = !this.selectedId || selected || related ? 1 : 0.22;
+        const depthOpacity = maximumRadius === minimumRadius
+          ? 1
+          : 0.18 + ((projected.radius - minimumRadius) / (maximumRadius - minimumRadius)) * 0.82;
+        const opacity = !this.selectedId
+          ? depthOpacity
+          : selected
+            ? 1
+            : related
+              ? Math.max(0.42, depthOpacity)
+              : Math.max(0.08, depthOpacity * 0.26);
         const radius = projected.radius * (selected ? 1.6 : related ? 1.22 : 1);
         const color = this.layout.domainColors.get(domain) ?? "#cbd5e1";
 
@@ -593,10 +660,10 @@ export function KnowledgeCone({
       distance: 0,
       dragging: true,
       pointerId: event.pointerId,
-      startOffsetY: renderer.camera.viewOffsetY,
+      startOffsetY: renderer.getTargetCamera().viewOffsetY,
       startX: event.clientX,
       startY: event.clientY,
-      startYaw: renderer.camera.yaw
+      startYaw: renderer.getTargetCamera().yaw
     };
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -616,9 +683,9 @@ export function KnowledgeCone({
       pointer.axis = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
     }
     if (pointer.axis === "horizontal") {
-      renderer.camera.yaw = pointer.startYaw + deltaX * 0.008;
+      renderer.setYaw(pointer.startYaw + deltaX * 0.008);
     } else if (pointer.axis === "vertical") {
-      renderer.camera.viewOffsetY = renderer.clampViewOffsetY(pointer.startOffsetY + deltaY);
+      renderer.setViewOffsetY(pointer.startOffsetY + deltaY);
     }
     renderer.renderFrame();
   };
@@ -655,15 +722,12 @@ export function KnowledgeCone({
     event.preventDefault();
     const deltaMultiplier = event.deltaMode === 1 ? 18 : 1;
     if (event.ctrlKey || event.metaKey) {
-      renderer.camera.zoom = clamp(
-        renderer.camera.zoom * Math.exp(-event.deltaY * deltaMultiplier * 0.0014),
-        0.48,
-        2.8
+      renderer.setZoom(
+        renderer.getTargetCamera().zoom * Math.exp(-event.deltaY * deltaMultiplier * 0.0014)
       );
-      renderer.camera.viewOffsetY = renderer.clampViewOffsetY(renderer.camera.viewOffsetY);
     } else {
-      renderer.camera.viewOffsetY = renderer.clampViewOffsetY(
-        renderer.camera.viewOffsetY - event.deltaY * deltaMultiplier
+      renderer.setViewOffsetY(
+        renderer.getTargetCamera().viewOffsetY - event.deltaY * deltaMultiplier
       );
     }
     renderer.renderFrame();

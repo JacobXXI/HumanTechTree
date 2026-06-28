@@ -2,12 +2,12 @@ import { KnowledgeFilters } from "./knowledge-filters";
 import type { KnowledgeNode } from "@/lib/knowledge/types";
 
 interface KnowledgeSidebarProps {
-  activeFilter: string;
-  filters: string[];
+  activeCategory: string;
+  categories: string[];
   nodes: KnowledgeNode[];
   query: string;
   selectedId: string | null;
-  onFilterChange: (filter: string) => void;
+  onCategoryChange: (category: string) => void;
   onOpen: (id: string) => void;
   onQueryChange: (query: string) => void;
 }
@@ -28,10 +28,11 @@ export function KnowledgeSidebar(props: KnowledgeSidebarProps) {
         type="search"
         value={props.query}
       />
+      <span className="search-label">Tree category</span>
       <KnowledgeFilters
-        activeFilter={props.activeFilter}
-        filters={props.filters}
-        onChange={props.onFilterChange}
+        activeCategory={props.activeCategory}
+        categories={props.categories}
+        onChange={props.onCategoryChange}
       />
       <nav className="node-list" aria-label="Knowledge nodes">
         {props.nodes.length ? (

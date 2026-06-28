@@ -15,7 +15,7 @@ The current app includes:
 
 - 110 reviewed technology and machine learning knowledge nodes.
 - 197 relationship records covering prerequisites, influences, applications, and alternative paths.
-- A searchable side navigator with data-driven high-level tag filters.
+- A searchable side navigator with data-driven high-level category filters.
 - A full-pane 2D prerequisite graph and a 3D cone view.
 - A knowledge introduction page opened from either the sidebar or the tree.
 - Descriptions, derived prerequisites, derived enabled ideas, tags, status, and references for each node.

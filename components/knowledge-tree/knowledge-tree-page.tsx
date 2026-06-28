@@ -1,29 +1,70 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { KnowledgeDetailPanel } from "./knowledge-detail-panel";
 import { KnowledgeCone } from "./knowledge-cone";
 import { KnowledgeGraph } from "./knowledge-graph";
 import { KnowledgeSidebar } from "./knowledge-sidebar";
-import { getAvailableTags, getNodeIndex, matchesNode } from "@/lib/knowledge/selectors";
+import {
+  getAvailableCategories,
+  getNodeIndex,
+  matchesCategory,
+  matchesQuery
+} from "@/lib/knowledge/selectors";
 import type { KnowledgeData, VisualizationMode } from "@/lib/knowledge/types";
 
-const preferredFilters = ["Mathematics", "Statistics", "Machine Learning", "Deep Learning", "Optimization"];
+const preferredCategories = [
+  "Mathematics",
+  "Statistics",
+  "Machine Learning",
+  "Deep Learning",
+  "Computer Science",
+  "Computing Systems",
+  "Data Science"
+];
 
 export function KnowledgeTreePage({ data }: { data: KnowledgeData }) {
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [category, setCategory] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [openDetailId, setOpenDetailId] = useState<string | null>(null);
   const [visualizationMode, setVisualizationMode] = useState<VisualizationMode>("2d");
-  const nodes = useMemo(
-    () => data.nodes.filter((node) => matchesNode(node, query, filter)),
-    [data.nodes, filter, query]
+  const nodeIndex = useMemo(() => getNodeIndex(data), [data]);
+  const categoryNodes = useMemo(
+    () => data.nodes.filter((node) => matchesCategory(node, category)),
+    [category, data.nodes]
   );
-  const availableTags = getAvailableTags(data);
-  const filters = preferredFilters.filter((tag) => availableTags.includes(tag));
-  const openNode = openDetailId ? getNodeIndex(data).get(openDetailId) : null;
+  const visibleNodeIds = useMemo(
+    () => new Set(categoryNodes.map((node) => node.id)),
+    [categoryNodes]
+  );
+  const nodes = useMemo(
+    () => categoryNodes.filter((node) => matchesQuery(node, query)),
+    [categoryNodes, query]
+  );
+  const graphData = useMemo(
+    () => ({
+      ...data,
+      nodes: categoryNodes,
+      relationships: data.relationships.filter(
+        (relationship) =>
+          visibleNodeIds.has(relationship.source) && visibleNodeIds.has(relationship.target)
+      )
+    }),
+    [categoryNodes, data, visibleNodeIds]
+  );
+  const availableCategories = getAvailableCategories(data);
+  const categories = [
+    ...preferredCategories.filter((item) => availableCategories.includes(item)),
+    ...availableCategories.filter((item) => !preferredCategories.includes(item))
+  ];
+  const openNode = openDetailId ? nodeIndex.get(openDetailId) : null;
+
+  useEffect(() => {
+    if (selectedId && !visibleNodeIds.has(selectedId)) setSelectedId(null);
+    if (openDetailId && !visibleNodeIds.has(openDetailId)) setOpenDetailId(null);
+  }, [openDetailId, selectedId, visibleNodeIds]);
 
   const openDetails = (id: string) => {
     setSelectedId(id);
@@ -33,10 +74,10 @@ export function KnowledgeTreePage({ data }: { data: KnowledgeData }) {
   return (
     <main className="app-shell">
       <KnowledgeSidebar
-        activeFilter={filter}
-        filters={filters}
+        activeCategory={category}
+        categories={categories}
         nodes={nodes}
-        onFilterChange={setFilter}
+        onCategoryChange={setCategory}
         onOpen={openDetails}
         onQueryChange={setQuery}
         query={query}
@@ -60,7 +101,7 @@ export function KnowledgeTreePage({ data }: { data: KnowledgeData }) {
           <div className="tree-view" hidden={visualizationMode !== "2d"}>
             <KnowledgeGraph
               active={visualizationMode === "2d"}
-              data={data}
+              data={graphData}
               onClear={() => setSelectedId(null)}
               onOpen={openDetails}
               onSelect={setSelectedId}
@@ -70,7 +111,7 @@ export function KnowledgeTreePage({ data }: { data: KnowledgeData }) {
           <div className="tree-view cone-view" hidden={visualizationMode !== "3d"}>
             <KnowledgeCone
               active={visualizationMode === "3d"}
-              data={data}
+              data={graphData}
               onClear={() => setSelectedId(null)}
               onOpen={openDetails}
               onSelect={setSelectedId}

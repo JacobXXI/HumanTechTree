@@ -1,3 +1,4 @@
+import { getPrimaryDomain } from "./graph";
 import type { KnowledgeData, KnowledgeNode } from "./types";
 
 export function getNodeIndex(data: KnowledgeData) {
@@ -24,7 +25,7 @@ export function getEnabledIds(data: KnowledgeData, id: string) {
     .map((relationship) => relationship.target);
 }
 
-export function matchesNode(node: KnowledgeNode, query: string, filter: string) {
+export function matchesQuery(node: KnowledgeNode, query: string) {
   const haystack = [
     node.name,
     node.description,
@@ -35,12 +36,17 @@ export function matchesNode(node: KnowledgeNode, query: string, filter: string) 
     .join(" ")
     .toLowerCase();
 
-  return (
-    (!query || haystack.includes(query.toLowerCase())) &&
-    (filter === "all" || node.tags.includes(filter))
-  );
+  return !query || haystack.includes(query.toLowerCase());
 }
 
-export function getAvailableTags(data: KnowledgeData) {
-  return [...new Set(data.nodes.flatMap((node) => node.tags))].sort();
+export function matchesCategory(node: KnowledgeNode, category: string) {
+  return category === "all" || getPrimaryDomain(node) === category;
+}
+
+export function matchesNode(node: KnowledgeNode, query: string, category: string) {
+  return matchesQuery(node, query) && matchesCategory(node, category);
+}
+
+export function getAvailableCategories(data: KnowledgeData) {
+  return [...new Set(data.nodes.map((node) => getPrimaryDomain(node)))].sort();
 }
