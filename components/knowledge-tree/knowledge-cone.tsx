@@ -57,7 +57,6 @@ interface ProjectedNode {
 }
 
 interface ConePointerState {
-  axis: "horizontal" | "vertical" | null;
   distance: number;
   dragging: boolean;
   pointerId: number;
@@ -498,9 +497,10 @@ class ConeCanvasRenderer {
       .forEach(({ domain, id, projected }) => {
         const selected = id === this.selectedId;
         const related = Boolean(this.selectedId && relatedIds.has(id));
-        const depthOpacity = maximumRadius === minimumRadius
+        const depthProgress = maximumRadius === minimumRadius
           ? 1
-          : 0.18 + ((projected.radius - minimumRadius) / (maximumRadius - minimumRadius)) * 0.82;
+          : (projected.radius - minimumRadius) / (maximumRadius - minimumRadius);
+        const depthOpacity = 0.03 + Math.pow(depthProgress, 1.8) * 0.97;
         const opacity = !this.selectedId
           ? depthOpacity
           : selected
@@ -656,7 +656,6 @@ export function KnowledgeCone({
     if (!active || !renderer || !event.isPrimary || event.button !== 0) return;
 
     pointerRef.current = {
-      axis: null,
       distance: 0,
       dragging: true,
       pointerId: event.pointerId,
@@ -679,14 +678,10 @@ export function KnowledgeCone({
     pointer.distance = Math.max(pointer.distance, Math.hypot(deltaX, deltaY));
     event.preventDefault();
 
-    if (!pointer.axis && pointer.distance > 6) {
-      pointer.axis = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
-    }
-    if (pointer.axis === "horizontal") {
-      renderer.setYaw(pointer.startYaw + deltaX * 0.008);
-    } else if (pointer.axis === "vertical") {
-      renderer.setViewOffsetY(pointer.startOffsetY + deltaY);
-    }
+    if (pointer.distance <= 4) return;
+
+    renderer.setYaw(pointer.startYaw + deltaX * 0.0072);
+    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.9);
     renderer.renderFrame();
   };
 
