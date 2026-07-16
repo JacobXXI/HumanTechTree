@@ -20,9 +20,12 @@ export function KnowledgeFilters({ activeCategory, categories, onChange }: Knowl
     <div className="filter-group" aria-label="Filter tree by category">
       {["all", ...categories].map((category) => (
         <button
+          aria-label={category === "all" ? "All categories" : category}
+          aria-pressed={category === activeCategory}
           className={`filter-button${category === activeCategory ? " is-active" : ""}`}
           key={category}
           onClick={() => onChange(category)}
+          title={category === "all" ? "All categories" : category}
           type="button"
         >
           {category === "all" ? "All" : labels[category] ?? category}
