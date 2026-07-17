@@ -3,7 +3,13 @@ import type { KnowledgeNode } from "@/lib/knowledge/types";
 
 interface KnowledgeSidebarProps {
   activeCategory: string;
-  categories: string[];
+  categoryOptions: Array<{
+    count: number;
+    label: string;
+    value: string;
+  }>;
+  filteredNodeCount: number;
+  matchingNodeCount: number;
   nodes: KnowledgeNode[];
   query: string;
   selectedId: string | null;
@@ -13,6 +19,10 @@ interface KnowledgeSidebarProps {
 }
 
 export function KnowledgeSidebar(props: KnowledgeSidebarProps) {
+  const summary = props.query
+    ? `${props.matchingNodeCount} of ${props.filteredNodeCount} visible nodes match`
+    : `${props.filteredNodeCount} nodes visible in the tree`;
+
   return (
     <aside className="navigator" aria-label="Knowledge navigator">
       <div className="brand">
@@ -28,12 +38,14 @@ export function KnowledgeSidebar(props: KnowledgeSidebarProps) {
         type="search"
         value={props.query}
       />
-      <span className="search-label">Tree category</span>
+      <label className="search-label" htmlFor="categorySelect">Tree category</label>
       <KnowledgeFilters
         activeCategory={props.activeCategory}
-        categories={props.categories}
+        id="categorySelect"
         onChange={props.onCategoryChange}
+        options={props.categoryOptions}
       />
+      <p className="filter-summary" role="status">{summary}</p>
       <nav className="node-list" aria-label="Knowledge nodes">
         {props.nodes.length ? (
           props.nodes.map((node) => (

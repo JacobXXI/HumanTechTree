@@ -285,15 +285,17 @@ class ConeCanvasRenderer {
   }
 
   private easeCamera(deltaSeconds: number) {
-    const easing = deltaSeconds ? 1 - Math.exp(-deltaSeconds * 14) : 0.24;
+    const easing = deltaSeconds
+      ? clamp(1 - Math.exp(-deltaSeconds * 10.5), 0.08, 0.2)
+      : 0.18;
     const step = (current: number, target: number, threshold: number) => {
       const next = current + (target - current) * easing;
       return Math.abs(target - next) < threshold ? target : next;
     };
 
-    this.camera.yaw = step(this.camera.yaw, this.targetCamera.yaw, 0.0008);
-    this.camera.viewOffsetY = step(this.camera.viewOffsetY, this.targetCamera.viewOffsetY, 0.12);
-    this.camera.zoom = step(this.camera.zoom, this.targetCamera.zoom, 0.0012);
+    this.camera.yaw = step(this.camera.yaw, this.targetCamera.yaw, 0.0004);
+    this.camera.viewOffsetY = step(this.camera.viewOffsetY, this.targetCamera.viewOffsetY, 0.08);
+    this.camera.zoom = step(this.camera.zoom, this.targetCamera.zoom, 0.0008);
   }
 
   private syncCameraToTarget() {
@@ -489,25 +491,25 @@ class ConeCanvasRenderer {
 
   private drawNodes(projectedNodes: ProjectedNode[], relatedIds: Set<string>) {
     this.hitTargets = [];
-    const radii = projectedNodes.map(({ projected }) => projected.radius);
-    const minimumRadius = Math.min(...radii);
-    const maximumRadius = Math.max(...radii);
+    const scales = projectedNodes.map(({ projected }) => projected.scale);
+    const minimumScale = Math.min(...scales);
+    const maximumScale = Math.max(...scales);
     projectedNodes
       .sort((left, right) => left.projected.depth - right.projected.depth)
       .forEach(({ domain, id, projected }) => {
         const selected = id === this.selectedId;
         const related = Boolean(this.selectedId && relatedIds.has(id));
-        const depthProgress = maximumRadius === minimumRadius
+        const proximity = maximumScale === minimumScale
           ? 1
-          : (projected.radius - minimumRadius) / (maximumRadius - minimumRadius);
-        const depthOpacity = 0.03 + Math.pow(depthProgress, 1.8) * 0.97;
+          : (projected.scale - minimumScale) / (maximumScale - minimumScale);
+        const depthOpacity = 0.012 + Math.pow(proximity, 2.8) * 0.988;
         const opacity = !this.selectedId
-          ? depthOpacity
+          ? Math.max(0.012, depthOpacity * 0.94)
           : selected
             ? 1
             : related
-              ? Math.max(0.42, depthOpacity)
-              : Math.max(0.08, depthOpacity * 0.26);
+              ? Math.max(0.3, depthOpacity * 0.9)
+              : Math.max(0.024, depthOpacity * 0.14);
         const radius = projected.radius * (selected ? 1.6 : related ? 1.22 : 1);
         const color = this.layout.domainColors.get(domain) ?? "#cbd5e1";
 
@@ -680,8 +682,8 @@ export function KnowledgeCone({
 
     if (pointer.distance <= 4) return;
 
-    renderer.setYaw(pointer.startYaw + deltaX * 0.0072);
-    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.9);
+    renderer.setYaw(pointer.startYaw + deltaX * 0.006);
+    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.72);
     renderer.renderFrame();
   };
 
@@ -716,13 +718,14 @@ export function KnowledgeCone({
 
     event.preventDefault();
     const deltaMultiplier = event.deltaMode === 1 ? 18 : 1;
+    const wheelDelta = clamp(event.deltaY * deltaMultiplier, -72, 72);
     if (event.ctrlKey || event.metaKey) {
       renderer.setZoom(
-        renderer.getTargetCamera().zoom * Math.exp(-event.deltaY * deltaMultiplier * 0.0014)
+        renderer.getTargetCamera().zoom * Math.exp(-wheelDelta * 0.0011)
       );
     } else {
       renderer.setViewOffsetY(
-        renderer.getTargetCamera().viewOffsetY - event.deltaY * deltaMultiplier
+        renderer.getTargetCamera().viewOffsetY - wheelDelta * 0.82
       );
     }
     renderer.renderFrame();

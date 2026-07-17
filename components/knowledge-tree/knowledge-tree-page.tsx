@@ -59,6 +59,17 @@ export function KnowledgeTreePage({ data }: { data: KnowledgeData }) {
     ...preferredCategories.filter((item) => availableCategories.includes(item)),
     ...availableCategories.filter((item) => !preferredCategories.includes(item))
   ];
+  const categoryOptions = useMemo(
+    () => [
+      { count: data.nodes.length, label: "All categories", value: "all" },
+      ...categories.map((item) => ({
+        count: data.nodes.filter((node) => matchesCategory(node, item)).length,
+        label: item,
+        value: item
+      }))
+    ],
+    [categories, data.nodes]
+  );
   const openNode = openDetailId ? nodeIndex.get(openDetailId) : null;
 
   useEffect(() => {
@@ -75,7 +86,9 @@ export function KnowledgeTreePage({ data }: { data: KnowledgeData }) {
     <main className="app-shell">
       <KnowledgeSidebar
         activeCategory={category}
-        categories={categories}
+        categoryOptions={categoryOptions}
+        filteredNodeCount={categoryNodes.length}
+        matchingNodeCount={nodes.length}
         nodes={nodes}
         onCategoryChange={setCategory}
         onOpen={openDetails}
