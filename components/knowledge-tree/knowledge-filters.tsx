@@ -6,27 +6,35 @@ interface CategoryOption {
 
 interface KnowledgeFiltersProps {
   activeCategory: string;
-  id: string;
+  labelId: string;
   onChange: (category: string) => void;
   options: CategoryOption[];
 }
 
-export function KnowledgeFilters({ activeCategory, id, onChange, options }: KnowledgeFiltersProps) {
+export function KnowledgeFilters({
+  activeCategory,
+  labelId,
+  onChange,
+  options
+}: KnowledgeFiltersProps) {
   return (
-    <div className="filter-select">
-      <select
-        aria-label="Filter tree by category"
-        className="filter-select-input"
-        id={id}
-        onChange={(event) => onChange(event.target.value)}
-        value={activeCategory}
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label} ({option.count})
-          </option>
-        ))}
-      </select>
+    <div aria-labelledby={labelId} className="category-filter-list" role="radiogroup">
+      {options.map((option) => {
+        const active = option.value === activeCategory;
+        return (
+          <button
+            aria-checked={active}
+            className={`category-filter-button${active ? " is-active" : ""}`}
+            key={option.value}
+            onClick={() => onChange(option.value)}
+            role="radio"
+            type="button"
+          >
+            <span>{option.label}</span>
+            <strong>{option.count}</strong>
+          </button>
+        );
+      })}
     </div>
   );
 }

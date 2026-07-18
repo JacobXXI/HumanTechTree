@@ -38,10 +38,10 @@ export function KnowledgeSidebar(props: KnowledgeSidebarProps) {
         type="search"
         value={props.query}
       />
-      <label className="search-label" htmlFor="categorySelect">Tree category</label>
+      <p className="search-label" id="categoryFilterLabel">Tree category</p>
       <KnowledgeFilters
         activeCategory={props.activeCategory}
-        id="categorySelect"
+        labelId="categoryFilterLabel"
         onChange={props.onCategoryChange}
         options={props.categoryOptions}
       />

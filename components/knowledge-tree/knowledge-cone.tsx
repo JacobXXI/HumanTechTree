@@ -286,8 +286,8 @@ class ConeCanvasRenderer {
 
   private easeCamera(deltaSeconds: number) {
     const easing = deltaSeconds
-      ? clamp(1 - Math.exp(-deltaSeconds * 10.5), 0.08, 0.2)
-      : 0.18;
+      ? clamp(1 - Math.exp(-deltaSeconds * 7.2), 0.04, 0.14)
+      : 0.12;
     const step = (current: number, target: number, threshold: number) => {
       const next = current + (target - current) * easing;
       return Math.abs(target - next) < threshold ? target : next;
@@ -502,19 +502,22 @@ class ConeCanvasRenderer {
         const proximity = maximumScale === minimumScale
           ? 1
           : (projected.scale - minimumScale) / (maximumScale - minimumScale);
-        const depthOpacity = 0.012 + Math.pow(proximity, 2.8) * 0.988;
+        const depthOpacity = 0.02 + Math.pow(proximity, 4.2) * 0.98;
         const opacity = !this.selectedId
-          ? Math.max(0.012, depthOpacity * 0.94)
+          ? Math.max(0.02, depthOpacity * 0.92)
           : selected
             ? 1
             : related
-              ? Math.max(0.3, depthOpacity * 0.9)
-              : Math.max(0.024, depthOpacity * 0.14);
+              ? Math.max(0.34, depthOpacity * 0.94)
+              : Math.max(0.03, depthOpacity * 0.1);
         const radius = projected.radius * (selected ? 1.6 : related ? 1.22 : 1);
         const color = this.layout.domainColors.get(domain) ?? "#cbd5e1";
+        const glowOpacity = selected ? 0.48 : 0.12 + proximity * 0.22;
 
         this.context.save();
         this.context.globalAlpha = opacity;
+        this.context.shadowBlur = selected ? 18 : 4 + proximity * 12;
+        this.context.shadowColor = colorWithAlpha(selected ? "#fde68a" : color, glowOpacity);
         this.context.beginPath();
         this.context.arc(projected.screenX, projected.screenY, radius + 4, 0, Math.PI * 2);
         this.context.fillStyle = selected
@@ -682,9 +685,9 @@ export function KnowledgeCone({
 
     if (pointer.distance <= 4) return;
 
-    renderer.setYaw(pointer.startYaw + deltaX * 0.006);
-    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.72);
-    renderer.renderFrame();
+    renderer.setYaw(pointer.startYaw + deltaX * 0.0048);
+    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.58);
+    if (reducedMotion) renderer.renderFrame();
   };
 
   const endDrag = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -721,14 +724,14 @@ export function KnowledgeCone({
     const wheelDelta = clamp(event.deltaY * deltaMultiplier, -72, 72);
     if (event.ctrlKey || event.metaKey) {
       renderer.setZoom(
-        renderer.getTargetCamera().zoom * Math.exp(-wheelDelta * 0.0011)
+        renderer.getTargetCamera().zoom * Math.exp(-wheelDelta * 0.0009)
       );
     } else {
       renderer.setViewOffsetY(
-        renderer.getTargetCamera().viewOffsetY - wheelDelta * 0.82
+        renderer.getTargetCamera().viewOffsetY - wheelDelta * 0.66
       );
     }
-    renderer.renderFrame();
+    if (reducedMotion) renderer.renderFrame();
   };
 
   return (
