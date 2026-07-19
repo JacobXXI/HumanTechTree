@@ -286,8 +286,8 @@ class ConeCanvasRenderer {
 
   private easeCamera(deltaSeconds: number) {
     const easing = deltaSeconds
-      ? clamp(1 - Math.exp(-deltaSeconds * 7.2), 0.04, 0.14)
-      : 0.12;
+      ? clamp(1 - Math.exp(-deltaSeconds * 5.4), 0.025, 0.11)
+      : 0.09;
     const step = (current: number, target: number, threshold: number) => {
       const next = current + (target - current) * easing;
       return Math.abs(target - next) < threshold ? target : next;
@@ -492,44 +492,53 @@ class ConeCanvasRenderer {
   private drawNodes(projectedNodes: ProjectedNode[], relatedIds: Set<string>) {
     this.hitTargets = [];
     const scales = projectedNodes.map(({ projected }) => projected.scale);
+    const depths = projectedNodes.map(({ projected }) => projected.depth);
     const minimumScale = Math.min(...scales);
     const maximumScale = Math.max(...scales);
+    const minimumDepth = Math.min(...depths);
+    const maximumDepth = Math.max(...depths);
     projectedNodes
       .sort((left, right) => left.projected.depth - right.projected.depth)
       .forEach(({ domain, id, projected }) => {
         const selected = id === this.selectedId;
         const related = Boolean(this.selectedId && relatedIds.has(id));
+        const frontness = maximumDepth === minimumDepth
+          ? 1
+          : 1 - (projected.depth - minimumDepth) / (maximumDepth - minimumDepth);
         const proximity = maximumScale === minimumScale
           ? 1
           : (projected.scale - minimumScale) / (maximumScale - minimumScale);
-        const depthOpacity = 0.02 + Math.pow(proximity, 4.2) * 0.98;
+        const depthOpacity = 0.015 + Math.pow(frontness, 3.4) * 0.985;
         const opacity = !this.selectedId
-          ? Math.max(0.02, depthOpacity * 0.92)
+          ? Math.max(0.015, depthOpacity * 0.96)
           : selected
             ? 1
             : related
-              ? Math.max(0.34, depthOpacity * 0.94)
-              : Math.max(0.03, depthOpacity * 0.1);
-        const radius = projected.radius * (selected ? 1.6 : related ? 1.22 : 1);
+              ? Math.max(0.3, depthOpacity * 0.96)
+              : Math.max(0.018, depthOpacity * 0.08);
+        const focusScale = 0.9 + frontness * 0.26;
+        const radius = projected.radius * focusScale * (selected ? 1.48 : related ? 1.18 : 1);
         const color = this.layout.domainColors.get(domain) ?? "#cbd5e1";
-        const glowOpacity = selected ? 0.48 : 0.12 + proximity * 0.22;
+        const glowOpacity = selected ? 0.48 : 0.08 + frontness * 0.3;
 
         this.context.save();
         this.context.globalAlpha = opacity;
-        this.context.shadowBlur = selected ? 18 : 4 + proximity * 12;
+        this.context.shadowBlur = selected ? 18 : 3 + frontness * 14;
         this.context.shadowColor = colorWithAlpha(selected ? "#fde68a" : color, glowOpacity);
         this.context.beginPath();
         this.context.arc(projected.screenX, projected.screenY, radius + 4, 0, Math.PI * 2);
         this.context.fillStyle = selected
           ? "rgba(251, 191, 36, 0.32)"
-          : "rgba(103, 232, 249, 0.13)";
+          : colorWithAlpha("#67e8f9", 0.08 + proximity * 0.08 + frontness * 0.08);
         this.context.fill();
         this.context.beginPath();
         this.context.arc(projected.screenX, projected.screenY, radius, 0, Math.PI * 2);
         this.context.fillStyle = color;
         this.context.fill();
         this.context.lineWidth = selected ? 3 : 1.4;
-        this.context.strokeStyle = selected ? "#fde68a" : "rgba(226, 232, 240, 0.72)";
+        this.context.strokeStyle = selected
+          ? "#fde68a"
+          : colorWithAlpha("#e2e8f0", 0.38 + proximity * 0.18 + frontness * 0.18);
         this.context.stroke();
         this.context.restore();
 
@@ -685,8 +694,8 @@ export function KnowledgeCone({
 
     if (pointer.distance <= 4) return;
 
-    renderer.setYaw(pointer.startYaw + deltaX * 0.0048);
-    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.58);
+    renderer.setYaw(pointer.startYaw + deltaX * 0.0038);
+    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.42);
     if (reducedMotion) renderer.renderFrame();
   };
 
@@ -728,7 +737,7 @@ export function KnowledgeCone({
       );
     } else {
       renderer.setViewOffsetY(
-        renderer.getTargetCamera().viewOffsetY - wheelDelta * 0.66
+        renderer.getTargetCamera().viewOffsetY - wheelDelta * 0.46
       );
     }
     if (reducedMotion) renderer.renderFrame();
