@@ -286,8 +286,8 @@ class ConeCanvasRenderer {
 
   private easeCamera(deltaSeconds: number) {
     const easing = deltaSeconds
-      ? clamp(1 - Math.exp(-deltaSeconds * 5.4), 0.025, 0.11)
-      : 0.09;
+      ? clamp(1 - Math.exp(-deltaSeconds * 4.4), 0.018, 0.085)
+      : 0.07;
     const step = (current: number, target: number, threshold: number) => {
       const next = current + (target - current) * easing;
       return Math.abs(target - next) < threshold ? target : next;
@@ -466,8 +466,9 @@ class ConeCanvasRenderer {
     });
 
     edges
-      .sort((left, right) =>
-        left.source.depth + left.target.depth - right.source.depth - right.target.depth
+      .sort(
+        (left, right) =>
+          right.source.depth + right.target.depth - left.source.depth - left.target.depth
       )
       .forEach(({ relationship, source, target }) => {
         const linked =
@@ -498,7 +499,7 @@ class ConeCanvasRenderer {
     const minimumDepth = Math.min(...depths);
     const maximumDepth = Math.max(...depths);
     projectedNodes
-      .sort((left, right) => left.projected.depth - right.projected.depth)
+      .sort((left, right) => right.projected.depth - left.projected.depth)
       .forEach(({ domain, id, projected }) => {
         const selected = id === this.selectedId;
         const related = Boolean(this.selectedId && relatedIds.has(id));
@@ -508,18 +509,18 @@ class ConeCanvasRenderer {
         const proximity = maximumScale === minimumScale
           ? 1
           : (projected.scale - minimumScale) / (maximumScale - minimumScale);
-        const depthOpacity = 0.015 + Math.pow(frontness, 3.4) * 0.985;
+        const depthOpacity = 0.008 + Math.pow(frontness, 4.4) * 0.992;
         const opacity = !this.selectedId
-          ? Math.max(0.015, depthOpacity * 0.96)
+          ? Math.max(0.008, depthOpacity * 0.92)
           : selected
             ? 1
             : related
-              ? Math.max(0.3, depthOpacity * 0.96)
-              : Math.max(0.018, depthOpacity * 0.08);
+              ? Math.max(0.28, depthOpacity * 0.9)
+              : Math.max(0.01, depthOpacity * 0.06);
         const focusScale = 0.9 + frontness * 0.26;
         const radius = projected.radius * focusScale * (selected ? 1.48 : related ? 1.18 : 1);
         const color = this.layout.domainColors.get(domain) ?? "#cbd5e1";
-        const glowOpacity = selected ? 0.48 : 0.08 + frontness * 0.3;
+        const glowOpacity = selected ? 0.48 : 0.04 + Math.pow(frontness, 1.8) * 0.3;
 
         this.context.save();
         this.context.globalAlpha = opacity;
@@ -554,7 +555,7 @@ class ConeCanvasRenderer {
   private drawLabels(projectedNodes: ProjectedNode[], relatedIds: Set<string>) {
     projectedNodes
       .filter(({ id }) => Boolean(this.selectedId && relatedIds.has(id)))
-      .sort((left, right) => left.projected.depth - right.projected.depth)
+      .sort((left, right) => right.projected.depth - left.projected.depth)
       .forEach(({ id, node, projected }) => {
         const selected = id === this.selectedId;
         const label = node.name;
@@ -694,8 +695,8 @@ export function KnowledgeCone({
 
     if (pointer.distance <= 4) return;
 
-    renderer.setYaw(pointer.startYaw + deltaX * 0.0038);
-    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.42);
+    renderer.setYaw(pointer.startYaw + deltaX * 0.0032);
+    renderer.setViewOffsetY(pointer.startOffsetY + deltaY * 0.34);
     if (reducedMotion) renderer.renderFrame();
   };
 
@@ -733,11 +734,11 @@ export function KnowledgeCone({
     const wheelDelta = clamp(event.deltaY * deltaMultiplier, -72, 72);
     if (event.ctrlKey || event.metaKey) {
       renderer.setZoom(
-        renderer.getTargetCamera().zoom * Math.exp(-wheelDelta * 0.0009)
+        renderer.getTargetCamera().zoom * Math.exp(-wheelDelta * 0.00075)
       );
     } else {
       renderer.setViewOffsetY(
-        renderer.getTargetCamera().viewOffsetY - wheelDelta * 0.46
+        renderer.getTargetCamera().viewOffsetY - wheelDelta * 0.36
       );
     }
     if (reducedMotion) renderer.renderFrame();
