@@ -23,6 +23,14 @@ const knowledgeTreePage = await readFile(
   path.join(repositoryRoot, "components", "knowledge-tree", "knowledge-tree-page.tsx"),
   "utf8"
 );
+const knowledgeSidebar = await readFile(
+  path.join(repositoryRoot, "components", "knowledge-tree", "knowledge-sidebar.tsx"),
+  "utf8"
+);
+const coneComponent = await readFile(
+  path.join(repositoryRoot, "components", "knowledge-tree", "knowledge-cone.tsx"),
+  "utf8"
+);
 const graphComponent = await readFile(
   path.join(repositoryRoot, "components", "knowledge-tree", "knowledge-graph.tsx"),
   "utf8"
@@ -79,8 +87,25 @@ expect(
   "KnowledgeTreePage must keep the 2D and 3D view state."
 );
 expect(
+  /onCategoryChange=\{setCategory\}/.test(knowledgeTreePage),
+  "KnowledgeTreePage must wire the category selector into the tree state."
+);
+expect(
+  /Tree category/.test(knowledgeSidebar) && /KnowledgeFilters/.test(knowledgeSidebar),
+  "KnowledgeSidebar must expose the tree category filter controls."
+);
+expect(
   /network-background/.test(graphComponent),
   "KnowledgeGraph must render the panel-sized particle canvas."
+);
+expect(
+  /easeCamera\(deltaSeconds\)/.test(coneComponent) &&
+    /Drag to rotate or pan/.test(coneComponent),
+  "KnowledgeCone must preserve smoothed 3D navigation with visible controls."
+);
+expect(
+  /depthOpacity/.test(coneComponent) && /frontness/.test(coneComponent),
+  "KnowledgeCone must keep depth-based fading so front nodes stay visually prioritized."
 );
 
 console.log("Next.js app smoke validation passed.");
